@@ -1,4 +1,4 @@
-import { User } from "#/users/entities/user.entity";
+import { User_Yzc } from "#/user_yzc/entities/user_yzc.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -27,6 +27,6 @@ export class Level_User{
   })
   deletedAt: Date;
 
-  @OneToMany(() => User, (user) => user.id_level_user)
-  user: User
+  @OneToMany(() => User_Yzc, (user_yzc) => user_yzc.level_user)
+  user_yzc: User_Yzc
 }

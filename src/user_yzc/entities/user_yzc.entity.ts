@@ -16,8 +16,8 @@ export class User_Yzc {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Level_User, (id_level_user) => id_level_user.user_yzc)
-  id_level_user : Level_User;
+  @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
+  level_user : Level_User;
 
   @Column({type: 'text'})
   email: string;
@@ -25,7 +25,7 @@ export class User_Yzc {
   @Column({type: 'text'})
   password: string;
 
-  @Column('uuid')
+  @PrimaryGeneratedColumn('uuid')
   salt: string;
 
   @CreateDateColumn({

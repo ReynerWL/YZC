@@ -2,14 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { User_Yzc } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LevelUserService } from '#/level_user/level_user.service';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(User_Yzc)
+    private usersRepository: Repository<User_Yzc>,
+    private leveluserService: LevelUserService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
