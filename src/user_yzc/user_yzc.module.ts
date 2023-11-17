@@ -7,6 +7,7 @@ import { LevelUserModule } from '#/level_user/level_user.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User_Yzc]), LevelUserModule],
+  exports: [UserYzcService],
   controllers: [UserYzcController],
   providers: [UserYzcService],
 })

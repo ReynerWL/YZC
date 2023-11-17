@@ -4,15 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
-import { JwtStrategy } from './jwt.strategies.service';
 import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt/dist';
 
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(User_Yzc)
         private useryzcRepository: Repository<User_Yzc>,
-        private jwtService: JwtStrategy,
+        private jwtService: JwtService,
     ){}
 
     async register(registerDto: RegisterDto){
