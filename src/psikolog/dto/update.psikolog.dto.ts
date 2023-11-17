@@ -2,8 +2,9 @@ import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsEnum} from "class-validator";
 import { GenderProduct } from "../entities/psikolog.entity";
 import { StatusPsikologAcount } from "../entities/psikolog.entity";
+import { CreatePsikologDto } from './create.psikolog.dto';
 
-export class UpdatePsikolog {
+export class UpdatePsikolog extends PartialType(CreatePsikologDto){
     @IsNotEmpty()
     photo: string;
 

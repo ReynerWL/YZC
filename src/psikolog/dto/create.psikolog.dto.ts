@@ -4,7 +4,7 @@ import { StatusPsikologAcount } from "../entities/psikolog.entity";
 
 export class CreatePsikologDto{
     @IsNotEmpty()
-    user_id: string;
+    user_yzc: string;
     
     @IsNotEmpty()
     photo: string;

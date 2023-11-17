@@ -2,22 +2,22 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { Psikolog } from './entities/psikolog.entity';
-import { UsersService } from '#/users/users.service';
+import { UserYzcService } from '#/user_yzc/user_yzc.service';
 import { CreatePsikologDto } from './dto/create.psikolog.dto';
-import { UpdatePsikolog } from './dto/update.psikolog.dto';
+import { UpdatePsikologDto } from './dto/update.psikolog.dto';
 
 @Injectable()
 export class PsikologService {
     constructor(
         @InjectRepository(Psikolog)
         private psikologRepository : Repository<Psikolog>,
-        private userService: UsersService
+        private userService: UserYzcService
     ){}
 
     findAll(){
         return this.psikologRepository.findAndCount({
             relations : {
-                user : true 
+                user_yzc : true 
             }
         });
     }
@@ -26,7 +26,7 @@ export class PsikologService {
         try {
             return await this.psikologRepository.findOneOrFail({
                 where : {id},
-                relations : {user: true}
+                relations : {user_yzc: true}
             })
         } catch (e) {
             if (e instanceof EntityNotFoundError){
@@ -46,7 +46,7 @@ export class PsikologService {
        async create(CreatePsikologDto : CreatePsikologDto){
         try {
             // cek user id is valid
-            const findOneUserId = await this.userService.findOne(CreatePsikologDto.user_id)
+            const findOneUserId = await this.userService.findOne(CreatePsikologDto.user_yzc)
     
             //kalau valid kita baru create review
             const psikologEntity= new Psikolog
@@ -58,7 +58,7 @@ export class PsikologService {
             psikologEntity.status = CreatePsikologDto.status
             psikologEntity.legality = CreatePsikologDto.legality
             psikologEntity.aboutMe = CreatePsikologDto.aboutMe
-            psikologEntity.user = findOneUserId
+            psikologEntity.user_yzc = findOneUserId
     
             const insertReview =  await this.psikologRepository.insert(psikologEntity)
             return await this.psikologRepository.findOneOrFail({
@@ -71,31 +71,31 @@ export class PsikologService {
         }
     }
 
-    // async update(id: string, UpdatePsikologDto: UpdatePsikologDto){
-    //     try {
-    //         // cari idnya valid atau engga
-    //         await this.findOneById(id)
+    async update(id: string, updatePsikologDto: UpdatePsikologDto){
+        try {
+            // cari idnya valid atau engga
+            await this.findOneById(id)
 
-    //         // kalau valid update datanya
-    //         const psikologEntity = new Psikolog
-    //         psikologEntity.fullName = CreatePsikologDto.fullName
-    //         psikologEntity.gender = CreatePsikologDto.gender
-    //         psikologEntity.phone = CreatePsikologDto.phone
-    //         psikologEntity.lastEducation = CreatePsikologDto.lastEducation
-    //         psikologEntity.status = CreatePsikologDto.status
-    //         psikologEntity.legality = CreatePsikologDto.legality
-    //         psikologEntity.aboutMe = CreatePsikologDto.aboutMe
+            // kalau valid update datanya
+            const psikologEntity = new Psikolog
+            psikologEntity.fullName = updatePsikologDto.fullName
+            psikologEntity.gender = updatePsikologDto.gender
+            psikologEntity.phone = updatePsikologDto.phone
+            psikologEntity.lastEducation = updatePsikologDto.lastEducation
+            psikologEntity.status = updatePsikologDto.status
+            psikologEntity.legality = updatePsikologDto.legality
+            psikologEntity.aboutMe = updatePsikologDto.aboutMe
 
-    //         await this.psikologRepository.update(id, psikologEntity)
+            await this.psikologRepository.update(id, psikologEntity)
 
-    //         //  return data setelah diupdate
-    //         return await this.psikologRepository.findOneOrFail({
-    //             where:{id}
-    //         })
-    //     } catch (e) {
-    //         throw e
-    //     }
-    // }
+            //  return data setelah diupdate
+            return await this.psikologRepository.findOneOrFail({
+                where:{id}
+            })
+        } catch (e) {
+            throw e
+        }
+    }
 
     async softDeletedById(id: string){
         try {
