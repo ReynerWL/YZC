@@ -1,4 +1,5 @@
 import { Level_User } from '#/level_user/entities/level_user.entity';
+import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import {
   Entity,
   Column,
@@ -8,6 +9,7 @@ import {
   VersionColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -44,6 +46,9 @@ export class User_Yzc {
     nullable: true,
   })
   deletedAt: Date;
+
+  @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc )
+  psikolog: Psikolog
 
 
   // @VersionColumn()
