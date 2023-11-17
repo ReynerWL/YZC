@@ -2,16 +2,30 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+<<<<<<< HEAD
 import { UsersModule } from './users/users.module';
+=======
+// import { UsersModule } from './users/users.module';
+>>>>>>> dev
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
+<<<<<<< HEAD
 import { SeederModule } from '#/seeder/seeder.module';
 import { PsikologController } from './psikolog/psikolog.controller';
 import { PsikologService } from './psikolog/psikolog.service';
 import { PsikologModule } from './psikolog/psikolog.module';
+import { LevelUserModule } from './level_user/level_user.module';
+import { UserYzcModule } from './user_yzc/user_yzc.module';
+import { AuthModule } from './auth/auth.module';
+=======
+// import { SeederModule } from '#/seeder/seeder.module';
+import { LevelUserModule } from './level_user/level_user.module';
+import { UserYzcModule } from './user_yzc/user_yzc.module';
+import { AuthModule } from './auth/auth.module';
+>>>>>>> dev
 
 @Module({
   imports: [
@@ -96,6 +110,7 @@ import { PsikologModule } from './psikolog/psikolog.module';
       },
       inject: [ConfigService],
     }),
+<<<<<<< HEAD
     SeederModule,
     UsersModule,
     HealthModule,
@@ -103,5 +118,14 @@ import { PsikologModule } from './psikolog/psikolog.module';
   ],
   controllers: [PsikologController],
   providers: [PsikologService],
+=======
+    // SeederModule,
+    // UsersModule,
+    // HealthModule,
+    LevelUserModule,
+    UserYzcModule,
+    AuthModule,
+  ],
+>>>>>>> dev
 })
 export class AppModule {}

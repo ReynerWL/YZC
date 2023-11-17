@@ -1,3 +1,4 @@
+import { Level_User } from '#/level_user/entities/level_user.entity';
 import {
   Entity,
   Column,
@@ -6,21 +7,25 @@ import {
   DeleteDateColumn,
   VersionColumn,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class User_Yzc {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  firstName: string;
+  @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
+  level_user : Level_User;
 
-  @Column()
-  lastName: string;
+  @Column({type: 'varchar'})
+  email: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({type: 'varchar'})
+  password: string;
+
+  @Column({nullable: true})
+  salt: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
@@ -40,6 +45,7 @@ export class User {
   })
   deletedAt: Date;
 
-  @VersionColumn()
-  version: number;
+
+  // @VersionColumn()
+  // version: number;
 }
