@@ -20,11 +20,13 @@ export class UserYzcService {
 
   async create(createUserYzcDto: CreateUserYzcDto) {
     try {
-     const reviewEntity = new User_Yzc
-     reviewEntity.email = createUserYzcDto.email
-     reviewEntity.password = createUserYzcDto.password
+     
+     const useryzcEntity = new User_Yzc
+     useryzcEntity.level_user = await this.leveluserService.findOne(createUserYzcDto.id_level_user)
+     useryzcEntity.email = createUserYzcDto.email
+     useryzcEntity.password = createUserYzcDto.password
 
-     const insertUserYzc = await this.useryzcRepository.insert(reviewEntity)
+     const insertUserYzc = await this.useryzcRepository.insert(useryzcEntity)
      return await this.useryzcRepository.findOneOrFail({
         where:{
             id: insertUserYzc.identifiers[0].id
@@ -59,11 +61,11 @@ export class UserYzcService {
     try {
       await this.findOne(id)
 
-      const reviewEntity = new User_Yzc
-      reviewEntity.email = updateUserYzcDto.email
-      reviewEntity.password = updateUserYzcDto.password
+      const useryzcEntity = new User_Yzc
+      useryzcEntity.email = updateUserYzcDto.email
+      useryzcEntity.password = updateUserYzcDto.password
 
-      await this.useryzcRepository.update(id,reviewEntity)
+      await this.useryzcRepository.update(id,useryzcEntity)
       return this.useryzcRepository.findOneOrFail({
         where: {id}
       })
