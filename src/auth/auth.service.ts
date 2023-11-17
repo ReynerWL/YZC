@@ -2,7 +2,7 @@ import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 import { JwtStrategy } from './jwt.strategies.service';
 import { LoginDto } from './dto/login.dto';
@@ -33,7 +33,17 @@ export class AuthService {
                 where: {id: createUserYzc.identifiers[0].id}
             })
         } catch (error) {
-            throw error
+            if (error instanceof EntityNotFoundError) {
+                throw new HttpException(
+                  {
+                    statusCode: HttpStatus.NOT_FOUND,
+                    message: 'data not found',
+                  },
+                  HttpStatus.NOT_FOUND,
+                );
+              } else {
+                throw error;
+              }
         }
     }
 
@@ -67,10 +77,16 @@ export class AuthService {
             }
 
             return {
-                access_token: await this.jwtService.validate(payload)
+                access_token: await this.jwtService.signAsync(payload)
             }
         } catch (error) {
-            throw error
+            throw new HttpException(
+                {
+                  statusCode: HttpStatus.UNAUTHORIZED,
+                  message: 'Invalid credential',
+                },
+                HttpStatus.UNAUTHORIZED,
+              );
         }
     }
 }

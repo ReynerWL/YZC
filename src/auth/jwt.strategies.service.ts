@@ -3,7 +3,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExtraJwt, Strategy } from "passport-jwt"
+import { ExtractJwt, Strategy } from "passport-jwt"
 import { Repository } from "typeorm";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy){
   ){
     super({
       secretOrKey: 'YzcSecretKey',
-      jwtFromRequest: ExtraJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     })
   }
 
