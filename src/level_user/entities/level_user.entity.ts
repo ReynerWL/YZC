@@ -6,7 +6,7 @@ export class Level_User{
  @PrimaryGeneratedColumn('uuid')
  id: string;
 
- @Column()
+ @Column({type: 'varchar'})
  name_level: string;
 
  @CreateDateColumn({
@@ -28,5 +28,5 @@ export class Level_User{
   deletedAt: Date;
 
   @OneToMany(() => User_Yzc, (user_yzc) => user_yzc.level_user)
-  user_yzc: User_Yzc
+  user_yzc: User_Yzc[];
 }

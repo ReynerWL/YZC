@@ -13,19 +13,9 @@ import {
   import { CreateUserYzcDto } from './dto/create-user_yzc.dto';
   import { UpdateUserYzcDto } from './dto/update-user_yzc.dto';
   
-  @Controller('users')
+  @Controller('user_yzc')
   export class UserYzcController {
     constructor(private readonly useryzcService: UserYzcService) {}
-  
-    @Post()
-    async create(@Body() createUserYzcDto: CreateUserYzcDto) {
-      return {
-        data: await this.useryzcService.create(createUserYzcDto),
-        statusCode: HttpStatus.CREATED,
-        message: 'success',
-      };
-    }
-  
     @Get()
     async findAll() {
       const [data, count] = await this.useryzcService.findAll();
@@ -37,6 +27,17 @@ import {
         message: 'success',
       };
     }
+    
+    @Post()
+    async create(@Body() createUserYzcDto: CreateUserYzcDto) {
+      const data = await this.useryzcService.createUserYzc(createUserYzcDto)
+      return {
+        data,
+        statusCode: HttpStatus.CREATED,
+        message: 'success',
+      };
+    }
+  
   
     @Get(':id')
     async findOne(@Param('id', ParseUUIDPipe) id: string) {

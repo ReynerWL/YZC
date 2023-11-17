@@ -1,5 +1,4 @@
 import { Level_User } from '#/level_user/entities/level_user.entity';
-import { text } from 'stream/consumers';
 import {
   Entity,
   Column,
@@ -19,13 +18,13 @@ export class User_Yzc {
   @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
   level_user : Level_User;
 
-  @Column({type: 'text'})
+  @Column({type: 'varchar'})
   email: string;
 
-  @Column({type: 'text'})
+  @Column({type: 'varchar'})
   password: string;
 
-  @PrimaryGeneratedColumn('uuid')
+  @Column({nullable: true})
   salt: string;
 
   @CreateDateColumn({
@@ -45,6 +44,7 @@ export class User_Yzc {
     nullable: true,
   })
   deletedAt: Date;
+
 
   // @VersionColumn()
   // version: number;
