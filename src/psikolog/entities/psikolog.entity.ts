@@ -8,6 +8,7 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToOne,
+    JoinColumn,
   } from 'typeorm';
 
   export enum GenderProduct{
@@ -26,7 +27,8 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @OneToOne(()=> User_Yzc,(user_yzc)=> user_yzc.psikolog)
+    @OneToOne(()=> User_Yzc)
+    @JoinColumn()
     user_yzc : User_Yzc
 
     @Column({

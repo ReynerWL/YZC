@@ -7,13 +7,11 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
-import { SeederModule } from '#/seeder/seeder.module';
-import { PsikologController } from './psikolog/psikolog.controller';
-import { PsikologService } from './psikolog/psikolog.service';
 import { PsikologModule } from './psikolog/psikolog.module';
 import { LevelUserModule } from './level_user/level_user.module';
 import { UserYzcModule } from './user_yzc/user_yzc.module';
 import { AuthModule } from './auth/auth.module';
+import { CustomerModule } from './customer/customer.module';
 
 @Module({
   imports: [
@@ -98,15 +96,13 @@ import { AuthModule } from './auth/auth.module';
       },
       inject: [ConfigService],
     }),
-    SeederModule,
     HealthModule,
     PsikologModule,
     LevelUserModule,
     UserYzcModule,
     AuthModule,
+    CustomerModule,
   ],
-  controllers: [PsikologController],
-  providers: [PsikologService],
     
 })
 export class AppModule {}

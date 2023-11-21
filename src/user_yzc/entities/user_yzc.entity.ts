@@ -1,3 +1,4 @@
+import { Customer } from '#/customer/entities/customer.entity';
 import { Level_User } from '#/level_user/entities/level_user.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import {
@@ -49,6 +50,9 @@ export class User_Yzc {
 
   @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc )
   psikolog: Psikolog
+
+  @OneToOne(() => Customer, (customer) => customer.user_yzc)
+  customer: Customer
 
 
   // @VersionColumn()
