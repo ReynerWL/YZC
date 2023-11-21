@@ -12,6 +12,14 @@ import { LevelUserModule } from './level_user/level_user.module';
 import { UserYzcModule } from './user_yzc/user_yzc.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomerModule } from './customer/customer.module';
+import { SeminarModule } from './seminar/seminar.module';
+import { PrivateKonselingModule } from './private_konseling/private_konseling.module';
+import { BankModule } from './bank/bank.module';
+import { TransaksiModule } from './transaksi/transaksi.module';
+import { OrderModule } from './order/order.module';
+import { DetailOrderModule } from './detail_order/detail_order.module';
+import { ArtikelModule } from './artikel/artikel.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -102,6 +110,14 @@ import { CustomerModule } from './customer/customer.module';
     UserYzcModule,
     AuthModule,
     CustomerModule,
+    SeminarModule,
+    PrivateKonselingModule,
+    BankModule,
+    TransaksiModule,
+    OrderModule,
+    DetailOrderModule,
+    ArtikelModule,
+    ReviewModule,
   ],
     
 })
