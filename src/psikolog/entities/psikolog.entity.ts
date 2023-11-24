@@ -1,3 +1,5 @@
+import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+import { Seminar } from '#/seminar/entities/seminar.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import {
     Entity,
@@ -9,6 +11,8 @@ import {
     CreateDateColumn,
     OneToOne,
     JoinColumn,
+    ManyToMany,
+    ManyToOne,
   } from 'typeorm';
 
   export enum GenderProduct{
@@ -16,11 +20,6 @@ import {
     WANITA = 'wanitia',
   }
 
-  export enum StatusPsikologAcount {
-    PENDING = 'pending',
-    ACTIVE = 'active',
-    NOT_ACTIVE = 'not active',
-  }
 
   @Entity()
   export class Psikolog {
@@ -58,13 +57,6 @@ import {
     lastEducation: string;
 
     @Column({
-      type:'enum',
-      enum: StatusPsikologAcount,
-      default: StatusPsikologAcount.PENDING,
-    })
-    status: StatusPsikologAcount;
-
-    @Column({
       type :"text"
     })
     legality: string;
@@ -94,4 +86,10 @@ import {
   
       @VersionColumn()
       version: number;
+
+      @ManyToOne(() => Seminar, (seminar) => seminar.psikolog)
+      seminar: Seminar
+
+      @OneToOne(() => PrivateKonseling, private_konseling => private_konseling.psikolog)
+      private_konseling: PrivateKonseling
   }

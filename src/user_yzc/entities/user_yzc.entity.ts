@@ -13,6 +13,12 @@ import {
   OneToOne,
 } from 'typeorm';
 
+export enum StatusAcount {
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  NOT_ACTIVE = 'not active',
+}
+
 @Entity()
 export class User_Yzc {
   @PrimaryGeneratedColumn('uuid')
@@ -26,6 +32,9 @@ export class User_Yzc {
 
   @Column({type: 'varchar'})
   password: string;
+
+  @Column({type: 'enum', enum: StatusAcount})
+  status: StatusAcount
 
   @Column({nullable: true})
   salt: string;

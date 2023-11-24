@@ -1,3 +1,6 @@
+import { OrderYzc } from '#/order/entities/order.entity';
+import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+import { Seminar } from '#/seminar/entities/seminar.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import {
     Entity,
@@ -10,6 +13,9 @@ import {
     ManyToOne,
     OneToOne,
     JoinColumn,
+    ManyToMany,
+    OneToMany,
+    JoinTable,
   } from 'typeorm';
   
   export enum CustomerGender{
@@ -71,4 +77,10 @@ export class Customer {
       })
       deletedAt: Date;
 
+      @ManyToMany(() => Seminar, (seminar) => seminar.customer)
+      @JoinTable({name: 'order_yzc'})
+      seminar: Seminar[]
+
+      @OneToOne(() => PrivateKonseling, (private_konseling) => private_konseling.customer)
+      private_konseling: PrivateKonseling
 }

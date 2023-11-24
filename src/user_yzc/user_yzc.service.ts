@@ -25,7 +25,8 @@ export class UserYzcService {
      useryzcEntity.level_user = findOneLevelUser
      useryzcEntity.email = createUserYzcDto.email
      useryzcEntity.password = createUserYzcDto.password
-
+    useryzcEntity.status = createUserYzcDto.status
+    
      const insertUserYzc = await this.useryzcRepository.insert(useryzcEntity)
      return await this.useryzcRepository.findOneOrFail({
         where:{
@@ -64,6 +65,8 @@ export class UserYzcService {
       const useryzcEntity = new User_Yzc
       useryzcEntity.email = updateUserYzcDto.email
       useryzcEntity.password = updateUserYzcDto.password
+      useryzcEntity.status = updateUserYzcDto.status
+
 
       await this.useryzcRepository.update(id,useryzcEntity)
       return this.useryzcRepository.findOneOrFail({

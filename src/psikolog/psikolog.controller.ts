@@ -33,17 +33,25 @@ async create (@Body() createPsikologDto:CreatePsikologDto){
   }
 }
 
-// @Put("/:id")
-// async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdateReviewDto:
-// UpdatePsikologDto){
-//   const data = await this.psikologService.update(id, UpdatePsikologDto)
+@Get(':id')
+    async findOne(@Param('id', ParseUUIDPipe) id: string) {
+      return {
+        data: await this.psikologService.findOne(id),
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
 
-//   return{
-//     data,
-//     StatusCode: HttpStatus.OK,
-//     message: "succes"
-//   }
-// }
+@Put("/:id")
+async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikolog){
+  const data = await this.psikologService.update(id, UpdatePsikologDto)
+
+  return{
+    data,
+    StatusCode: HttpStatus.OK,
+    message: "succes"
+  }
+}
 
 @Delete("/:id")
 async softDelete(@Param("id", ParseUUIDPipe) id: string){

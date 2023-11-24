@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { StatusAcount } from '../entities/user_yzc.entity';
 
 export class CreateUserYzcDto {
   @IsNotEmpty()
@@ -9,4 +10,8 @@ export class CreateUserYzcDto {
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  @IsEnum(StatusAcount)
+  status: StatusAcount
 }
