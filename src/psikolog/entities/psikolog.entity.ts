@@ -89,7 +89,4 @@ import {
 
       @ManyToOne(() => Seminar, (seminar) => seminar.psikolog)
       seminar: Seminar
-
-      @OneToOne(() => PrivateKonseling, private_konseling => private_konseling.psikolog)
-      private_konseling: PrivateKonseling
   }

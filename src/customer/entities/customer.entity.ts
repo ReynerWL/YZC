@@ -77,10 +77,7 @@ export class Customer {
       })
       deletedAt: Date;
 
-      @ManyToMany(() => Seminar, (seminar) => seminar.customer)
-      @JoinTable({name: 'order_yzc'})
-      seminar: Seminar[]
+      @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.customer)
+      order: OrderYzc[]
 
-      @OneToOne(() => PrivateKonseling, (private_konseling) => private_konseling.customer)
-      private_konseling: PrivateKonseling
 }

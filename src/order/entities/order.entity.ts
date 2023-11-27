@@ -16,7 +16,7 @@ import {
 import { Seminar, Status } from "#/seminar/entities/seminar.entity";
 import { Customer } from '#/customer/entities/customer.entity';
 
-@Entity('order_yzc')
+@Entity()
 export class OrderYzc{
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -48,11 +48,10 @@ export class OrderYzc{
   })
   deletedAt: Date;
   
-  @ManyToOne(() => Customer, customer => customer.seminar)
-  @JoinColumn({name: 'customer'})
+  @ManyToOne(() => Customer, customer => customer.order)
   customer: Customer
   
-  @ManyToOne(() => Seminar, seminar => seminar.customer)
+  @OneToMany(() => Seminar, seminar => seminar.customer)
   @JoinColumn({name: 'seminar'})
   seminar: Seminar
 }

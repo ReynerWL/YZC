@@ -17,7 +17,7 @@ export class SeminarService {
  ){}
 
  findAll(){
-    return this.seminarRepository.findAndCount({relations: {customer: true, psikolog: true}})
+    return this.seminarRepository.findAndCount({relations: { psikolog: true}})
  }
 
  async createSeminar(createSeminarDto: CreateSeminarDto){
@@ -25,7 +25,7 @@ export class SeminarService {
       const findCustomer = await this.customerService.findOne(createSeminarDto.customer)
       const findPsikolog  = await this.psikologService.findOne(createSeminarDto.psikolog['psikolog'])
       const seminarEntity = new Seminar
-      seminarEntity.customer = findCustomer
+      // seminarEntity.order[''] = findCustomer
       seminarEntity.psikolog['psikolog'] = findPsikolog
       seminarEntity.title = createSeminarDto.title
       seminarEntity.price = createSeminarDto.price
@@ -43,7 +43,7 @@ export class SeminarService {
 
  async findOne(id: string){
    try {
-       return await this.seminarRepository.findOneOrFail({where:{id}, relations: {customer: true,psikolog: true}})
+       return await this.seminarRepository.findOneOrFail({where:{id}, relations: {psikolog: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(
@@ -63,7 +63,7 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
      const findCustomer = await this.customerService.findOne(updateSeminarDto.customer)
       const findPsikolog  = await this.psikologService.findOne(updateSeminarDto.psikolog['psikolog'])
       const seminarEntity = new Seminar
-      seminarEntity.customer= findCustomer
+      // seminarEntity.order['']= findCustomer
       seminarEntity.psikolog['psikolog'] = findPsikolog
       seminarEntity.title = updateSeminarDto.title
       seminarEntity.price = updateSeminarDto.price

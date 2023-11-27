@@ -1,5 +1,6 @@
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { Status } from '#/seminar/entities/seminar.entity';
 import {
     Entity,
     Column,
@@ -21,11 +22,38 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToOne(() => Customer, (customer) => customer.private_konseling)
+    @OneToOne(() => Customer)
     @JoinColumn()
     customer: Customer
 
-    @OneToOne(() => Psikolog, (psikolog) => psikolog.private_konseling)
+    @OneToOne(() => Psikolog)
     @JoinColumn()
     psikolog: Psikolog
+
+    @Column({type: 'time with time zone'})
+    datetime: Date
+
+    @Column({type: 'int'})
+    price: Number
+
+    @Column({type: 'enum', enum: Status})
+    status: Status
+
+    @CreateDateColumn({
+      type: 'timestamp with time zone',
+      nullable: false,
+    })
+    createdAt: Date;
+  
+    @UpdateDateColumn({
+      type: 'timestamp with time zone',
+      nullable: false,
+    })
+    updatedAt: Date;
+  
+    @DeleteDateColumn({
+      type: 'timestamp with time zone',
+      nullable: true,
+    })
+    deletedAt: Date;
   }
