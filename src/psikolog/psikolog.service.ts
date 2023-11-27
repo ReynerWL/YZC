@@ -53,7 +53,7 @@ export class PsikologService {
             psikologEntity.photo = CreatePsikologDto.photo
             psikologEntity.fullName = CreatePsikologDto.fullName
             psikologEntity.gender = CreatePsikologDto.gender
-            psikologEntity.phone = CreatePsikologDto.phone
+            psikologEntity.phone_number = CreatePsikologDto.phone_number
             psikologEntity.lastEducation = CreatePsikologDto.lastEducation
             psikologEntity.legality = CreatePsikologDto.legality
             psikologEntity.aboutMe = CreatePsikologDto.aboutMe
@@ -79,7 +79,7 @@ export class PsikologService {
             const psikologEntity = new Psikolog
             psikologEntity.fullName = updatePsikologDto.fullName
             psikologEntity.gender = updatePsikologDto.gender
-            psikologEntity.phone = updatePsikologDto.phone
+            psikologEntity.phone_number = updatePsikologDto.phone_number
             psikologEntity.lastEducation = updatePsikologDto.lastEducation
             psikologEntity.legality = updatePsikologDto.legality
             psikologEntity.aboutMe = updatePsikologDto.aboutMe

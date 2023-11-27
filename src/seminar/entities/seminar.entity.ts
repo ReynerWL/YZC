@@ -67,7 +67,7 @@ import {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => OrderYzc, (orderYzc) => orderYzc.seminar)
-  @JoinTable({name: 'order_yzc'})
-  customer: Customer
+  // @ManyToOne(() => OrderYzc, (orderYzc) => orderYzc.seminar)
+  // @JoinTable({name: 'order_yzc'})
+  // customer: Customer
 }

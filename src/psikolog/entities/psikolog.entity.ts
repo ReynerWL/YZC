@@ -1,3 +1,4 @@
+import { Gender } from '#/customer/entities/customer.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
@@ -42,14 +43,12 @@ import {
 
     @Column({
       type :'enum',
-      enum: GenderProduct
+      enum: Gender
     })
-    gender: GenderProduct
+    gender: Gender
 
-    @Column({
-      type :"varchar",
-    })
-    phone: number;
+    @Column({type: 'char', length: 15})
+    phone_number: string;
 
     @Column({
       type :"varchar",

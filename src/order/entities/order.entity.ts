@@ -48,10 +48,10 @@ export class OrderYzc{
   })
   deletedAt: Date;
   
-  @ManyToOne(() => Customer, customer => customer.order)
-  customer: Customer
+  // @ManyToOne(() => Customer, customer => customer.order)
+  // customer: Customer
   
-  @OneToMany(() => Seminar, seminar => seminar.customer)
-  @JoinColumn({name: 'seminar'})
-  seminar: Seminar
+  // @OneToMany(() => Seminar, seminar => seminar.customer)
+  // @JoinColumn({name: 'seminar'})
+  // seminar: Seminar
 }

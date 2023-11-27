@@ -20,7 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy){
 
   async validate(payload: any){
     try {
-      const useryzcOne = this.useryzcRepository.findOne({
+      const useryzcOne = await this.useryzcRepository.findOne({
+        relations: ['level_user'],
         where: {id: payload.id}
       })
       if (!useryzcOne) {
@@ -29,7 +30,9 @@ export class JwtStrategy extends PassportStrategy(Strategy){
             message: "Token Is Invalid",
         },HttpStatus.UNAUTHORIZED)
       }
-      return useryzcOne
+
+      const data = {id: useryzcOne.id,role: useryzcOne.level_user.name_level}
+      return data
     } catch (error) {
         throw error
     }

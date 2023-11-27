@@ -18,9 +18,9 @@ import {
     JoinTable,
   } from 'typeorm';
   
-  export enum CustomerGender{
-    Pria = 'Pria',
-    Wanita = 'Wanita'
+  export enum Gender{
+    Pria = 'pria',
+    Wanita = 'wanita'
   }
   export enum Religion{
     Islam = 'Islam',
@@ -47,8 +47,8 @@ export class Customer {
     @Column({type: 'date'})
     birth_date: Date
 
-    @Column({type: 'enum', enum: CustomerGender})
-    gender : CustomerGender
+    @Column({type: 'enum', enum: Gender})
+    gender : Gender
 
     @Column({type: 'enum', enum: Religion })
     religion: Religion
@@ -77,7 +77,7 @@ export class Customer {
       })
       deletedAt: Date;
 
-      @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.customer)
-      order: OrderYzc[]
+      // @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.customer)
+      // order: OrderYzc[]
 
 }
