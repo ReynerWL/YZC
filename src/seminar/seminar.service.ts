@@ -6,13 +6,13 @@ import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
+import { OrderService } from '#/order/order.service';
 
 @Injectable()
 export class SeminarService {
  constructor(
     @InjectRepository(Seminar)
     private seminarRepository: Repository<Seminar>,
-    private customerService: CustomerService,
     private psikologService: PsikologService,
  ){}
 
@@ -22,10 +22,8 @@ export class SeminarService {
 
  async createSeminar(createSeminarDto: CreateSeminarDto){
    try {
-      const findCustomer = await this.customerService.findOne(createSeminarDto.customer)
       const findPsikolog  = await this.psikologService.findOne(createSeminarDto.psikolog['psikolog'])
       const seminarEntity = new Seminar
-      // seminarEntity.order[''] = findCustomer
       seminarEntity.psikolog['psikolog'] = findPsikolog
       seminarEntity.title = createSeminarDto.title
       seminarEntity.price = createSeminarDto.price
@@ -60,10 +58,8 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
    try {
      await this.findOne(id)
 
-     const findCustomer = await this.customerService.findOne(updateSeminarDto.customer)
       const findPsikolog  = await this.psikologService.findOne(updateSeminarDto.psikolog['psikolog'])
       const seminarEntity = new Seminar
-      // seminarEntity.order['']= findCustomer
       seminarEntity.psikolog['psikolog'] = findPsikolog
       seminarEntity.title = updateSeminarDto.title
       seminarEntity.price = updateSeminarDto.price

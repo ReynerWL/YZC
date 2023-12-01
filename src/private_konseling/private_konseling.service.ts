@@ -24,13 +24,13 @@ export class PrivateKonselingService {
     try {
         const findOneCustomer = await this.customerService.findOne(createPrivateKonselingDto.customer)
         const findOnePsikolog = await this.psikologService.findOne(createPrivateKonselingDto.psikolog)
-
+        let Status: any = 'pending'
         const privateKonselingEntity = new PrivateKonseling
         privateKonselingEntity.customer = findOneCustomer
         privateKonselingEntity.psikolog = findOnePsikolog
         privateKonselingEntity.datetime = createPrivateKonselingDto.datetime
         privateKonselingEntity.price = createPrivateKonselingDto.price
-        privateKonselingEntity.status = createPrivateKonselingDto.status
+        privateKonselingEntity.status = Status
         
         const insertCostumer = await this.privateKonselingRepository.insert(privateKonselingEntity)
         return await this.privateKonselingRepository.findOneOrFail({where:{id: insertCostumer.identifiers[0].id}})
@@ -56,6 +56,8 @@ async findOne(id: string){
 
 async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
     try {
+      if (updatePrivateKonselingDto.status === 'pending') {
+        
       await this.findOne(id)
       const findOnePsikolog = await this.psikologService.findOne(updatePrivateKonselingDto.psikolog)
       const privateKonselingEntity = new PrivateKonseling
@@ -68,6 +70,7 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
       return this.privateKonselingRepository.findOneOrFail({
         where: {id}
       })
+    }
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(
@@ -89,6 +92,20 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
         return `Delete Success`
     } catch (error) {
         throw error
+    }
+  }
+
+  async statusUpdate(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto){
+    try {
+      await this.findOne(id)
+      const privateKonselingEntity = new PrivateKonseling
+      privateKonselingEntity.status = updatePrivateKonselingDto.status
+      await this.privateKonselingRepository.update(id,privateKonselingEntity)
+      return this.privateKonselingRepository.findOneOrFail({
+        where: {id}
+      })
+    } catch (error) {
+      
     }
   }
 }

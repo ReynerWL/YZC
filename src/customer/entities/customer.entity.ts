@@ -76,8 +76,4 @@ export class Customer {
         nullable: true,
       })
       deletedAt: Date;
-
-      // @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.customer)
-      // order: OrderYzc[]
-
-}
+    }

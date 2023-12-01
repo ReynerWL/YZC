@@ -16,7 +16,7 @@ import { SeminarModule } from './seminar/seminar.module';
 import { PrivateKonselingModule } from './private_konseling/private_konseling.module';
 import { BankModule } from './bank/bank.module';
 import { TransaksiModule } from './transaksi/transaksi.module';
-import { OrderModule } from './order/order.module';
+import {  OrderYzcModule } from './order/order.module';
 import { DetailOrderModule } from './detail_order/detail_order.module';
 import { ArtikelModule } from './artikel/artikel.module';
 import { ReviewModule } from './review/review.module';
@@ -114,7 +114,7 @@ import { ReviewModule } from './review/review.module';
     PrivateKonselingModule,
     BankModule,
     TransaksiModule,
-    OrderModule,
+    OrderYzcModule,
     DetailOrderModule,
     ArtikelModule,
     ReviewModule,

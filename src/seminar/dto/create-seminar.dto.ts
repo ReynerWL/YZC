@@ -4,9 +4,6 @@ import { Psikolog } from "#/psikolog/entities/psikolog.entity";
 
 export class CreateSeminarDto{
     @IsNotEmpty()
-    customer: string
-
-    @IsNotEmpty()
     @IsArray()
     psikolog: Psikolog[]
 
@@ -28,4 +25,5 @@ export class CreateSeminarDto{
     @IsNotEmpty()
     @IsEnum(Status)
     status: Status
+
 }

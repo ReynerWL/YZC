@@ -13,8 +13,15 @@ import {
     ManyToMany,
     JoinTable,
   } from 'typeorm';
-import { Seminar, Status } from "#/seminar/entities/seminar.entity";
+import { Seminar} from "#/seminar/entities/seminar.entity";
 import { Customer } from '#/customer/entities/customer.entity';
+import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+
+export enum Status{
+  Pending = 'pending',
+  Approve = 'approve',
+  Reject = 'reject'
+}
 
 @Entity()
 export class OrderYzc{
@@ -48,10 +55,14 @@ export class OrderYzc{
   })
   deletedAt: Date;
   
-  // @ManyToOne(() => Customer, customer => customer.order)
-  // customer: Customer
+  @OneToOne(() => Customer)
+  @JoinColumn()
+  customer: Customer
   
-  // @OneToMany(() => Seminar, seminar => seminar.customer)
-  // @JoinColumn({name: 'seminar'})
-  // seminar: Seminar
+  @ManyToOne(() => Seminar, (seminar) => seminar.orderYzc)
+  seminar: Seminar
+
+  @OneToOne(() => PrivateKonseling)
+  @JoinColumn()
+  private_konseling: PrivateKonseling
 }

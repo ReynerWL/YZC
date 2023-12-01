@@ -14,7 +14,4 @@ export class CreatePrivateKonselingDto{
     @IsNotEmpty()
     price: Number
 
-    @IsNotEmpty()
-    @IsEnum(Status)
-    status: Status
 }

@@ -16,6 +16,7 @@ import {
     ManyToMany,
     JoinTable,
   } from 'typeorm';
+  
   export enum Status{
     Pending = 'pending',
     Approve = 'approve',
@@ -67,7 +68,6 @@ import {
   })
   deletedAt: Date;
 
-  // @ManyToOne(() => OrderYzc, (orderYzc) => orderYzc.seminar)
-  // @JoinTable({name: 'order_yzc'})
-  // customer: Customer
+  @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.seminar)
+  orderYzc: OrderYzc
 }

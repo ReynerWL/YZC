@@ -1,6 +1,5 @@
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
-import { Status } from '#/seminar/entities/seminar.entity';
 import {
     Entity,
     Column,
@@ -16,6 +15,12 @@ import {
     OneToMany,
     JoinTable,
   } from 'typeorm';
+
+  export enum Status{
+    Pending = 'pending',
+    Approve = 'approve',
+    Reject = 'reject'
+  }
 
   @Entity()
   export class PrivateKonseling{
@@ -36,7 +41,7 @@ import {
     @Column({type: 'int'})
     price: Number
 
-    @Column({type: 'enum', enum: Status})
+    @Column({enum: Status,type: 'enum'})
     status: Status
 
     @CreateDateColumn({
