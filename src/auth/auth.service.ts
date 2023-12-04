@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt'
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { JwtService } from '@nestjs/jwt/dist';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {

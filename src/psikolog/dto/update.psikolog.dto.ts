@@ -4,7 +4,7 @@ import { GenderProduct } from "../entities/psikolog.entity";
 import { StatusPsikologAcount } from "../entities/psikolog.entity";
 import { CreatePsikologDto } from './create.psikolog.dto';
 
-export class UpdatePsikolog extends PartialType(CreatePsikologDto){
+export class UpdatePsikologDto extends PartialType(CreatePsikologDto){
     @IsNotEmpty()
     photo: string;
 

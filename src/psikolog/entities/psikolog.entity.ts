@@ -1,4 +1,5 @@
-import { User } from '#/users/entities/user.entity';
+import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
+import { string } from "joi";
 import {
     Entity,
     Column,
@@ -8,6 +9,7 @@ import {
     VersionColumn,
     CreateDateColumn,
     OneToOne,
+    JoinColumn,
   } from 'typeorm';
 
   export enum GenderProduct{
@@ -26,8 +28,9 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    // @OneToOne(()=> User,(user)=> user.psikolog)
-    user : User
+    @OneToOne(()=> User_Yzc)
+    @JoinColumn()
+    user_yzc : User_Yzc
 
     @Column({
         type :"text"
