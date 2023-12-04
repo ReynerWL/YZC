@@ -69,5 +69,21 @@ import {
         message: 'success',
       };
     }
+
+    @Put()
+    async reject(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdateUserYzcDto){
+      return {
+        data: await this.useryzcService.reject(id, updateDto)
+      }
+    }
+
+    @Put()
+    async approve(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdateUserYzcDto){
+      return {
+        data: await this.useryzcService.approve(id, updateDto)
+      }
+    }
   }
   

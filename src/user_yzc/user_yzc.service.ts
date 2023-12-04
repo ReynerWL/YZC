@@ -95,4 +95,42 @@ export class UserYzcService {
         throw error
     }
   }
+
+  async reject(id: string, updateDto: UpdateUserYzcDto){
+    if (updateDto.status === 'pending') {
+    try {
+      
+      await this.findOne(id)
+  
+      const status: any = 'not active'
+      const entity = new User_Yzc
+      entity.status = updateDto.status = status
+  
+      await this.useryzcRepository.update(id,entity)
+       return this.useryzcRepository.findOneOrFail({
+         where: {id}
+       })
+    } catch (error) {
+      throw error
+    }
+   }
+  }
+   async approve(id: string, updateDto: UpdateUserYzcDto){
+    if (updateDto.status === 'pending') {
+    try {
+      await this.findOne(id)
+  
+      const status: any = 'active'
+      const entity = new User_Yzc
+      entity.status = updateDto.status = status
+  
+      await this.useryzcRepository.update(id,entity)
+       return this.useryzcRepository.findOneOrFail({
+         where: {id}
+       })
+    } catch (error) {
+      throw error
+    }
+   }
+  }
 }

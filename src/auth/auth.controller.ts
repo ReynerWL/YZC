@@ -1,4 +1,4 @@
-import { Body, Controller , HttpStatus, Post, Get, Req, UseGuards, Query} from '@nestjs/common';
+import { Body, Controller , HttpStatus, Post, Get, Req, UseGuards, Query, Put} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport/dist';
 import { RegisterDto, RegisterPsikologDto } from './dto/register.dto';
@@ -26,6 +26,11 @@ export class AuthController {
         const data = await this.authService.login(loginDto)
         return {data,statusCode: HttpStatus.OK,message: "Success"}
     }
+
+    // @Put()
+    // async changePassword(@Body() ){
+
+    // }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('/profile')

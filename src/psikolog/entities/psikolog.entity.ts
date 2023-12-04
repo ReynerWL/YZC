@@ -1,3 +1,4 @@
+import { Bank } from '#/bank/entities/bank.entity';
 import { Gender } from '#/customer/entities/customer.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
@@ -14,6 +15,7 @@ import {
     JoinColumn,
     ManyToMany,
     ManyToOne,
+    OneToMany,
   } from 'typeorm';
 
   export enum GenderProduct{
@@ -88,4 +90,7 @@ import {
 
       @ManyToOne(() => Seminar, (seminar) => seminar.psikolog)
       seminar: Seminar
+
+      @OneToMany(() => Bank, (bank) => bank.psikolog)
+      bank: Bank
   }

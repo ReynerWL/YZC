@@ -50,10 +50,10 @@ export class SeminarController {
     @Put(':id')
     async update(
       @Param('id', ParseUUIDPipe) id: string,
-      @Body() updateCustomerDto: UpdateSeminarDto,
+      @Body() updateSeminarDto: UpdateSeminarDto,
     ) {
       return {
-        data: await this.seminarService.update(id, updateCustomerDto),
+        data: await this.seminarService.update(id, updateSeminarDto),
         statusCode: HttpStatus.OK,
         message: 'success',
       };
@@ -67,5 +67,21 @@ export class SeminarController {
         statusCode: HttpStatus.OK,
         message: 'success',
       };
+    }
+
+    @Put()
+    async reject(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdateSeminarDto){
+      return {
+        data: await this.seminarService.reject(id, updateDto)
+      }
+    }
+
+    @Put()
+    async approve(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdateSeminarDto){
+      return {
+        data: await this.seminarService.approve(id, updateDto)
+      }
     }
 }

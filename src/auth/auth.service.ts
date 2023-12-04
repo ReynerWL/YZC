@@ -9,6 +9,8 @@ import { JwtService } from '@nestjs/jwt/dist';
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { LevelUserService } from '#/level_user/level_user.service';
+import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -173,5 +175,31 @@ export class AuthService {
                 HttpStatus.UNAUTHORIZED,
               );
         }
+    }
+
+    async changePassword(id: string,updateUserYzcDto: UpdateUserYzcDto, changePasswordDto: ChangePasswordDto ){
+      try {
+        await this.useryzcRepository.findOneOrFail({where: {id}})
+        const useryzcOne = await this.useryzcRepository.findOne({
+          where: {email: updateUserYzcDto.email}
+      })
+
+      const entity = new User_Yzc
+      entity.password = changePasswordDto.old_password
+      entity.password = changePasswordDto.new_password
+
+      const isMatch = await bcrypt.compare(updateUserYzcDto.password, useryzcOne.password)
+            if (isMatch) {
+             
+            }
+      } catch (error) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.UNAUTHORIZED,
+            message: 'Invalid credential',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
     }
 }

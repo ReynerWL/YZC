@@ -108,4 +108,38 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
       
     }
   }
+
+  async reject(id: string, updateDto: UpdatePrivateKonselingDto){
+    try {
+      await this.findOne(id)
+  
+      const status: any = 'reject'
+      const entity = new PrivateKonseling
+      entity.status = updateDto.status = status
+  
+      await this.privateKonselingRepository.update(id,entity)
+       return this.privateKonselingRepository.findOneOrFail({
+         where: {id}
+       })
+    } catch (error) {
+      throw error
+    }
+   }
+  
+   async approve(id: string, updateDto: UpdatePrivateKonselingDto){
+    try {
+      await this.findOne(id)
+  
+      const status: any = 'approve'
+      const entity = new PrivateKonseling
+      entity.status = updateDto.status = status
+  
+      await this.privateKonselingRepository.update(id,entity)
+       return this.privateKonselingRepository.findOneOrFail({
+         where: {id}
+       })
+    } catch (error) {
+      throw error
+    }
+   }
 }

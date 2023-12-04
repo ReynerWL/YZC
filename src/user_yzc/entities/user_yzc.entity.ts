@@ -1,3 +1,4 @@
+import { Bank } from '#/bank/entities/bank.entity';
 import { Customer } from '#/customer/entities/customer.entity';
 import { Level_User } from '#/level_user/entities/level_user.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
@@ -11,6 +12,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
 export enum StatusAcount {
@@ -63,6 +65,8 @@ export class User_Yzc {
   @OneToOne(() => Customer, (customer) => customer.user_yzc)
   customer: Customer
 
+  @OneToMany(() => Bank, (bank) => bank.userYzc)
+  bank: Bank
 
   // @VersionColumn()
   // version: number;

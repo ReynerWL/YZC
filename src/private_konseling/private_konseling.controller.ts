@@ -69,4 +69,20 @@ export class PrivateKonselingController {
         message: 'success',
       };
     }
+
+    @Put()
+    async reject(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdatePrivateKonselingDto){
+      return {
+        data: await this.privateKonselingService.reject(id, updateDto)
+      }
+    }
+
+    @Put()
+    async approve(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdatePrivateKonselingDto){
+      return {
+        data: await this.privateKonselingService.approve(id, updateDto)
+      }
+    }
 }

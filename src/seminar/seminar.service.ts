@@ -95,4 +95,38 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
        throw error
    }
  }
+
+ async reject(id: string, updateDto: UpdateSeminarDto){
+  try {
+    await this.findOne(id)
+
+    const status: any = 'reject'
+    const entity = new Seminar
+    entity.status = updateDto.status = status
+
+    await this.seminarRepository.update(id,entity)
+     return this.seminarRepository.findOneOrFail({
+       where: {id}
+     })
+  } catch (error) {
+    throw error
+  }
+ }
+
+ async approve(id: string, updateDto: UpdateSeminarDto){
+  try {
+    await this.findOne(id)
+
+    const status: any = 'approve'
+    const entity = new Seminar
+    entity.status = updateDto.status = status
+
+    await this.seminarRepository.update(id,entity)
+     return this.seminarRepository.findOneOrFail({
+       where: {id}
+     })
+  } catch (error) {
+    throw error
+  }
+ }
 }
