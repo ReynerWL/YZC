@@ -7,6 +7,7 @@ import { UserYzcModule } from '#/user_yzc/user_yzc.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Psikolog]), UserYzcModule],
+    exports: [PsikologService],
     providers : [PsikologService],
     controllers : [PsikologController]
 })

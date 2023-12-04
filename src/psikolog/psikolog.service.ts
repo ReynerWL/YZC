@@ -4,7 +4,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { Psikolog } from './entities/psikolog.entity';
 import { UserYzcService } from '#/user_yzc/user_yzc.service';
 import { CreatePsikologDto } from './dto/create.psikolog.dto';
-import { UpdatePsikologDto } from './dto/update.psikolog.dto';
+import { UpdatePsikolog } from './dto/update.psikolog.dto';
 
 @Injectable()
 export class PsikologService {
@@ -22,7 +22,7 @@ export class PsikologService {
         });
     }
 
-    async findOneById(id: string){
+    async findOne(id: string){
         try {
             return await this.psikologRepository.findOneOrFail({
                 where : {id},
@@ -53,9 +53,8 @@ export class PsikologService {
             psikologEntity.photo = CreatePsikologDto.photo
             psikologEntity.fullName = CreatePsikologDto.fullName
             psikologEntity.gender = CreatePsikologDto.gender
-            psikologEntity.phone = CreatePsikologDto.phone
+            psikologEntity.phone_number = CreatePsikologDto.phone_number
             psikologEntity.lastEducation = CreatePsikologDto.lastEducation
-            psikologEntity.status = CreatePsikologDto.status
             psikologEntity.legality = CreatePsikologDto.legality
             psikologEntity.aboutMe = CreatePsikologDto.aboutMe
             psikologEntity.user_yzc = findOneUserId
@@ -71,18 +70,17 @@ export class PsikologService {
         }
     }
 
-    async update(id: string, updatePsikologDto: UpdatePsikologDto){
+    async update(id: string, updatePsikologDto: UpdatePsikolog){
         try {
             // cari idnya valid atau engga
-            await this.findOneById(id)
+            await this.findOne(id)
 
             // kalau valid update datanya
             const psikologEntity = new Psikolog
             psikologEntity.fullName = updatePsikologDto.fullName
             psikologEntity.gender = updatePsikologDto.gender
-            psikologEntity.phone = updatePsikologDto.phone
+            psikologEntity.phone_number = updatePsikologDto.phone_number
             psikologEntity.lastEducation = updatePsikologDto.lastEducation
-            psikologEntity.status = updatePsikologDto.status
             psikologEntity.legality = updatePsikologDto.legality
             psikologEntity.aboutMe = updatePsikologDto.aboutMe
 
@@ -100,7 +98,7 @@ export class PsikologService {
     async softDeletedById(id: string){
         try {
             // cari dulu id valid ga
-            await this.findOneById(id)
+            await this.findOne(id)
 
             //kalau nemu langsung delete
             await this.psikologRepository.softDelete(id)
