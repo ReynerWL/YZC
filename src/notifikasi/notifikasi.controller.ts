@@ -28,7 +28,6 @@ export class NotifikasiController {
         }
     }
 
-
     @Post()
     async create(@Body() createNotikasiDto: CreateNotifikasiDto) {
         const data = await this.NotifikasiService.createNotifikasi(createNotikasiDto)
@@ -39,5 +38,12 @@ export class NotifikasiController {
         };
     }
 
-
+    @Get(':id')
+    async findOne(@Param('id', ParseUUIDPipe) id: string) {
+      return {
+        data: await this.NotifikasiService.findOne(id),
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
 }

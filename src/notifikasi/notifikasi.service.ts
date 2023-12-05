@@ -36,7 +36,52 @@ export class NotifikasiService {
         }
     }
 
-   
+    async findOne(id: string) {
+        try {
+            return await this.notifikasiRepository.findOneOrFail({ where: { id }, relations: { customer: true, psikolog: true } })
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+                    HttpStatus.NOT_FOUND,
+                )
+            } else {
+                throw error
+            }
+        }
+    }
+
+    async update(id: string, updateNotifikasiDto: UpdateNotifikasiDto) {
+        try {
+            if (updateNotifikasiDto.statusNotifikasi === 'unread') {
+
+                await this.findOne(id)
+                const findOnePsikolog = await this.psikologService.findOne(updateNotifikasiDto.psikolog)
+                const notifikasiEntity = new Notifikasi
+                notifikasiEntity.notificationContent = updateNotifikasiDto.notificationContent
+                notifikasiEntity.statusNotifikasi = updateNotifikasiDto.statusNotifikasi
+                notifikasiEntity.psikolog = findOnePsikolog
+
+                await this.notifikasiRepository.update(id, notifikasiEntity)
+                return this.notifikasiRepository.findOneOrFail({
+                    where: { id }
+                })
+            }
+        } catch (e) {
+            if (e instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: 'Data not found',
+                    },
+                    HttpStatus.NOT_FOUND,
+                );
+            } else {
+                throw e;
+            }
+        }
+    }
+
 }
   
 
