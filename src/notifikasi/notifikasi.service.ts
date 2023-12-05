@@ -82,6 +82,15 @@ export class NotifikasiService {
         }
     }
 
+    async deleteNotifikasi(id: string) {
+        try {
+            await this.findOne(id)
+            await this.notifikasiRepository.softDelete(id)
+            return `Delete Succes`
+        } catch (error) {
+            throw error
+        }
+    }
 }
   
 

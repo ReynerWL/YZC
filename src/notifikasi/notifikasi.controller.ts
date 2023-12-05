@@ -46,4 +46,27 @@ export class NotifikasiController {
         message: 'success',
       };
     }
+
+    @Put(':id')
+    async update(
+      @Param('id', ParseUUIDPipe) id: string,
+      @Body() updateNotifikasiDto: UpdateNotifikasiDto,
+    ) {
+      return {
+        data: await this.NotifikasiService.update(id, updateNotifikasiDto),
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
+  
+    @Delete(':id')
+    async remove(@Param('id', ParseUUIDPipe) id: string) {
+      await this.NotifikasiService.deleteNotifikasi(id)
+  
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
+
 }
