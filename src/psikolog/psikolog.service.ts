@@ -22,7 +22,7 @@ export class PsikologService {
         });
     }
 
-    async findOneById(id: string){
+    async findOne(id: string){
         try {
             return await this.psikologRepository.findOneOrFail({
                 where : {id},
@@ -74,7 +74,7 @@ export class PsikologService {
     async update(id: string, updatePsikologDto: UpdatePsikologDto){
         try {
             // cari idnya valid atau engga
-            await this.findOneById(id)
+            await this.findOne(id)
 
             // kalau valid update datanya
             const psikologEntity = new Psikolog
@@ -100,7 +100,7 @@ export class PsikologService {
     async softDeletedById(id: string){
         try {
             // cari dulu id valid ga
-            await this.findOneById(id)
+            await this.findOne(id)
 
             //kalau nemu langsung delete
             await this.psikologRepository.softDelete(id)
@@ -110,4 +110,5 @@ export class PsikologService {
             throw e
         }
     }
+
 }

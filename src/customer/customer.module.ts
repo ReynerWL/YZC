@@ -7,6 +7,7 @@ import { CustomerController } from './customer.controller';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Customer]), UserYzcModule],
+    exports: [CustomerService],
     providers: [CustomerService],
     controllers: [CustomerController]
 })

@@ -20,6 +20,7 @@ import { CustomerController } from './customer/customer.controller';
 import { LevelUserModule } from './level_user/level_user.module';
 import { UserYzcModule } from './user_yzc/user_yzc.module';
 import { AuthModule } from './auth/auth.module';
+import { NotifikasiModule } from './notifikasi/notifikasi.module';
 
 @Module({
   imports: [
@@ -109,6 +110,7 @@ import { AuthModule } from './auth/auth.module';
     HealthModule,
     PsikologModule,
     CustomerModule,
+    NotifikasiModule,
   ]
 })
 export class AppModule {}
