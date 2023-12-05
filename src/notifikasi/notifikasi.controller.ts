@@ -36,7 +36,7 @@ export class NotifikasiController {
             statusCode: HttpStatus.CREATED,
             message: 'success',
         };
-    }
+    }         
 
     @Get(':id')
     async findOne(@Param('id', ParseUUIDPipe) id: string) {
