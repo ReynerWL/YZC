@@ -1,5 +1,6 @@
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
 import {
     Entity,
     Column,
@@ -30,6 +31,9 @@ import {
 
   @OneToMany(() => Psikolog, (psikolog) => psikolog.seminar )
   psikolog : Psikolog[]
+
+  @ManyToOne(()=> PsikologSeminar, psikologseminar => psikologseminar.seminar)
+  psikologseminar: PsikologSeminar
 
   @Column({type: 'text'})
   title: string

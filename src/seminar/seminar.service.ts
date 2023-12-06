@@ -7,6 +7,7 @@ import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
 import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
+import { PsikologSeminarService } from '#/psikolog_seminar/psikolog_seminar.service';
 
 @Injectable()
 export class SeminarService {
@@ -14,6 +15,7 @@ export class SeminarService {
     @InjectRepository(Seminar)
     private seminarRepository: Repository<Seminar>,
     private psikologService: PsikologService,
+    private psikologSeminarService: PsikologSeminarService
  ){}
 
  findAll(){

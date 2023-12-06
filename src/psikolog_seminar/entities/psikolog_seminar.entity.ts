@@ -24,8 +24,7 @@ import {
     @OneToMany(() => Psikolog, psikolog => psikolog.listseminar)
     psikolog: Psikolog[]
     
-    @OneToOne(() => Seminar)
-    @JoinColumn()
+    @OneToMany(() => Seminar, seminar => seminar.psikologseminar)
     seminar: Seminar
 
     @CreateDateColumn({
