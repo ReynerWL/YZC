@@ -1,4 +1,3 @@
-import { OrderYzc } from '#/order/entities/order.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';

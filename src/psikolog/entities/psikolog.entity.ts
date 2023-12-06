@@ -1,6 +1,7 @@
 import { Bank } from '#/bank/entities/bank.entity';
 import { Gender } from '#/customer/entities/customer.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import {
@@ -93,4 +94,7 @@ import {
 
       @OneToMany(() => Bank, (bank) => bank.psikolog)
       bank: Bank
+
+      @ManyToOne(() => PsikologSeminar, listseminar => listseminar.psikolog)
+      listseminar: PsikologSeminar
   }

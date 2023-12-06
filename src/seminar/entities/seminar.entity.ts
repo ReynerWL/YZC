@@ -1,5 +1,4 @@
 import { Customer } from '#/customer/entities/customer.entity';
-import { OrderYzc } from '#/order/entities/order.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import {
     Entity,
@@ -67,7 +66,4 @@ import {
     nullable: true,
   })
   deletedAt: Date;
-
-  @OneToMany(() => OrderYzc, (orderYzc) => orderYzc.seminar)
-  orderYzc: OrderYzc
 }

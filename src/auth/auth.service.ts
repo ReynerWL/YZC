@@ -177,21 +177,28 @@ export class AuthService {
         }
     }
 
-    async changePassword(id: string,updateUserYzcDto: UpdateUserYzcDto, changePasswordDto: ChangePasswordDto ){
+    async findOne(id: string){
       try {
-        await this.useryzcRepository.findOneOrFail({where: {id}})
-        const useryzcOne = await this.useryzcRepository.findOne({
-          where: {email: updateUserYzcDto.email}
-      })
+        return await this.useryzcRepository.findOneOrFail({where: {id}})
+      } catch (error) {
+        return error
+      }
+    }
+
+    async changePassword(id: string, changePasswordDto: ChangePasswordDto, updateUserYzcDto: UpdateUserYzcDto){
+      try {
+      await this.findOne(id)
+      const password = (await this.useryzcRepository.findOneOrFail({where: {id}})).password
+      const salt = (await this.useryzcRepository.findOneOrFail({where: {id}})).salt
+      const hash = await bcrypt.hash(password, salt)
 
       const entity = new User_Yzc
-      entity.password = changePasswordDto.old_password
-      entity.password = changePasswordDto.new_password
+      entity.password = changePasswordDto.new_password = hash
 
-      const isMatch = await bcrypt.compare(updateUserYzcDto.password, useryzcOne.password)
-            if (isMatch) {
-             
-            }
+      await this.useryzcRepository.update(id,entity)
+      return this.useryzcRepository.findOneOrFail({
+         where: {id}
+       })
       } catch (error) {
         throw new HttpException(
           {

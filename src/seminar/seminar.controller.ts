@@ -8,6 +8,7 @@ import {
     Delete,
     ParseUUIDPipe,
     HttpStatus,
+    Req
   } from '@nestjs/common';
 import { SeminarService } from './seminar.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
@@ -25,6 +26,14 @@ export class SeminarController {
             status: HttpStatus.OK,
             message: 'success'
         }
+    }
+
+    @Get('/psikolog/:id')
+    async findAllByPsikolog(@Param('id', ParseUUIDPipe) id: string){
+      const data = await this.seminarService.findAllByPsikolog(id)
+      return{
+        data,statusCode: HttpStatus.OK, message: 'Success'
+      }
     }
 
     @Post()
@@ -51,7 +60,7 @@ export class SeminarController {
     async update(
       @Param('id', ParseUUIDPipe) id: string,
       @Body() updateSeminarDto: UpdateSeminarDto,
-    ) {
+    ) {     
       return {
         data: await this.seminarService.update(id, updateSeminarDto),
         statusCode: HttpStatus.OK,
