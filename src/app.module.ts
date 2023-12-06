@@ -16,10 +16,11 @@ import { SeminarModule } from './seminar/seminar.module';
 import { PrivateKonselingModule } from './private_konseling/private_konseling.module';
 import { BankModule } from './bank/bank.module';
 import { TransaksiModule } from './transaksi/transaksi.module';
-import {  OrderYzcModule } from './order/order.module';
 import { DetailOrderModule } from './detail_order/detail_order.module';
 import { ArtikelModule } from './artikel/artikel.module';
 import { ReviewModule } from './review/review.module';
+import { CaseHandledModule } from './case_handled/case_handled.module';
+import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.module';
 
 @Module({
   imports: [
@@ -114,10 +115,11 @@ import { ReviewModule } from './review/review.module';
     PrivateKonselingModule,
     BankModule,
     TransaksiModule,
-    OrderYzcModule,
     DetailOrderModule,
     ArtikelModule,
     ReviewModule,
+    CaseHandledModule,
+    PsikologSeminarModule,
   ],
     
 })

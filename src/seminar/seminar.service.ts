@@ -6,7 +6,8 @@ import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
-import { OrderService } from '#/order/order.service';
+import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
+import { PsikologSeminarService } from '#/psikolog_seminar/psikolog_seminar.service';
 
 @Injectable()
 export class SeminarService {
@@ -14,11 +15,13 @@ export class SeminarService {
     @InjectRepository(Seminar)
     private seminarRepository: Repository<Seminar>,
     private psikologService: PsikologService,
+    private psikologSeminarService: PsikologSeminarService
  ){}
 
  findAll(){
     return this.seminarRepository.findAndCount({relations: { psikolog: true}})
  }
+
 
  async createSeminar(createSeminarDto: CreateSeminarDto){
    try {
@@ -38,6 +41,15 @@ export class SeminarService {
       return error
    }
  }
+
+ async findAllByPsikolog(id: string){
+try {
+  const psikolog = await this.psikologService.findOne(id)
+  return await this.seminarRepository.findAndCount({where: {id: psikolog.id}})
+} catch (error) {
+  return error
+}
+}
 
  async findOne(id: string){
    try {

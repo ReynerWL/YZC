@@ -17,7 +17,7 @@ export class PrivateKonselingService {
  ){}
 
  findAll(){
-    return this,this.privateKonselingRepository.findAndCount({relations: {customer: true, psikolog: true}})
+    return this.privateKonselingRepository.findAndCount({relations: {customer: true, psikolog: true}})
  }
 
  async createPrivateKonseling(createPrivateKonselingDto: CreatePrivateKonselingDto){
@@ -92,20 +92,6 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
         return `Delete Success`
     } catch (error) {
         throw error
-    }
-  }
-
-  async statusUpdate(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto){
-    try {
-      await this.findOne(id)
-      const privateKonselingEntity = new PrivateKonseling
-      privateKonselingEntity.status = updatePrivateKonselingDto.status
-      await this.privateKonselingRepository.update(id,privateKonselingEntity)
-      return this.privateKonselingRepository.findOneOrFail({
-        where: {id}
-      })
-    } catch (error) {
-      
     }
   }
 

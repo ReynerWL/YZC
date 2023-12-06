@@ -1,8 +1,22 @@
-import { Body, Controller , HttpStatus, Post, Get, Req, UseGuards, Query, Put} from '@nestjs/common';
-import { AuthService } from './auth.service';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Put,
+    Query,
+    Param,
+    Delete,
+    ParseUUIDPipe,
+    HttpStatus,
+    UseGuards,
+    Req
+  } from '@nestjs/common';import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport/dist';
 import { RegisterDto, RegisterPsikologDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,10 +41,11 @@ export class AuthController {
         return {data,statusCode: HttpStatus.OK,message: "Success"}
     }
 
-    // @Put()
-    // async changePassword(@Body() ){
-
-    // }
+    @Put('/change-password/:id')
+    async changePassword(@Body() changePasswordDto: ChangePasswordDto,updateUserYzcDto: UpdateUserYzcDto, @Param('id', ParseUUIDPipe) id: string){
+      const data = await this.authService.changePassword(id,changePasswordDto,updateUserYzcDto)
+      return {data, statusCode: HttpStatus.OK,message: "Success"}
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('/profile')
