@@ -13,6 +13,7 @@ import {
 import { SeminarService } from './seminar.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
+import { UpdatePsikologSeminarDto } from '#/psikolog_seminar/dto/update-psikolog_seminar.dto';
 
 @Controller('seminar')
 export class SeminarController {
@@ -59,10 +60,10 @@ export class SeminarController {
     @Put(':id')
     async update(
       @Param('id', ParseUUIDPipe) id: string,
-      @Body() updateSeminarDto: UpdateSeminarDto,
+      @Body() updateSeminarDto: UpdateSeminarDto
     ) {     
       return {
-        data: await this.seminarService.update(id, updateSeminarDto),
+        data: await this.seminarService.update(id, updateSeminarDto, ),
         statusCode: HttpStatus.OK,
         message: 'success',
       };

@@ -2,43 +2,63 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Seminar } from './entities/seminar.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
-import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
 import { PsikologSeminarService } from '#/psikolog_seminar/psikolog_seminar.service';
+import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
+import { UpdatePsikologSeminarDto } from '#/psikolog_seminar/dto/update-psikolog_seminar.dto';
 
 @Injectable()
 export class SeminarService {
  constructor(
     @InjectRepository(Seminar)
     private seminarRepository: Repository<Seminar>,
+    @InjectRepository(PsikologSeminar)
+    private psikologSeminarRepository: Repository<PsikologSeminar>,
     private psikologService: PsikologService,
     private psikologSeminarService: PsikologSeminarService
  ){}
-
+ 
  findAll(){
-    return this.seminarRepository.findAndCount({relations: { psikolog: true}})
+    return this.seminarRepository.findAndCount({relations: { psikolog: true, psikologseminar: {psikolog:true}}})
  }
 
 
  async createSeminar(createSeminarDto: CreateSeminarDto){
    try {
-      const findPsikolog  = await this.psikologService.findOne(createSeminarDto.psikolog['psikolog'])
+
+    const mapping = createSeminarDto.psikolog.map((val) =>{ return this.psikologService.findOne(val)})
+    const result = await Promise.all(mapping)
+    const findPsikolog  = createSeminarDto.psikolog.map(async val =>{return await this.psikologService.findOne(val)})
+
       const seminarEntity = new Seminar
-      seminarEntity.psikolog['psikolog'] = findPsikolog
+      seminarEntity.psikolog = await Promise.all(findPsikolog)
       seminarEntity.title = createSeminarDto.title
       seminarEntity.price = createSeminarDto.price
       seminarEntity.poster = createSeminarDto.poster
       seminarEntity.description = createSeminarDto.description
       seminarEntity.datetime = createSeminarDto.datetime
       seminarEntity.status = createSeminarDto.status
-
       const insertSeminar = await this.seminarRepository.insert(seminarEntity)
-      return await this.seminarRepository.findOneOrFail({where: {id: insertSeminar.identifiers[0].id}})
+
+      result.forEach(async element => {
+      const psikologSeminarEntity = new PsikologSeminar
+      psikologSeminarEntity.psikolog = element
+      psikologSeminarEntity.seminar = insertSeminar.identifiers[0].id
+      const insertList = await this.psikologSeminarRepository.insert(psikologSeminarEntity)
+      seminarEntity.psikologseminar = insertList.identifiers[0].id
+    });
+
+      console.log(result);
+      
+      
+
+      return(
+        this.seminarRepository.findOneOrFail({where: {id: insertSeminar.identifiers[0].id}, relations: {psikologseminar: {psikolog: true} , psikolog: true}})
+      ) 
    } catch (error) {
-      return error
+      throw error
    }
  }
 
@@ -53,7 +73,7 @@ try {
 
  async findOne(id: string){
    try {
-       return await this.seminarRepository.findOneOrFail({where:{id}, relations: {psikolog: true}})
+       return await this.seminarRepository.findOneOrFail({where:{id}, relations: {psikolog: true,psikologseminar: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(
@@ -69,18 +89,30 @@ try {
 async update(id: string, updateSeminarDto: UpdateSeminarDto) {
    try {
      await this.findOne(id)
+     
 
-      const findPsikolog  = await this.psikologService.findOne(updateSeminarDto.psikolog['psikolog'])
-      const seminarEntity = new Seminar
-      seminarEntity.psikolog['psikolog'] = findPsikolog
-      seminarEntity.title = updateSeminarDto.title
-      seminarEntity.price = updateSeminarDto.price
-      seminarEntity.poster = updateSeminarDto.poster
-      seminarEntity.description = updateSeminarDto.description
-      seminarEntity.datetime = updateSeminarDto.datetime
-      seminarEntity.status = updateSeminarDto.status
+     const mapping = updateSeminarDto.psikolog.map((val) =>{ return this.psikologService.findOne(val)})
+     const result = await Promise.all(mapping)
 
-     await this.seminarRepository.update(id,seminarEntity)
+       const seminarEntity = new Seminar
+       seminarEntity.title = updateSeminarDto.title
+       seminarEntity.price = updateSeminarDto.price
+       seminarEntity.poster = updateSeminarDto.poster
+       seminarEntity.description = updateSeminarDto.description
+       seminarEntity.datetime = updateSeminarDto.datetime
+       seminarEntity.status = updateSeminarDto.status
+
+ 
+       result.forEach(async element => {
+       await this.deletePsikolog(element.id)
+
+       const psikologSeminarEntity = new PsikologSeminar
+       psikologSeminarEntity.psikolog = element
+       psikologSeminarEntity.seminar = await this.findOne(id)
+       await this.psikologSeminarRepository.insert(psikologSeminarEntity)
+       return this.psikologSeminarRepository.find({where:{id}})
+     });
+        
      return this.seminarRepository.findOneOrFail({
        where: {id}
      })
@@ -107,6 +139,17 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
        throw error
    }
  }
+
+ async deletePsikolog(id: string) {
+  try {
+    console.log("Ini Id yg akan didelete",id);
+      await this.psikologSeminarRepository.findOne({where:{psikolog:{id}}})
+      await this.psikologSeminarRepository.delete({psikolog:{id}})
+      return `Delete Success`
+  } catch (error) {
+      throw error
+  }
+}
 
  async reject(id: string, updateDto: UpdateSeminarDto){
   try {

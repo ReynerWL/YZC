@@ -99,7 +99,7 @@ import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.modul
           entities: [],
           synchronize: configService.get<string>('env') === 'development',
           autoLoadEntities: true,
-          logging: false,
+          logging: ["query","error"],
           namingStrategy: new SnakeNamingStrategy(),
         };
       },

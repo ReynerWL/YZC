@@ -95,6 +95,6 @@ import {
       @OneToMany(() => Bank, (bank) => bank.psikolog)
       bank: Bank
 
-      @ManyToOne(() => PsikologSeminar, listseminar => listseminar.psikolog)
-      listseminar: PsikologSeminar
+      @OneToMany(() => PsikologSeminar, listseminar => listseminar.psikolog)
+      psikologseminar: PsikologSeminar[]
   }

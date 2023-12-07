@@ -104,6 +104,7 @@ export class AuthService {
             const psikologEntity = new Psikolog()
             psikologEntity.user_yzc = createUserYzc.identifiers[0].id
             psikologEntity.photo = registerPsikologDto.photo
+            psikologEntity.phone_number = registerPsikologDto.phone_number
             psikologEntity.fullName = registerPsikologDto.full_name
             psikologEntity.gender = registerPsikologDto.gender
             psikologEntity.lastEducation = registerPsikologDto.last_education

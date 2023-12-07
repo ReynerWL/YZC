@@ -21,10 +21,10 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToMany(() => Psikolog, psikolog => psikolog.listseminar)
-    psikolog: Psikolog[]
+    @ManyToOne(() => Psikolog, psikolog => psikolog.psikologseminar)
+    psikolog: Psikolog
     
-    @OneToMany(() => Seminar, seminar => seminar.psikologseminar)
+    @ManyToOne(() => Seminar, seminar => seminar.psikologseminar)
     seminar: Seminar
 
     @CreateDateColumn({

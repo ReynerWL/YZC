@@ -51,6 +51,9 @@ export class RegisterPsikologDto{
     password: string
 
     @IsNotEmpty()
+    phone_number: string
+
+    @IsNotEmpty()
     photo: string;
 
     @IsNotEmpty()
@@ -68,4 +71,5 @@ export class RegisterPsikologDto{
 
     @IsNotEmpty()
     aboutMe: string;
+    
 }

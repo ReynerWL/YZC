@@ -46,6 +46,15 @@ export class PsikologSeminarService {
             }
         }
      }
+
+     async findOnePsikolog(id: string){
+      try {
+        const psikolog = await this.psikologService.findOne(id)
+        return await this.psikologSeminarRepository.findAndCount({where: {id: psikolog.id}})
+      } catch (error) {
+        return error
+      }
+   }
      
      async update(id: string, updatePsikologSeminarDto: UpdatePsikologSeminarDto) {
         try {
@@ -76,7 +85,7 @@ export class PsikologSeminarService {
       async deleteSeminar(id: string) {
         try {
             await this.findOne(id)
-            await this.psikologSeminarRepository.softDelete(id)
+            await this.psikologSeminarRepository.delete(id)
             return `Delete Success`
         } catch (error) {
             throw error

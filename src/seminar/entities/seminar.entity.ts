@@ -32,8 +32,8 @@ import {
   @OneToMany(() => Psikolog, (psikolog) => psikolog.seminar )
   psikolog : Psikolog[]
 
-  @ManyToOne(()=> PsikologSeminar, psikologseminar => psikologseminar.seminar)
-  psikologseminar: PsikologSeminar
+  @OneToMany(()=> PsikologSeminar, psikologseminar => psikologseminar.seminar)
+  psikologseminar: PsikologSeminar[]
 
   @Column({type: 'text'})
   title: string
@@ -47,7 +47,7 @@ import {
   @Column({type: 'text'})
   description: string
 
-  @Column({type: 'time with time zone'})
+  @Column({type: 'timestamp with time zone', nullable: true})
   datetime: Date
 
   @Column({type: 'enum', enum: Status })
@@ -65,7 +65,7 @@ import {
   })
   updatedAt: Date;
 
-  @DeleteDateColumn({
+  @DeleteDateColumn({ 
     type: 'timestamp with time zone',
     nullable: true,
   })
