@@ -1,5 +1,7 @@
+import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
+import { Transaction } from '#/transaksi/entities/transaction.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import {
     Entity,
@@ -75,4 +77,10 @@ export class Customer {
         nullable: true,
       })
       deletedAt: Date;
+
+      @OneToMany(() => DetailOrder, detailOrder => detailOrder.customer)
+      detailOrder: DetailOrder
+
+      @OneToMany(() => Transaction, transaction => transaction.customer)
+      transaction: Transaction
     }

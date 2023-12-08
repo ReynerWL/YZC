@@ -1,5 +1,7 @@
 import { Customer } from '#/customer/entities/customer.entity';
+import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { Transaction } from '#/transaksi/entities/transaction.entity';
 import {
     Entity,
     Column,
@@ -35,14 +37,20 @@ import {
     @JoinColumn()
     psikolog: Psikolog
 
-    @Column({type: 'time with time zone'})
-    datetime: Date
+    @Column({type: 'date'})
+    start_date: Date
+
+    @Column({type: 'date'})
+    end_date: Date
 
     @Column({type: 'int'})
     price: Number
 
     @Column({enum: Status,type: 'enum'})
     status: Status
+
+    @Column({type: 'text', nullable: true})
+    alasan: string
 
     @CreateDateColumn({
       type: 'timestamp with time zone',
@@ -61,4 +69,10 @@ import {
       nullable: true,
     })
     deletedAt: Date;
+
+    @ManyToOne(() => DetailOrder, detailOrder => detailOrder.privateKonseling)
+    detailOrder: DetailOrder
+
+    @OneToMany(() => Transaction, transaction => transaction.privateKonseling)
+    transaction: Transaction
   }

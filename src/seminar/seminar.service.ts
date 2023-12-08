@@ -157,6 +157,7 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
 
     const status: any = 'reject'
     const entity = new Seminar
+    entity.alasan = updateDto.alasan
     entity.status = updateDto.status = status
 
     await this.seminarRepository.update(id,entity)

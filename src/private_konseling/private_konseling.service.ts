@@ -28,7 +28,8 @@ export class PrivateKonselingService {
         const privateKonselingEntity = new PrivateKonseling
         privateKonselingEntity.customer = findOneCustomer
         privateKonselingEntity.psikolog = findOnePsikolog
-        privateKonselingEntity.datetime = createPrivateKonselingDto.datetime
+        privateKonselingEntity.start_date = createPrivateKonselingDto.start_date
+        privateKonselingEntity.end_date = createPrivateKonselingDto.end_date
         privateKonselingEntity.price = createPrivateKonselingDto.price
         privateKonselingEntity.status = Status
         
@@ -61,7 +62,8 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
       await this.findOne(id)
       const findOnePsikolog = await this.psikologService.findOne(updatePrivateKonselingDto.psikolog)
       const privateKonselingEntity = new PrivateKonseling
-        privateKonselingEntity.datetime = updatePrivateKonselingDto.datetime
+        privateKonselingEntity.start_date = updatePrivateKonselingDto.start_date
+        privateKonselingEntity.end_date = updatePrivateKonselingDto.end_date
         privateKonselingEntity.price = updatePrivateKonselingDto.price
         privateKonselingEntity.status = updatePrivateKonselingDto.status
         privateKonselingEntity.psikolog = findOnePsikolog
@@ -81,7 +83,7 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
           HttpStatus.NOT_FOUND,
         );
       } else {
-        throw e;
+        throw e; 
       }
     }
 }
@@ -101,6 +103,7 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
   
       const status: any = 'reject'
       const entity = new PrivateKonseling
+      entity.alasan = updateDto.alasan
       entity.status = updateDto.status = status
   
       await this.privateKonselingRepository.update(id,entity)

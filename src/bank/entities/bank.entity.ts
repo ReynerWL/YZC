@@ -1,4 +1,5 @@
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { Transaction } from '#/transaksi/entities/transaction.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import {
     Entity,
@@ -10,6 +11,7 @@ import {
     CreateDateColumn,
     ManyToOne,
     OneToOne,
+    OneToMany,
   } from 'typeorm';
 
   @Entity()
@@ -31,4 +33,7 @@ import {
 
     @ManyToOne(() => Psikolog, (psikolog) => psikolog.bank)
     psikolog: Psikolog
+
+    @OneToMany(() => Transaction, transaction => transaction)
+    transaction: Transaction
   }

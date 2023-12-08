@@ -1,4 +1,5 @@
 import { Customer } from '#/customer/entities/customer.entity';
+import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
 import {
@@ -53,6 +54,9 @@ import {
   @Column({type: 'enum', enum: Status })
   status: Status
 
+  @Column({type: 'text', nullable: true})
+  alasan: string
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
@@ -70,4 +74,5 @@ import {
     nullable: true,
   })
   deletedAt: Date;
+
 }

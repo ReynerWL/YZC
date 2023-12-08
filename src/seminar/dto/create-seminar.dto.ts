@@ -27,6 +27,8 @@ export class CreateSeminarDto{
     @IsEnum(Status)
     status: Status
 
+    alasan: string
+
     psikologSeminar: PsikologSeminar
 
 }

@@ -9,9 +9,16 @@ export class CreatePrivateKonselingDto{
     psikolog: string
 
     @IsNotEmpty()
-    datetime: Date
+    start_date: Date
+
+    @IsNotEmpty()
+    end_date: Date
 
     @IsNotEmpty()
     price: Number
 
+    @IsEnum(Status)
+    status: Status
+
+    alasan: string
 }
