@@ -18,6 +18,24 @@ export class NotifikasiService {
         return this.notifikasiRepository.findAndCount()
     }
 
+    async findNotifById(id: string) {
+        try {
+            return await this.notifikasiRepository.findOneOrFail({ 
+                where: { id }, 
+                relations: { pengirim: true, penerima: true } 
+            })
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+                    HttpStatus.NOT_FOUND,
+                )
+            } else {
+                throw error
+            }
+        }
+    }
+    
     async createNotifikasi(CreateNotifikasiDto: CreateNotifikasiDto) {
         try {
             console.log("sebelum")
@@ -37,6 +55,8 @@ export class NotifikasiService {
             return error
         }
     }
+
+    
 
 }
   

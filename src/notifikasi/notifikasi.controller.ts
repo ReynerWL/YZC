@@ -18,7 +18,27 @@ import { UpdateNotifikasiDto } from './dto/update.notifikasi.dto';
 export class NotifikasiController {
   constructor(private NotifikasiService: NotifikasiService) { }
 
+ 
+  @Get('/all')
+  async getAllNotif() {
+    const [data, count] = await this.NotifikasiService.findAll()
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    }
+  }
 
+  @Get('/:id')
+  async getNotifById(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.NotifikasiService.findNotifById(id),
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
+  
   @Post('/create')
   async create(@Body() createNotikasiDto: CreateNotifikasiDto) {
     const data = await this.NotifikasiService.createNotifikasi(createNotikasiDto)
@@ -30,4 +50,5 @@ export class NotifikasiController {
     };
   }
 
+  
 }
