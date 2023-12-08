@@ -5,6 +5,7 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { CreateNotifikasiDto } from './dto/create.notifikasi.dto';
 import { UpdateNotifikasiDto } from './dto/update.notifikasi.dto';
 import { UserYzcService } from '#/user_yzc/user_yzc.service';
+import { UpdateStatusNotifikasiDto } from './dto/update.status.notifikasi.dto';
 
 @Injectable()
 export class NotifikasiService {
@@ -100,6 +101,22 @@ export class NotifikasiService {
             }
         }
     }
+
+    async updateStatusNotif(id: string, updateStatusNotifikasiDto: UpdateStatusNotifikasiDto){
+        try{
+            await this.findNotifById(id)
+            const statusNotif = new Notifikasi
+            statusNotif.statusNotifikasi = updateStatusNotifikasiDto.statusNotifikasi
+
+            await this.notifikasiRepository.update(id, statusNotif)
+            return await this.notifikasiRepository.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
+        }
+    }
+
 
 }
   

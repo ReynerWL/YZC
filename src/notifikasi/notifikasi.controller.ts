@@ -13,6 +13,7 @@ import {
 import { NotifikasiService } from './notifikasi.service';
 import { CreateNotifikasiDto } from './dto/create.notifikasi.dto';
 import { UpdateNotifikasiDto } from './dto/update.notifikasi.dto';
+import { UpdateStatusNotifikasiDto } from './dto/update.status.notifikasi.dto';
 
 @Controller('notifikasi')
 export class NotifikasiController {
@@ -71,5 +72,20 @@ export class NotifikasiController {
       message: 'success',
     };
   }
-  
+
+  @Put('/status-notif/:id')
+  async updateStatusNotif(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateStatusNotifikasiDto: UpdateStatusNotifikasiDto,
+  ) {
+    const data = await this.NotifikasiService.updateStatusNotif(
+      id,
+      updateStatusNotifikasiDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
 }
