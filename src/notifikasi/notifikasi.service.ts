@@ -35,6 +35,23 @@ export class NotifikasiService {
             }
         }
     }
+
+    async findNotifUnread(inputStatus: string){
+        let enumStatus:any
+
+        if(inputStatus == "unread"){
+            enumStatus = StatusNotifikasi.UNREAD
+        }
+        try{
+            const result =  await this.notifikasiRepository.find({
+                where:{statusNotifikasi: enumStatus}
+            })
+            return result
+        }catch(e){
+            throw e
+        }
+    }
+
     
     async createNotifikasi(CreateNotifikasiDto: CreateNotifikasiDto) {
         try {

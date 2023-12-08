@@ -38,7 +38,17 @@ export class NotifikasiController {
       message: 'Success',
     };
   }
-  
+
+  @Get('/unread')
+  async getNotifUnread(@Query('status') status: string) {
+    const data = await this.NotifikasiService.findNotifUnread(status);
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
+
   @Post('/create')
   async create(@Body() createNotikasiDto: CreateNotifikasiDto) {
     const data = await this.NotifikasiService.createNotifikasi(createNotikasiDto)
