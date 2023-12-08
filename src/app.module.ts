@@ -21,6 +21,8 @@ import { LevelUserModule } from './level_user/level_user.module';
 import { UserYzcModule } from './user_yzc/user_yzc.module';
 import { AuthModule } from './auth/auth.module';
 import { NotifikasiModule } from './notifikasi/notifikasi.module';
+import { ArtikelController } from './artikel/artikel.controller';
+import { ArtikelModule } from './artikel/artikel.module';
 
 @Module({
   imports: [
@@ -111,6 +113,8 @@ import { NotifikasiModule } from './notifikasi/notifikasi.module';
     PsikologModule,
     CustomerModule,
     NotifikasiModule,
-  ]
+    ArtikelModule,
+  ],
+  controllers: [ArtikelController]
 })
 export class AppModule {}

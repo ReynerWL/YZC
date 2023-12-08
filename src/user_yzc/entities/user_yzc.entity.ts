@@ -1,4 +1,5 @@
 import { Level_User } from '#/level_user/entities/level_user.entity';
+import { Notifikasi } from '#/notifikasi/entities/notifikasi.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import {
   Entity,
@@ -10,6 +11,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -19,6 +21,12 @@ export class User_Yzc {
 
   @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
   level_user : Level_User;
+
+  @OneToMany(() => Notifikasi, (notif1) => notif1.penerima)
+  notif1: Notifikasi;
+
+  @OneToMany(() => Notifikasi, (notif2) => notif2.pengirim)
+  notif2: Notifikasi;
 
   @Column({type: 'varchar'})
   email: string;

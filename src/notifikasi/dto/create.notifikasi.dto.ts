@@ -1,17 +1,12 @@
-    import { IsEnum, IsNotEmpty,} from "class-validator";
-    import { StatusNotifikasi } from "../entities/notifikasi.entity";
+    import { IsNotEmpty,} from "class-validator";
 
     export class CreateNotifikasiDto{
         @IsNotEmpty()
-        customer: string
+        penerima: string
 
         @IsNotEmpty()
-        psikolog: string
+        pengirim: string
         
-        @IsNotEmpty()
-        @IsEnum(StatusNotifikasi)
-        statusNotifikasi: StatusNotifikasi
-
         @IsNotEmpty()
         notificationContent: string;
     }

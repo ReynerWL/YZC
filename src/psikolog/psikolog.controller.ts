@@ -43,6 +43,7 @@ export class PsikologController {
     }
   }
 
+
   @Delete("/:id")
   async softDelete(@Param("id", ParseUUIDPipe) id: string) {
     return {

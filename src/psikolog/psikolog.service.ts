@@ -5,6 +5,7 @@ import { Psikolog } from './entities/psikolog.entity';
 import { UserYzcService } from '#/user_yzc/user_yzc.service';
 import { CreatePsikologDto } from './dto/create.psikolog.dto';
 import { UpdatePsikologDto } from './dto/update.psikolog.dto';
+import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 
 @Injectable()
 export class PsikologService {
@@ -55,7 +56,6 @@ export class PsikologService {
             psikologEntity.gender = CreatePsikologDto.gender
             psikologEntity.phone = CreatePsikologDto.phone
             psikologEntity.lastEducation = CreatePsikologDto.lastEducation
-            psikologEntity.status = CreatePsikologDto.status
             psikologEntity.legality = CreatePsikologDto.legality
             psikologEntity.aboutMe = CreatePsikologDto.aboutMe
             psikologEntity.user_yzc = findOneUserId
@@ -82,7 +82,6 @@ export class PsikologService {
             psikologEntity.gender = updatePsikologDto.gender
             psikologEntity.phone = updatePsikologDto.phone
             psikologEntity.lastEducation = updatePsikologDto.lastEducation
-            psikologEntity.status = updatePsikologDto.status
             psikologEntity.legality = updatePsikologDto.legality
             psikologEntity.aboutMe = updatePsikologDto.aboutMe
 

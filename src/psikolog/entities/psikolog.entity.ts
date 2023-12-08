@@ -14,7 +14,7 @@ import {
 
   export enum GenderProduct{
     PRIA = 'pria',
-    WANITA = 'wanitia',
+    WANITA = 'wanita',
   }
 
   export enum StatusPsikologAcount {

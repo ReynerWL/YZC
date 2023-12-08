@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsEnum} from "class-validator";
 import { GenderProduct } from "../entities/psikolog.entity";
-import { StatusPsikologAcount } from "../entities/psikolog.entity";
 
 export class CreatePsikologDto{
     @IsNotEmpty()
@@ -21,10 +20,6 @@ export class CreatePsikologDto{
 
     @IsNotEmpty()
     lastEducation: string;
-
-    @IsNotEmpty()
-    @IsEnum(StatusPsikologAcount)
-    status: StatusPsikologAcount;
 
     @IsNotEmpty()
     legality: string;
