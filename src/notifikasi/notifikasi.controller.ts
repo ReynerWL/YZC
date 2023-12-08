@@ -60,5 +60,16 @@ export class NotifikasiController {
     };
   }
 
+  @Put(':id')
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateNotifikasiDto: UpdateNotifikasiDto,
+  ) {
+    return {
+      data: await this.NotifikasiService.update(id, updateNotifikasiDto),
+      statusCode: HttpStatus.OK,
+      message: 'success',
+    };
+  }
   
 }

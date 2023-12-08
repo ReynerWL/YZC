@@ -73,7 +73,33 @@ export class NotifikasiService {
         }
     }
 
-    
+    async update(id: string, updateNotifikasiDto: UpdateNotifikasiDto) {
+        try {
+             {
+
+                await this.findNotifById(id)
+                const notifikasiEntity = new Notifikasi
+                notifikasiEntity.notificationContent = updateNotifikasiDto.notificationContent
+
+                await this.notifikasiRepository.update(id, notifikasiEntity)
+                return this.notifikasiRepository.findOneOrFail({
+                    where: { id }
+                })
+            }
+        } catch (e) {
+            if (e instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: 'Data not found',
+                    },
+                    HttpStatus.NOT_FOUND,
+                );
+            } else {
+                throw e;
+            }
+        }
+    }
 
 }
   
