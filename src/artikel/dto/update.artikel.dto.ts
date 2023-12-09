@@ -5,12 +5,6 @@ import { IsNotEmpty } from "class-validator";
 
 export class UpdateArtikelDto extends PartialType(CreateArtikelDto){
     @IsNotEmpty()
-    customer: string
-
-    @IsNotEmpty()
-    psikolog: string
-
-    @IsNotEmpty()
     title : string
 
     @IsNotEmpty()
@@ -18,4 +12,6 @@ export class UpdateArtikelDto extends PartialType(CreateArtikelDto){
 
     @IsNotEmpty()
     imgThumbnail : string
+
+    alasan: string;
 }

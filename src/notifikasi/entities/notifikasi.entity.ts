@@ -24,7 +24,7 @@ export class Notifikasi {
   penerima: User_Yzc
 
   @ManyToOne(() => User_Yzc, (pengirim) => pengirim.notif2)
-  pengirim: User_Yzc
+  pengirim: User_Yzc     
 
   @Column({
     type: "enum",

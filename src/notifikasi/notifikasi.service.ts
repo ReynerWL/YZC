@@ -47,6 +47,7 @@ export class NotifikasiService {
             const result =  await this.notifikasiRepository.find({
                 where:{statusNotifikasi: enumStatus}
             })
+            console.log(result, "halo")
             return result
         }catch(e){
             throw e
@@ -56,18 +57,14 @@ export class NotifikasiService {
     
     async createNotifikasi(CreateNotifikasiDto: CreateNotifikasiDto) {
         try {
-            console.log("sebelum")
             const pengirim = await this.useryzcService.findOne(CreateNotifikasiDto.pengirim)
-            console.log( "pengirim ga ada")
             const penerima = await this.useryzcService.findOne(CreateNotifikasiDto.penerima)
-            console.log("penerima ga ada")
             const notifikasiEntity = new Notifikasi()
             notifikasiEntity.pengirim = pengirim
             notifikasiEntity.penerima = penerima
             notifikasiEntity.notificationContent = CreateNotifikasiDto.notificationContent
-            console.log("apa aja")
             const insertNotif = await this.notifikasiRepository.insert(notifikasiEntity)
-            console.log("apaan tuh")
+          
             return await this.notifikasiRepository.findOneOrFail({ where: { id: insertNotif.identifiers[0].id } })
         } catch (error) {
             return error

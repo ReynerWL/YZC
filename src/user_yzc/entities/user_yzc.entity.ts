@@ -1,3 +1,4 @@
+import { Artikel } from '#/artikel/entities/artikel.entity';
 import { Level_User } from '#/level_user/entities/level_user.entity';
 import { Notifikasi } from '#/notifikasi/entities/notifikasi.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
@@ -20,7 +21,7 @@ export class User_Yzc {
   id: string;
 
   @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
-  level_user : Level_User;
+  level_user: Level_User;
 
   @OneToMany(() => Notifikasi, (notif1) => notif1.penerima)
   notif1: Notifikasi;
@@ -28,13 +29,19 @@ export class User_Yzc {
   @OneToMany(() => Notifikasi, (notif2) => notif2.pengirim)
   notif2: Notifikasi;
 
-  @Column({type: 'varchar'})
+  @OneToMany(() => Artikel, (artikel1) => artikel1.admin)
+  artikel1: Artikel;
+
+  @OneToMany(() => Artikel, (artikel2) => artikel2.psikolog)
+  artikel2: Artikel;
+
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   password: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   salt: string;
 
   @CreateDateColumn({
@@ -55,7 +62,7 @@ export class User_Yzc {
   })
   deletedAt: Date;
 
-  @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc )
+  @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc)
   psikolog: Psikolog
 
 

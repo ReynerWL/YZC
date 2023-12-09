@@ -18,7 +18,16 @@ import { UpdateStatusNotifikasiDto } from './dto/update.status.notifikasi.dto';
 @Controller('notifikasi')
 export class NotifikasiController {
   constructor(private NotifikasiService: NotifikasiService) { }
-
+  
+  @Get('/unread')
+  async getNotifUnread(@Query('status') status: string) {
+    const data = await this.NotifikasiService.findNotifUnread(status);
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
  
   @Get('/all')
   async getAllNotif() {
@@ -40,15 +49,6 @@ export class NotifikasiController {
     };
   }
 
-  @Get('/unread')
-  async getNotifUnread(@Query('status') status: string) {
-    const data = await this.NotifikasiService.findNotifUnread(status);
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
 
   @Post('/create')
   async create(@Body() createNotikasiDto: CreateNotifikasiDto) {
