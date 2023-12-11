@@ -37,61 +37,6 @@ export class ArtikelService {
         }
     }
 
-    async findArtikelApprove(inputStatus: string){
-        let enumStatus:any
-
-        if(inputStatus == "approve"){
-            enumStatus = StatusArtikel.APPROVE
-        }
-        try{
-            const result =  await this.artikelRepository.find({
-                where:{statusArtikel:enumStatus}
-            })
-            return result
-        }catch(e){
-            throw e
-        }
-    }
-
-    async findArtikelreject(id: string, approveRejectDto: ApproveRejectArtikelDto){
-        try{
-            const cariStatus = await this. findArtikelById(id)
-            if(cariStatus.statusArtikel === "pending"){
-                const cekPrivate = new Artikel
-                cekPrivate.statusArtikel = approveRejectDto.statusArtikel
-                cekPrivate.alasan = approveRejectDto.alasan_tolak
-                await this.artikelRepository.update(id,cekPrivate)
-                
-                return await this.artikelRepository.findOneOrFail({
-                    where:{id}
-                })
-            }else{
-                throw new BadRequestException ("artikel tidak ditemukan")
-            }
-
-        }catch(e){
-            throw e
-        }
-    }
-
-    async findListartikelByAutor(id: string) {
-        try {
-            return await this.artikelRepository.findOneOrFail({ 
-                where: { id }, 
-                relations: { user_yzc: true} 
-            })
-        } catch (error) {
-            if (error instanceof EntityNotFoundError) {
-                throw new HttpException(
-                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
-                    HttpStatus.NOT_FOUND,
-                )
-            } else {
-                throw error
-            }
-        }
-    }
-
     async createArtikel (createartikelDto: CreateArtikelDto) {
         try {
             const user_yzc = await this.useryzcService.findOne(createartikelDto.userYzc)
@@ -140,33 +85,4 @@ export class ArtikelService {
         }
     }
 
-    
-    async approveRejectArtikel(id: string, updateStatusArtikelikasiDto: ApproveRejectArtikelDto){
-        try{
-            await this.findArtikelById(id)
-            const statusArtikel = new Artikel
-            statusArtikel.statusArtikel = updateStatusArtikelikasiDto.statusArtikel
-
-            await this.artikelRepository.update(id, statusArtikel)
-            return await this.artikelRepository.findOneOrFail({
-                where:{id}
-            })
-        }catch(e){
-            throw e
-        }
-    }
-    
-    async softDeletedById(id: string) {
-        try {
-            // cari dulu id valid ga
-            await this.findArtikelById(id)
-
-            //kalau nemu langsung delete
-            await this.artikelRepository.softDelete(id)
-
-            return "succes"
-        } catch (e) {
-            throw e
-        }
-    }
 }        

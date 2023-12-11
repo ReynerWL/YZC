@@ -19,25 +19,6 @@ import { ApproveRejectArtikelDto } from './dto/approvereject.artikel.dto';
 export class ArtikelController {
   constructor(private ArtikelService: ArtikelService) { }
 
-  @Get('/approve')
-  async Approve(@Query('status') status: string) {
-    const data = await this.ArtikelService.findArtikelApprove(status);
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
-
-  @Put('/reject/:id')
-  async reject(@Param('id', ParseUUIDPipe) id: string, @Body() approveRejectDto: ApproveRejectArtikelDto) {
-    const data = await this.ArtikelService.findArtikelreject(id, approveRejectDto)
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: "Success"
-    }
-  }
 
   @Get()
   async findAll() {
@@ -71,16 +52,6 @@ export class ArtikelController {
     };
   }
 
-  @Get('/list-artikel-byautor/:id')
-  async getListartikelByAutor(@Param('id', ParseUUIDPipe) id: string) {
-    return {
-      data: await this.ArtikelService.findListartikelByAutor(id),
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
-
-
   @Put('/:id')
   async updateArtikel(
     @Param('id', ParseUUIDPipe) id: string,
@@ -91,30 +62,6 @@ export class ArtikelController {
       statusCode: HttpStatus.OK,
       message: 'success',
     };
-  }
-
-  @Put('/status-artikel/:id')
-  async updateStatusArtikel(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateStatusArtikelDto: ApproveRejectArtikelDto,
-  ) {
-    const data = await this.ArtikelService.approveRejectArtikel(
-      id,
-      updateStatusArtikelDto,
-    );
-    return {
-      data,
-      statusCode: HttpStatus.OK,
-      message: 'Success',
-    };
-  }
-
-  @Delete("/:id")
-  async softDelete(@Param("id", ParseUUIDPipe) id: string) {
-    return {
-      StatusCode: HttpStatus.OK,
-      message: await this.ArtikelService.softDeletedById(id)
-    }
   }
 
 }
