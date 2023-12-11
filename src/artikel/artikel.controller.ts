@@ -19,6 +19,25 @@ import { ApproveRejectArtikelDto } from './dto/approvereject.artikel.dto';
 export class ArtikelController {
   constructor(private ArtikelService: ArtikelService) { }
 
+  @Get('/approve')
+  async Approve(@Query('status') status: string) {
+    const data = await this.ArtikelService.findArtikelApprove(status);
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
+
+  @Put('/reject/:id')
+  async reject(@Param('id', ParseUUIDPipe) id: string, @Body() approveRejectDto: ApproveRejectArtikelDto) {
+    const data = await this.ArtikelService.findArtikelreject(id, approveRejectDto)
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: "Success"
+    }
+  }
 
   @Get()
   async findAll() {
@@ -39,6 +58,8 @@ export class ArtikelController {
       message: 'Success',
     };
   }
+
+  
 
   @Post()
   async creatArtikel(@Body() createArtikelDto: CreateArtikelDto) {

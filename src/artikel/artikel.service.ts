@@ -19,6 +19,42 @@ export class ArtikelService {
         return this.artikelRepository.findAndCount()
     }
 
+    async findArtikelApprove(inputStatus: string){
+        let enumStatus:any
+
+        if(inputStatus == "approve"){
+            enumStatus = StatusArtikel.APPROVE
+        }
+        try{
+            const result =  await this.artikelRepository.find({
+                where:{statusArtikel:enumStatus}
+            })
+            return result
+        }catch(e){
+            throw e
+        }
+    }
+
+    async findArtikelreject(id: string, approveRejectDto: ApproveRejectArtikelDto){
+        try{
+            const cariStatus = await this. findArtikelById(id)
+            if(cariStatus.statusArtikel === "pending"){
+                const cekPrivate = new Artikel
+                cekPrivate.statusArtikel = approveRejectDto.statusArtikel
+                cekPrivate.alasan = approveRejectDto.alasan_tolak
+                await this.artikelRepository.update(id,cekPrivate)
+                
+                return await this.artikelRepository.findOneOrFail({
+                    where:{id}
+                })
+            }else{
+                throw new BadRequestException ("artikel tidak ditemukan")
+            }
+
+        }catch(e){
+            throw e
+        }
+    }
     async findArtikelById(id: string) {
         try {
             return await this.artikelRepository.findOneOrFail({ 
