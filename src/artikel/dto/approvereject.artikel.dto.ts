@@ -1,6 +1,9 @@
 import { StatusArtikel } from "../entities/artikel.entity"
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty, IsString,} from "class-validator"
 
-export class ApproveRejectDto{
+export class ApproveRejectArtikelDto{
+    @IsString()
+    alasan_tolak: string
+
     @IsNotEmpty()
     statusArtikel : StatusArtikel }

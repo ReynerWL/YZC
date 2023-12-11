@@ -21,11 +21,8 @@ export class Artikel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User_Yzc, (admin) => admin.artikel1)
-  admin: User_Yzc
-
-  @ManyToOne(() => User_Yzc, (psikolog) => psikolog.artikel2)
-  psikolog: User_Yzc 
+  @ManyToOne(() => User_Yzc, (user_yzc) => user_yzc.artikel)
+  user_yzc: User_Yzc
 
   @Column({
     type: "varchar"
@@ -47,9 +44,9 @@ export class Artikel {
     enum: StatusArtikel,
     default: StatusArtikel.PENDING,
   })
-  statusNotifikasi: StatusArtikel
+  statusArtikel: StatusArtikel
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: "varchar", nullable: true })
   alasan: string
 
   @CreateDateColumn({

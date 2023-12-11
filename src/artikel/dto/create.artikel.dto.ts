@@ -2,10 +2,7 @@ import { IsNotEmpty } from "class-validator"
 
 export class CreateArtikelDto {
     @IsNotEmpty()
-    admin: string
-
-    @IsNotEmpty()
-    psikolog: string
+    userYzc: string
 
     @IsNotEmpty()
     title : string
@@ -15,6 +12,4 @@ export class CreateArtikelDto {
 
     @IsNotEmpty()
     imgThumbnail : string
-
-    alasan: string
 }

@@ -29,11 +29,8 @@ export class User_Yzc {
   @OneToMany(() => Notifikasi, (notif2) => notif2.pengirim)
   notif2: Notifikasi;
 
-  @OneToMany(() => Artikel, (artikel1) => artikel1.admin)
-  artikel1: Artikel;
-
-  @OneToMany(() => Artikel, (artikel2) => artikel2.psikolog)
-  artikel2: Artikel;
+  @OneToMany(() => Artikel, (artikel) => artikel.user_yzc)
+  artikel: Artikel;
 
   @Column({ type: 'varchar' })
   email: string;
