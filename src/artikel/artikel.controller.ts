@@ -59,7 +59,14 @@ export class ArtikelController {
     };
   }
 
-  
+  @Get('/list-artikel-byautor/:id')
+  async getListartikelByAutor(@Param('id', ParseUUIDPipe) id: string) {
+    return {
+      data: await this.ArtikelService.findListartikelByAutor(id),
+      statusCode: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
 
   @Post()
   async creatArtikel(@Body() createArtikelDto: CreateArtikelDto) {
@@ -82,6 +89,22 @@ export class ArtikelController {
       data: await this.ArtikelService.updateArtikel(id, updateArtikelDto),
       statusCode: HttpStatus.OK,
       message: 'success',
+    };
+  }
+
+  @Put('/status-artikel/:id')
+  async updateStatusArtikel(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateStatusArtikelDto: ApproveRejectArtikelDto,
+  ) {
+    const data = await this.ArtikelService.approveRejectArtikel(
+      id,
+      updateStatusArtikelDto,
+    );
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      message: 'Success',
     };
   }
 

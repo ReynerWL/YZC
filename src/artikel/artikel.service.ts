@@ -73,6 +73,24 @@ export class ArtikelService {
         }
     }
 
+    async findListartikelByAutor(id: string) {
+        try {
+            return await this.artikelRepository.findOneOrFail({ 
+                where: { id }, 
+                relations: { user_yzc: true} 
+            })
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+                    HttpStatus.NOT_FOUND,
+                )
+            } else {
+                throw error
+            }
+        }
+    }
+
     async createArtikel (createartikelDto: CreateArtikelDto) {
         try {
             const user_yzc = await this.useryzcService.findOne(createartikelDto.userYzc)
@@ -118,6 +136,21 @@ export class ArtikelService {
             } else {
                 throw e;
             }
+        }
+    }
+
+    async approveRejectArtikel(id: string, updateStatusArtikelikasiDto: ApproveRejectArtikelDto){
+        try{
+            await this.findArtikelById(id)
+            const statusArtikel = new Artikel
+            statusArtikel.statusArtikel = updateStatusArtikelikasiDto.statusArtikel
+
+            await this.artikelRepository.update(id, statusArtikel)
+            return await this.artikelRepository.findOneOrFail({
+                where:{id}
+            })
+        }catch(e){
+            throw e
         }
     }
 
