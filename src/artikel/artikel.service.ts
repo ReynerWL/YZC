@@ -12,72 +12,74 @@ export class ArtikelService {
     constructor(
         @InjectRepository(Artikel)
         private artikelRepository: Repository<Artikel>,
-        private useryzcService : UserYzcService
-    ){}
+        private useryzcService: UserYzcService
+    ) { }
 
     findAll() {
         return this.artikelRepository.findAndCount()
     }
 
-    async findArtikelApprove(inputStatus: string){
-        let enumStatus:any
+    async findArtikelById(id: string) {
+        try {
+            return await this.artikelRepository.findOneOrFail({
+                where: { id },
+                relations: { user_yzc: true }
+            })
+        } catch (error) {
+            if (error instanceof EntityNotFoundError) {
+                throw new HttpException(
+                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+                    HttpStatus.NOT_FOUND,
+                )
+            } else {
+                throw error
+            }
+        }
+    }
 
-        if(inputStatus == "approve"){
+    async findArtikelApprove(inputStatus: string) {
+        let enumStatus: any
+
+        if (inputStatus == "approve") {
             enumStatus = StatusArtikel.APPROVE
         }
-        try{
-            const result =  await this.artikelRepository.find({
-                where:{statusArtikel:enumStatus}
+        try {
+            const result = await this.artikelRepository.find({
+                where: { statusArtikel: enumStatus }
             })
             return result
-        }catch(e){
+        } catch (e) {
             throw e
         }
     }
 
-    async findArtikelreject(id: string, approveRejectDto: ApproveRejectArtikelDto){
-        try{
-            const cariStatus = await this. findArtikelById(id)
-            if(cariStatus.statusArtikel === "pending"){
+    async findArtikelreject(id: string, approveRejectDto: ApproveRejectArtikelDto) {
+        try {
+            const cariStatus = await this.findArtikelById(id)
+            if (cariStatus.statusArtikel === "pending") {
                 const cekPrivate = new Artikel
                 cekPrivate.statusArtikel = approveRejectDto.statusArtikel
                 cekPrivate.alasan = approveRejectDto.alasan_tolak
-                await this.artikelRepository.update(id,cekPrivate)
-                
+                await this.artikelRepository.update(id, cekPrivate)
+
                 return await this.artikelRepository.findOneOrFail({
-                    where:{id}
+                    where: { id }
                 })
-            }else{
-                throw new BadRequestException ("artikel tidak ditemukan")
+            } else {
+                throw new BadRequestException("artikel tidak ditemukan")
             }
 
-        }catch(e){
+        } catch (e) {
             throw e
         }
     }
-    async findArtikelById(id: string) {
-        try {
-            return await this.artikelRepository.findOneOrFail({ 
-                where: { id }, 
-                relations: { user_yzc: true} 
-            })
-        } catch (error) {
-            if (error instanceof EntityNotFoundError) {
-                throw new HttpException(
-                    { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
-                    HttpStatus.NOT_FOUND,
-                )
-            } else {
-                throw error
-            }
-        }
-    }
+
 
     async findListartikelByAutor(id: string) {
         try {
-            return await this.artikelRepository.findOneOrFail({ 
-                where: { id }, 
-                relations: { user_yzc: true} 
+            return await this.artikelRepository.findOneOrFail({
+                where: { id },
+                relations: { user_yzc: true }
             })
         } catch (error) {
             if (error instanceof EntityNotFoundError) {
@@ -91,7 +93,7 @@ export class ArtikelService {
         }
     }
 
-    async createArtikel (createartikelDto: CreateArtikelDto) {
+    async createArtikel(createartikelDto: CreateArtikelDto) {
         try {
             const user_yzc = await this.useryzcService.findOne(createartikelDto.userYzc)
             const ArtikelEntity = new Artikel()
@@ -101,17 +103,17 @@ export class ArtikelService {
             ArtikelEntity.imgThumbnail = createartikelDto.imgThumbnail
             const insertArtikel = await this.artikelRepository.insert(ArtikelEntity)
 
-            return await this.artikelRepository.findOne({where:{id: insertArtikel.identifiers[0].id}})
-        } catch (error)  {
+            return await this.artikelRepository.findOne({ where: { id: insertArtikel.identifiers[0].id } })
+        } catch (error) {
             return error
         }
     }
 
-    
+
 
     async updateArtikel(id: string, updateArtikelDto: UpdateArtikelDto) {
         try {
-             {
+            {
 
                 await this.findArtikelById(id)
                 const ArtikelEntity = new Artikel
@@ -139,19 +141,32 @@ export class ArtikelService {
         }
     }
 
-    async approveRejectArtikel(id: string, updateStatusArtikelikasiDto: ApproveRejectArtikelDto){
-        try{
+    async approveRejectArtikel(id: string) {
+        try {
             await this.findArtikelById(id)
-            const statusArtikel = new Artikel
-            statusArtikel.statusArtikel = updateStatusArtikelikasiDto.statusArtikel
-
-            await this.artikelRepository.update(id, statusArtikel)
+            const status: any = "approve"
+            const cekPrivate = new Artikel
+            cekPrivate.statusArtikel = status
+            await this.artikelRepository.update(id, cekPrivate)
             return await this.artikelRepository.findOneOrFail({
-                where:{id}
+                where: { id }
             })
-        }catch(e){
+        } catch (e) {
             throw e
         }
     }
 
+    async softDeletedById(id: string) {
+        try {
+            // cari dulu id valid ga
+            await this.findArtikelById(id)
+
+            //kalau nemu langsung delete
+            await this.artikelRepository.softDelete(id)
+
+            return "succes"
+        } catch (e) {
+            throw e
+        }
+    }
 }        
