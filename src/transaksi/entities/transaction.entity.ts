@@ -1,6 +1,8 @@
 import { Bank } from '#/bank/entities/bank.entity';
 import { Customer } from '#/customer/entities/customer.entity';
+import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import {
     Entity,
@@ -37,12 +39,12 @@ import {
     @ManyToOne(()=> Customer, customer => customer.transaction)
     customer: Customer
 
-    @OneToOne(()=> Seminar)
-    @JoinColumn()
-    seminar: Seminar
+    @ManyToOne(() => Psikolog, psikolog => psikolog.transaction)
+    psikolog: Psikolog
 
-    @ManyToOne(() => PrivateKonseling, privateKonseling => privateKonseling.transaction)
-    privateKonseling: PrivateKonseling
+    @OneToMany(() => DetailOrder, detailOrder => detailOrder.transaction)
+    detailOrder : DetailOrder[]
+
 
     @ManyToOne(() => Bank, bank => bank.transaction)
     bank: Bank
@@ -50,14 +52,16 @@ import {
     @Column({type: 'enum', enum: Type})
     type: Type
 
+    @Column({type: 'int'})
+    transaction_amount: number
+
     @Column({type: 'timestamp with time zone', nullable: true})
     exp_date: Date
 
     @Column({type: 'text'})
     payment_proof: string
 
-
-    @Column({type: 'enum', enum: Status,default: 'pending'})
+    @Column({type: 'enum', enum: Status,default: 'pending', nullable: true})
     status: Status
 
     @Column({type: 'text', nullable: true})

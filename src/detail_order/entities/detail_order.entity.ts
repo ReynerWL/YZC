@@ -1,5 +1,6 @@
 import { Customer } from '#/customer/entities/customer.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
+import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import { Transaction } from '#/transaksi/entities/transaction.entity';
 import {
@@ -23,19 +24,25 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToMany(() => PrivateKonseling, privateKonseling => privateKonseling.detailOrder)
+    @OneToOne(() => PrivateKonseling)
+    @JoinColumn()
     privateKonseling : PrivateKonseling
 
     @OneToOne(() => Seminar)
     @JoinColumn()
     seminar: Seminar
 
-    @OneToOne(() => Transaction)
-    @JoinColumn()
+    @ManyToOne(() => Transaction, transaction => transaction.detailOrder)
     transaction: Transaction
 
     @ManyToOne(() => Customer, customer => customer.detailOrder)
     customer: Customer
+
+    @ManyToOne(() => Psikolog, psikolog => psikolog.detailOrder)
+    psikolog: Psikolog
+
+    @Column({type: 'int'})
+    price: number
 
     @CreateDateColumn({
         type: 'timestamp with time zone',

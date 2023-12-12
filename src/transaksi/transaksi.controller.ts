@@ -11,7 +11,7 @@ import {
     Req
   } from '@nestjs/common';
 import { TransaksiService } from './transaksi.service';
-import { CreateTransactionDto, CreateTransactionKonselingDto } from './dto/create-transaction.dto';
+import { CreateTransactionDto, CreateTransactionKonselingDto, CreateTransactionPsikologDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Controller('transaksi')
@@ -47,6 +47,15 @@ export class TransaksiController {
  @Post('/private_konseling')
  async createTransactionKonseling(@Body() createTransactionKonselingDto: CreateTransactionKonselingDto){
     const data = await this.transactionService.createTransactionKonseling(createTransactionKonselingDto)
+    return{
+        data,statusCode: HttpStatus.CREATED,
+        message: 'Success'
+    }
+ }
+
+ @Post('/psikolog')
+ async createTransactionPsikolog(@Body() createTransactionPsikologDto: CreateTransactionPsikologDto){
+    const data = await this.transactionService.createTransactionPsikolog(createTransactionPsikologDto)
     return{
         data,statusCode: HttpStatus.CREATED,
         message: 'Success'

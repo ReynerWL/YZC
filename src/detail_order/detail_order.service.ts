@@ -12,10 +12,6 @@ export class DetailOrderService {
     constructor(
         @InjectRepository(DetailOrder)
         private detailOrderRepository: Repository<DetailOrder>,
-        private privateKonselingService: PrivateKonselingService,
-        private seminarService: SeminarService,
-        private transactionService: TransaksiService,
-        private customerService: CustomerService
     ){}
 
     findAll(){

@@ -7,9 +7,10 @@ import { PrivateKonselingModule } from '#/private_konseling/private_konseling.mo
 import { SeminarModule } from '#/seminar/seminar.module';
 import { CustomerModule } from '#/customer/customer.module';
 import { TransaksiModule } from '#/transaksi/transaksi.module';
+import { PsikologModule } from '#/psikolog/psikolog.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DetailOrder]),PrivateKonselingModule,SeminarModule,CustomerModule,TransaksiModule],
+  imports: [TypeOrmModule.forFeature([DetailOrder]),PrivateKonselingModule,SeminarModule,CustomerModule,PsikologModule],
   controllers: [DetailOrderController],
   providers: [DetailOrderService]
 })

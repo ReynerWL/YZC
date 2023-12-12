@@ -44,7 +44,7 @@ import {
     end_date: Date
 
     @Column({type: 'int'})
-    price: Number
+    price: number
 
     @Column({enum: Status,type: 'enum'})
     status: Status
@@ -69,10 +69,4 @@ import {
       nullable: true,
     })
     deletedAt: Date;
-
-    @ManyToOne(() => DetailOrder, detailOrder => detailOrder.privateKonseling)
-    detailOrder: DetailOrder
-
-    @OneToMany(() => Transaction, transaction => transaction.privateKonseling)
-    transaction: Transaction
   }

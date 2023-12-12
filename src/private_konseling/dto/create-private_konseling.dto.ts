@@ -15,7 +15,7 @@ export class CreatePrivateKonselingDto{
     end_date: Date
 
     @IsNotEmpty()
-    price: Number
+    price: number
 
     @IsEnum(Status)
     status: Status
