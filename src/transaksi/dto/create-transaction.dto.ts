@@ -3,13 +3,11 @@ import { IsArray, IsEnum, IsNotEmpty, isArray } from "class-validator";
 import { Status, Type } from "../entities/transaction.entity";
 import { PrivateKonseling } from "#/private_konseling/entities/private_konseling.entity";
 import { DetailOrder } from "#/detail_order/entities/detail_order.entity";
+import { Seminar } from "#/seminar/entities/seminar.entity";
 
 export class CreateTransactionDto{
     @IsNotEmpty()
     customer : string
-
-    @IsNotEmpty()
-    seminar: string
 
     @IsNotEmpty()
     bank: string
@@ -19,16 +17,13 @@ export class CreateTransactionDto{
     type: Type
 
     @IsNotEmpty()
-    transaction_amount: number
-
-    @IsNotEmpty()
     exp_date: Date
 
     @IsNotEmpty()
     payment_proof: string
 
     @IsEnum(Status)
-    status: string
+    status: string = 'pending'
 
     @IsArray()
     detailOrder: CreateDetailOrderTransactionDto[]
@@ -41,18 +36,11 @@ export class CreateTransactionKonselingDto{
     customer : string
 
     @IsNotEmpty()
-    @IsArray()
-    privateKonseling: string[]
-
-    @IsNotEmpty()
     bank: string
 
     @IsNotEmpty()
     @IsEnum(Type)
     type: Type
-
-    @IsNotEmpty()
-    transaction_amount: number
 
     @IsNotEmpty()
     exp_date: Date
@@ -61,13 +49,12 @@ export class CreateTransactionKonselingDto{
     payment_proof: string
 
     @IsEnum(Status)
-    status: string
+    status: string = 'pending'
 
     @IsArray()
     detailOrder: CreateDetailOrderTransactionDto[]
 
     alasan: string
-
 }
 
 export class CreateDetailOrderTransactionDto{
@@ -99,10 +86,7 @@ export class CreateTransactionPsikologDto{
  payment_proof: string
 
  @IsEnum(Status)
- status: string
-
- @IsArray()
- detailOrder: CreateDetailOrderTransactionDto[]
+ status: string = 'pending'
 
  alasan: string
 }

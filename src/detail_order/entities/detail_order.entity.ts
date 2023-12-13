@@ -24,12 +24,10 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToOne(() => PrivateKonseling)
-    @JoinColumn()
+    @ManyToOne(() => PrivateKonseling, privateKonseling => privateKonseling.detailOrder)
     privateKonseling : PrivateKonseling
 
-    @OneToOne(() => Seminar)
-    @JoinColumn()
+    @ManyToOne(() => Seminar, seminar => seminar.detailOrder)
     seminar: Seminar
 
     @ManyToOne(() => Transaction, transaction => transaction.detailOrder)

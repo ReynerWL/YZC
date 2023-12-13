@@ -25,6 +25,9 @@ import {
     @Column()
     account_owner_name: string
 
+    @Column()
+    account_number: string
+
     @Column({type: 'text'})
     qr: string
 

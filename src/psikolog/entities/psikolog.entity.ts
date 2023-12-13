@@ -105,4 +105,7 @@ import {
 
       @OneToMany(() => Transaction, transaction => transaction.psikolog)
       transaction: Transaction
+
+      @OneToMany(()=> PrivateKonseling, privateKonseling => privateKonseling.psikolog)
+      privateKonseling: PrivateKonseling
   }

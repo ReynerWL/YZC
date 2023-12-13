@@ -29,24 +29,16 @@ import {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @OneToOne(() => Customer)
-    @JoinColumn()
-    customer: Customer
-
-    @OneToOne(() => Psikolog)
-    @JoinColumn()
+    @ManyToOne(() => Psikolog, psikolog => psikolog.privateKonseling)
     psikolog: Psikolog
 
     @Column({type: 'date'})
-    start_date: Date
-
-    @Column({type: 'date'})
-    end_date: Date
+    datetime: Date
 
     @Column({type: 'int'})
     price: number
 
-    @Column({enum: Status,type: 'enum'})
+    @Column({enum: Status,type: 'enum',default: 'pending'})
     status: Status
 
     @Column({type: 'text', nullable: true})
@@ -69,4 +61,7 @@ import {
       nullable: true,
     })
     deletedAt: Date;
+
+    @OneToMany(() => DetailOrder, detailOrder => detailOrder.privateKonseling)
+    detailOrder: DetailOrder
   }

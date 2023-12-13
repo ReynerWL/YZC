@@ -6,6 +6,7 @@ import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreatePrivateKonselingDto } from './dto/create-private_konseling.dto';
 import { UpdatePrivateKonselingDto } from './dto/update-private_konseling.dto';
+import { date } from 'joi';
 
 @Injectable()
 export class PrivateKonselingService {
@@ -17,24 +18,23 @@ export class PrivateKonselingService {
  ){}
 
  findAll(){
-    return this.privateKonselingRepository.findAndCount({relations: {customer: true, psikolog: true}})
+    return this.privateKonselingRepository.findAndCount({relations: {psikolog: true}})
  }
 
  async createPrivateKonseling(createPrivateKonselingDto: CreatePrivateKonselingDto){
     try {
-        const findOneCustomer = await this.customerService.findOne(createPrivateKonselingDto.customer)
         const findOnePsikolog = await this.psikologService.findOne(createPrivateKonselingDto.psikolog)
         let Status: any = 'pending'
+        let konseling: PrivateKonseling
         const privateKonselingEntity = new PrivateKonseling
-        privateKonselingEntity.customer = findOneCustomer
-        privateKonselingEntity.psikolog = findOnePsikolog
-        privateKonselingEntity.start_date = createPrivateKonselingDto.start_date
-        privateKonselingEntity.end_date = createPrivateKonselingDto.end_date
-        privateKonselingEntity.price = createPrivateKonselingDto.price
-        privateKonselingEntity.status = Status
-        
-        const insertCostumer = await this.privateKonselingRepository.insert(privateKonselingEntity)
-        return await this.privateKonselingRepository.findOneOrFail({where:{id: insertCostumer.identifiers[0].id}})
+        createPrivateKonselingDto.datetime.map(async(val) =>{
+          privateKonselingEntity.psikolog = findOnePsikolog
+          privateKonselingEntity.datetime = val
+          privateKonselingEntity.price = createPrivateKonselingDto.price
+          privateKonselingEntity.status = Status
+          await this.privateKonselingRepository.insert(privateKonselingEntity)
+        })
+        return await this.privateKonselingRepository.findOne({where:{psikolog:{id: findOnePsikolog.id}},order:{createdAt:'DESC'}})
     } catch (error) {
         return error
     }
@@ -42,7 +42,7 @@ export class PrivateKonselingService {
 
 async findOne(id: string){
     try {
-        return await this.privateKonselingRepository.findOneOrFail({where:{id}, relations: {customer: true,psikolog:true}})
+        return await this.privateKonselingRepository.findOneOrFail({where:{id}, relations: {psikolog:true}})
     } catch (error) {
         if (error instanceof EntityNotFoundError) {
             throw new HttpException(
@@ -62,12 +62,12 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
       await this.findOne(id)
       const findOnePsikolog = await this.psikologService.findOne(updatePrivateKonselingDto.psikolog)
       const privateKonselingEntity = new PrivateKonseling
-        privateKonselingEntity.start_date = updatePrivateKonselingDto.start_date
-        privateKonselingEntity.end_date = updatePrivateKonselingDto.end_date
+      updatePrivateKonselingDto.datetime.map((val) =>{ 
+        privateKonselingEntity.datetime = val
         privateKonselingEntity.price = updatePrivateKonselingDto.price
-        privateKonselingEntity.status = updatePrivateKonselingDto.status
         privateKonselingEntity.psikolog = findOnePsikolog
-
+      })
+       
       await this.privateKonselingRepository.update(id,privateKonselingEntity)
       return this.privateKonselingRepository.findOneOrFail({
         where: {id}

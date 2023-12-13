@@ -1,24 +1,19 @@
 import { Status } from "#/seminar/entities/seminar.entity";
-import { IsEnum, IsNotEmpty } from "class-validator";
+import { IsAlpha, IsArray, IsEnum, IsNotEmpty } from "class-validator";
 
 export class CreatePrivateKonselingDto{
-    @IsNotEmpty()
-    customer: string
-
     @IsNotEmpty()
     psikolog: string
 
     @IsNotEmpty()
-    start_date: Date
-
-    @IsNotEmpty()
-    end_date: Date
+    @IsArray()
+    datetime: Date[]
 
     @IsNotEmpty()
     price: number
 
     @IsEnum(Status)
-    status: Status
+    status: string = 'pending'
 
     alasan: string
 }

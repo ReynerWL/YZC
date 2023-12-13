@@ -18,9 +18,17 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 export class TransaksiController {
  constructor(private transactionService: TransaksiService){}
 
- @Get()
+ @Get('CusToAd')
  async findAll(){
     const [data,count] = await this.transactionService.findAll()
+    return{
+        data,count,status: HttpStatus.OK,message: 'Success'
+    }
+ }
+
+ @Get('AdToPsi')
+ async findAllAdmin(){
+    const [data,count] = await this.transactionService.findAllAdmin()
     return{
         data,count,status: HttpStatus.OK,message: 'Success'
     }
@@ -30,6 +38,15 @@ export class TransaksiController {
  async findOne(@Param('id', ParseUUIDPipe) id: string){
     return{
         data: await this.transactionService.findOne(id),
+        statusCode: HttpStatus.OK,
+        message: 'Success'
+    }
+ }
+
+ @Get('detail/:id')
+ async findDetailOrder(@Param('id', ParseUUIDPipe) id: string){
+    return{
+        data: await this.transactionService.findDetailOrderPsikolog(id),
         statusCode: HttpStatus.OK,
         message: 'Success'
     }

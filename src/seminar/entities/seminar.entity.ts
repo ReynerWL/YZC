@@ -75,4 +75,6 @@ import {
   })
   deletedAt: Date;
 
+  @OneToMany(() => DetailOrder, detailOrder => detailOrder.seminar)
+  detailOrder: DetailOrder
 }

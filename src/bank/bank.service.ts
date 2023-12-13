@@ -27,6 +27,7 @@ export class BankService {
     entity.userYzc = findUser
     entity.bank_name = createBankDto.bank_name
     entity.account_owner_name = createBankDto.account_owner_name
+    entity.account_number = createBankDto.account_number
     entity.qr = createBankDto.qr
 
     const insertEntity = await this.bankRepository.insert(entity)
@@ -43,6 +44,7 @@ export class BankService {
    entity.psikolog = findPsikolog
    entity.bank_name = createBankDto.bank_name
    entity.account_owner_name = createBankDto.account_owner_name
+   entity.account_number = createBankDto.account_number
    entity.qr = createBankDto.qr
 
    const insertEntity = await this.bankRepository.insert(entity)
@@ -88,6 +90,7 @@ async updateBankPsikolog(id: string, updateBankDto: UpdateBankDto) {
       const entity = new Bank
       entity.bank_name = updateBankDto.bank_name
       entity.account_owner_name = updateBankDto.account_owner_name
+      entity.account_number = updateBankDto.account_number
       entity.qr = updateBankDto.qr
 
      await this.bankRepository.update(id,entity)
@@ -116,6 +119,7 @@ async updateBankUser(id: string, updateBankDto: UpdateBankDto) {
       const entity = new Bank
       entity.bank_name = updateBankDto.bank_name
       entity.account_owner_name = updateBankDto.account_owner_name
+      entity.account_number = updateBankDto.account_number
       entity.qr = updateBankDto.qr
 
      await this.bankRepository.update(id,entity)

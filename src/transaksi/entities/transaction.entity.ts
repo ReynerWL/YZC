@@ -21,14 +21,17 @@ import {
   } from 'typeorm';
 
   export enum Type{
-    Bank = 'bank',
-    E_wallet = 'e-wallet',
+    CusToAdmin = 'CusToAdmin',
+    AdminToPsi = 'AdminToPsi',
 
   }
+
   export enum Status{
     Pending = 'pending',
     Approve = 'approve',
-    Reject = 'reject'
+    Reject = 'reject',
+    PendingToPsi = 'pendingToPayPsi',
+    Done = 'done'
   }
 
   @Entity()
@@ -44,7 +47,6 @@ import {
 
     @OneToMany(() => DetailOrder, detailOrder => detailOrder.transaction)
     detailOrder : DetailOrder[]
-
 
     @ManyToOne(() => Bank, bank => bank.transaction)
     bank: Bank
