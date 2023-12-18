@@ -1,3 +1,4 @@
+@Controller('artikel')
 import {
   Controller,
   Get,
