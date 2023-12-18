@@ -5,16 +5,12 @@ import * as bcrypt from 'bcrypt'
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { RegisterDto, RegisterPsikologDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-<<<<<<< HEAD
 import { JwtService } from '@nestjs/jwt/dist';
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { LevelUserService } from '#/level_user/level_user.service';
 import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-=======
-import { JwtService } from '@nestjs/jwt';
->>>>>>> nazhwa
 
 @Injectable()
 export class AuthService {
@@ -49,18 +45,18 @@ export class AuthService {
             user_yzc.email = registerDto.email
             user_yzc.salt = saltGenerator
             user_yzc.password = hash
-            user_yzc.status = Status
+            user_yzc.salt = Status
             user_yzc.level_user = levelUser
             const createUserYzc = await this.useryzcRepository.insert(user_yzc)
 
               const customerEntity = new Customer()
             customerEntity.user_yzc = createUserYzc.identifiers[0].id
-            customerEntity.full_name = registerDto.full_name
-            customerEntity.birth_date =registerDto.birth_date
+            customerEntity.fullName= registerDto.full_name
+            customerEntity.birthDate=registerDto.birth_date
             customerEntity.gender = registerDto.gender
             customerEntity.religion = registerDto.religion
             customerEntity.phone_number = registerDto.phone_number
-            customerEntity.last_education = registerDto.last_education
+            customerEntity.lastEducation = registerDto.last_education
 
             const createCustomer = await this.customerRepository.insert(customerEntity)
 
@@ -101,7 +97,7 @@ export class AuthService {
           user_yzc.email = registerPsikologDto.email
           user_yzc.salt = saltGenerator
           user_yzc.password = hash
-          user_yzc.status = Status
+          user_yzc.salt = Status
           user_yzc.level_user = levelUser
           const createUserYzc = await this.useryzcRepository.insert(user_yzc)
           

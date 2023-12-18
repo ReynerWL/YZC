@@ -58,9 +58,9 @@ gender: GenderProduct
 religion: Religion
 
 @Column({
-  type :"varchar",
+  type :"char",
 })
-phone: number;
+phone_number: string;
 
 @Column({
   type :"varchar",

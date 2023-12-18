@@ -58,7 +58,7 @@ export class CustomerService {
             customerEntity.birthDate = createcustomerDto.birthDate
             customerEntity.gender = createcustomerDto.gender
             customerEntity.religion = createcustomerDto.Religion
-            customerEntity.phone = createcustomerDto.phone
+            customerEntity.phone_number = createcustomerDto.phone
             customerEntity.lastEducation = createcustomerDto.lastEducation
             customerEntity.user_yzc = findOneUserId
 
@@ -84,7 +84,7 @@ export class CustomerService {
             customerEntity.birthDate = updatecustomerDto.birthDate
             customerEntity.gender = updatecustomerDto.gender
             customerEntity.religion = updatecustomerDto.Religion
-            customerEntity.phone = updatecustomerDto.phone
+            customerEntity.phone_number = updatecustomerDto.phone
             customerEntity.lastEducation = updatecustomerDto.lastEducation
 
             await this.customerRepository.update(id, customerEntity)

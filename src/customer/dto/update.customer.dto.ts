@@ -21,7 +21,7 @@ export class UpdateCustomerDto extends PartialType(CreateCustomerDto){
     Religion: Religion;
     
     @IsNotEmpty()
-    phone: number;
+    phone: string;
 
     @IsNotEmpty()
     lastEducation: string;

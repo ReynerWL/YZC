@@ -21,7 +21,7 @@ export class CreateCustomerDto{
     Religion: Religion;
 
     @IsNotEmpty()
-    phone: number;
+    phone: string;
 
     @IsNotEmpty()
     lastEducation: string;

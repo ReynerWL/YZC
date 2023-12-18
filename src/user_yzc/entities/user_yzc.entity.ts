@@ -49,6 +49,12 @@ export class User_Yzc {
   @Column({ nullable: true })
   salt: string;
 
+  @Column({
+    type : 'enum', 
+    enum : StatusAcount, default: 'pending'
+  })
+  status: StatusAcount 
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,

@@ -1,4 +1,4 @@
-import { Gender, Religion } from "#/customer/entities/customer.entity";
+import { GenderProduct, Religion } from "#/customer/entities/customer.entity";
 import { Status } from "#/seminar/entities/seminar.entity";
 import { IsEnum, IsNotEmpty } from "class-validator";
 
@@ -22,8 +22,8 @@ export class RegisterDto{
     birth_date: Date
 
     @IsNotEmpty()
-    @IsEnum(Gender)
-    gender: Gender
+    @IsEnum(GenderProduct)
+    gender: GenderProduct
 
     @IsNotEmpty()
     @IsEnum(Religion)
@@ -51,14 +51,17 @@ export class RegisterPsikologDto{
     password: string
 
     @IsNotEmpty()
+    phone_number: string
+
+    @IsNotEmpty()
     photo: string;
 
     @IsNotEmpty()
     full_name: string
    
     @IsNotEmpty()
-    @IsEnum(Gender)
-    gender: Gender
+    @IsEnum(GenderProduct)
+    gender: GenderProduct
 
     @IsNotEmpty()
     last_education: string
@@ -68,4 +71,5 @@ export class RegisterPsikologDto{
 
     @IsNotEmpty()
     aboutMe: string;
+    
 }
