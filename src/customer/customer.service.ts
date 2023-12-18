@@ -1,92 +1,115 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from './entities/customer.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
+import { Customer } from './entities/customer.entity';
 import { UserYzcService } from '#/user_yzc/user_yzc.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { CreateCustomerDto } from './dto/create.customer.dto';
+import { UpdateCustomerDto } from './dto/update.customer.dto';
+import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { createConnection } from 'net';
 
 @Injectable()
 export class CustomerService {
     constructor(
         @InjectRepository(Customer)
         private customerRepository: Repository<Customer>,
-        private useryzcService: UserYzcService,
-    ){}
-   
-    findAll(){
-        return this.customerRepository.findAndCount({relations: {user_yzc: true}})
+
+
+        private userService: UserYzcService
+    ) { }
+
+    findAll() {
+        return this.customerRepository.findAndCount({
+            relations: {
+                user_yzc: true
+            }
+        });
     }
 
-    async createCustomer(createCustomerDto: CreateCustomerDto){
+    async findOne(id: string) {
         try {
-            const findOneUserYzc = await this.useryzcService.findOne(createCustomerDto.user_yzc)
-            const customerEntity = new Customer
-            customerEntity.user_yzc = findOneUserYzc
-            customerEntity.full_name = createCustomerDto.full_name
-            customerEntity.birth_date = createCustomerDto.birth_date
-            customerEntity.gender = createCustomerDto.gender
-            customerEntity.religion = createCustomerDto.religion
-            customerEntity.phone_number = createCustomerDto.phone_number
-            customerEntity.last_education = createCustomerDto.last_education
-
-            const insertCostumer = await this.customerRepository.insert(customerEntity)
-            return await this.customerRepository.findOneOrFail({where:{id: insertCostumer.identifiers[0].id}})
-        } catch (error) {
-            return error
-        }
-    }
-
-    async findOne(id: string){
-        try {
-            return await this.customerRepository.findOneOrFail({where:{id}, relations: {user_yzc: true}})
-        } catch (error) {
-            if (error instanceof EntityNotFoundError) {
+            return await this.customerRepository.findOneOrFail({
+                where: { id },
+                relations: { user_yzc: true }
+            })
+        } catch (e) {
+            if (e instanceof EntityNotFoundError) {
                 throw new HttpException(
-                    {statusCode: HttpStatus.NOT_FOUND,error: 'Data Not Found'},
-                    HttpStatus.NOT_FOUND,
+                    {
+                        statusCode: HttpStatus.NOT_FOUND,
+                        error: "data not found",
+                    },
+                    HttpStatus.NOT_FOUND
                 )
             } else {
-                throw error
+                throw e
             }
         }
     }
 
-    async update(id: string, updateCustomerDto: UpdateCustomerDto) {
+    async create(createcustomerDto: CreateCustomerDto) {
         try {
-          await this.findOne(id)
-    
-          const customerEntity = new Customer
-            customerEntity.full_name = updateCustomerDto.full_name
-            customerEntity.birth_date = updateCustomerDto.birth_date
-            customerEntity.phone_number = updateCustomerDto.phone_number
-            customerEntity.last_education = updateCustomerDto.last_education
-    
-          await this.customerRepository.update(id,customerEntity)
-          return this.customerRepository.findOneOrFail({
-            where: {id}
-          })
+            // cek user id is valid
+            const findOneUserId = await this.userService.findOne(createcustomerDto.user_yzc)
+
+            //kalau valid kita baru create review
+            const customerEntity = new Customer
+            customerEntity.fullName = createcustomerDto.fullName
+            customerEntity.birthDate = createcustomerDto.birthDate
+            customerEntity.gender = createcustomerDto.gender
+            customerEntity.religion = createcustomerDto.Religion
+            customerEntity.phone = createcustomerDto.phone
+            customerEntity.lastEducation = createcustomerDto.lastEducation
+            customerEntity.user_yzc = findOneUserId
+
+            const insertReview = await this.customerRepository.insert(customerEntity)
+            return await this.customerRepository.findOneOrFail({
+                where: {
+                    id: insertReview.identifiers[0].id
+                }
+            })
         } catch (e) {
-          if (e instanceof EntityNotFoundError) {
-            throw new HttpException(
-              {
-                statusCode: HttpStatus.NOT_FOUND,
-                error: 'Data not found',
-              },
-              HttpStatus.NOT_FOUND,
-            );
-          } else {
-            throw e;
-          }
+            throw e
         }
     }
-      async deleteCustomer(id: string) {
+
+    async update(id: string, updatecustomerDto: UpdateCustomerDto) {
         try {
+            // cari idnya valid atau engga
             await this.findOne(id)
-            await this.customerRepository.softDelete(id)
-            return `Delete Success`
-        } catch (error) {
-            throw error
+
+            //kalau valid update datanya
+            const customerEntity = new Customer
+            customerEntity.fullName = updatecustomerDto.fullName
+            customerEntity.birthDate = updatecustomerDto.birthDate
+            customerEntity.gender = updatecustomerDto.gender
+            customerEntity.religion = updatecustomerDto.Religion
+            customerEntity.phone = updatecustomerDto.phone
+            customerEntity.lastEducation = updatecustomerDto.lastEducation
+
+            await this.customerRepository.update(id, customerEntity)
+
+            // return data setelah diupdate
+            return await this.customerRepository.findOneOrFail({
+                where: { id }
+            })
+        } catch (e) {
+            throw e
         }
-      }
+    }
+
+    async softDeletedById(id: string) {
+        try {
+            // cari dulu id valid ga
+            await this.findOne(id)
+
+            //kalau nemu langsung delete
+            await this.customerRepository.softDelete(id)
+
+            return "succes"
+        } catch (e) {
+            throw e
+        }
+    }
+
 }

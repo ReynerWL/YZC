@@ -5,12 +5,16 @@ import * as bcrypt from 'bcrypt'
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { RegisterDto, RegisterPsikologDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+<<<<<<< HEAD
 import { JwtService } from '@nestjs/jwt/dist';
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { LevelUserService } from '#/level_user/level_user.service';
 import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+=======
+import { JwtService } from '@nestjs/jwt';
+>>>>>>> nazhwa
 
 @Injectable()
 export class AuthService {

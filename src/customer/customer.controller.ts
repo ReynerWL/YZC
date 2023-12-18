@@ -30,7 +30,7 @@ export class CustomerController {
 
     @Post()
     async create(@Body() createCustomerDto: CreateCustomerDto) {
-      const data = await this.customerSevice.createCustomer(createCustomerDto)
+      const data = await this.customerSevice.create(createCustomerDto)
       return {
         data,
         statusCode: HttpStatus.CREATED,
@@ -62,11 +62,11 @@ export class CustomerController {
   
     @Delete(':id')
     async remove(@Param('id', ParseUUIDPipe) id: string) {
-      await this.customerSevice.deleteCustomer(id)
+      await this.customerSevice.softDeletedById(id)
   
       return {
         statusCode: HttpStatus.OK,
         message: 'success',
       };
     }
-}
+  }

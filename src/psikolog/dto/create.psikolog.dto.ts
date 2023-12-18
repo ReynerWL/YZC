@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEnum} from "class-validator";
 import { GenderProduct } from "../entities/psikolog.entity";
-import { Gender } from "#/customer/entities/customer.entity";
+import { StatusPsikologAcount } from "../entities/psikolog.entity";
 
 export class CreatePsikologDto{
     @IsNotEmpty()
