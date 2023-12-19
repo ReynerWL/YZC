@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { Bank } from '#/bank/entities/bank.entity';
 import { Customer } from '#/customer/entities/customer.entity';
+=======
+import { Artikel } from '#/artikel/entities/artikel.entity';
+>>>>>>> nazhwa
 import { Level_User } from '#/level_user/entities/level_user.entity';
+import { Notifikasi } from '#/notifikasi/entities/notifikasi.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import {
   Entity,
@@ -27,18 +32,31 @@ export class User_Yzc {
   id: string;
 
   @ManyToOne(() => Level_User, (level_user) => level_user.user_yzc)
-  level_user : Level_User;
+  level_user: Level_User;
 
-  @Column({type: 'varchar'})
+  @OneToMany(() => Notifikasi, (notif1) => notif1.penerima)
+  notif1: Notifikasi;
+
+  @OneToMany(() => Notifikasi, (notif2) => notif2.pengirim)
+  notif2: Notifikasi;
+
+  @OneToMany(() => Artikel, (artikel) => artikel.user_yzc)
+  artikel: Artikel;
+
+  @Column({ type: 'varchar' })
   email: string;
 
-  @Column({type: 'varchar'})
+  @Column({ type: 'varchar' })
   password: string;
 
+<<<<<<< HEAD
   @Column({type: 'enum', enum: StatusAcount})
   status: StatusAcount
 
   @Column({nullable: true})
+=======
+  @Column({ nullable: true })
+>>>>>>> nazhwa
   salt: string;
 
   @CreateDateColumn({
@@ -59,7 +77,7 @@ export class User_Yzc {
   })
   deletedAt: Date;
 
-  @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc )
+  @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc)
   psikolog: Psikolog
 
   @OneToOne(() => Customer, (customer) => customer.user_yzc)

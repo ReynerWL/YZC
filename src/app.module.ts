@@ -21,6 +21,7 @@ import { ArtikelModule } from './artikel/artikel.module';
 import { ReviewModule } from './review/review.module';
 import { CaseHandledModule } from './case_handled/case_handled.module';
 import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.module';
+import { NotifikasiModule } from './notifikasi/notifikasi.module';
 
 @Module({
   imports: [
@@ -120,7 +121,15 @@ import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.modul
     ReviewModule,
     CaseHandledModule,
     PsikologSeminarModule,
+    NotifikasiModule,
   ],
     
+    // SeederModule,
+    // UsersModule,
+   
+    
+   
+   
+  
 })
 export class AppModule {}

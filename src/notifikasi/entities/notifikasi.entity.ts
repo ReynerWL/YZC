@@ -10,44 +10,33 @@ import {
   VersionColumn,
 } from 'typeorm'
 
-export enum StatusArtikel {
-  APPROVE = 'approve',
-  REJECT = 'reject',
-  PENDING = 'pending'
+export enum StatusNotifikasi {
+  UNREAD = 'unread',
+  ALREADY_READ = 'AlreadyRead'
 }
 
 @Entity()
-export class Artikel {
+export class Notifikasi {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User_Yzc, (user_yzc) => user_yzc.artikel)
-  user_yzc: User_Yzc
+  @ManyToOne(() => User_Yzc, (penerima) => penerima.notif1)
+  penerima: User_Yzc
 
-  @Column({
-    type: "varchar"
-  })
-  title: string;
-
-  @Column({
-    type: "text"
-  })
-  articleContent: string
-
-  @Column({
-    type: "text"
-  })
-  imgThumbnail: string
+  @ManyToOne(() => User_Yzc, (pengirim) => pengirim.notif2)
+  pengirim: User_Yzc     
 
   @Column({
     type: "enum",
-    enum: StatusArtikel,
-    default: StatusArtikel.PENDING,
+    enum: StatusNotifikasi,
+    default: StatusNotifikasi.UNREAD,
   })
-  statusArtikel: StatusArtikel
+  statusNotifikasi: StatusNotifikasi
 
-  @Column({ type: "varchar", nullable: true })
-  alasan: string
+  @Column({
+    type: "text"
+  })
+  notificationContent: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
