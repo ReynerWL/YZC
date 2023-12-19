@@ -1,9 +1,5 @@
 import { IsNotEmpty, IsEnum} from "class-validator";
 import { GenderProduct } from "../entities/psikolog.entity";
-<<<<<<< HEAD
-import { Gender } from "#/customer/entities/customer.entity";
-=======
->>>>>>> nazhwa
 
 export class CreatePsikologDto{
     @IsNotEmpty()
@@ -16,8 +12,8 @@ export class CreatePsikologDto{
     fullName: string;
 
     @IsNotEmpty()
-    @IsEnum(Gender)
-    gender: Gender;
+    @IsEnum(GenderProduct)
+    gender: GenderProduct;
 
     @IsNotEmpty()
     phone_number: string;
