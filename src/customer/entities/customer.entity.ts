@@ -15,7 +15,7 @@ import {
   OneToMany,
 } from 'typeorm';
 
-export enum GenderProduct {
+export enum Gender {
   PRIA = 'pria',
   WANITA = 'wanita',
 }
@@ -50,9 +50,9 @@ birthDate: Date;
 
 @Column({
   type :"enum",
-  enum: GenderProduct
+  enum: Gender
 })
-gender: GenderProduct
+gender: Gender
 
 @Column({
   type :"enum",

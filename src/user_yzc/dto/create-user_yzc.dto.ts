@@ -1,6 +1,7 @@
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { StatusAcount } from '../entities/user_yzc.entity';
-import { Gender, Religion } from '#/customer/entities/customer.entity';
+import { Religion } from '#/customer/entities/customer.entity';
+import { GenderProduct } from '#/psikolog/entities/psikolog.entity';
 
 export class CreateUserYzcDto {
   // @IsNotEmpty()
@@ -22,8 +23,8 @@ export class CreateUserYzcDto {
   birth_date: Date
 
   @IsNotEmpty()
-  @IsEnum(Gender)
-  gender: Gender
+  // @IsEnum(Gender)
+  gender: GenderProduct
 
   @IsNotEmpty()
   @IsEnum(Religion)

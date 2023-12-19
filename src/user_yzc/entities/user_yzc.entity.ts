@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import { Bank } from '#/bank/entities/bank.entity';
 import { Customer } from '#/customer/entities/customer.entity';
-=======
 import { Artikel } from '#/artikel/entities/artikel.entity';
->>>>>>> nazhwa
 import { Level_User } from '#/level_user/entities/level_user.entity';
 import { Notifikasi } from '#/notifikasi/entities/notifikasi.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
@@ -49,14 +46,10 @@ export class User_Yzc {
   @Column({ type: 'varchar' })
   password: string;
 
-<<<<<<< HEAD
   @Column({type: 'enum', enum: StatusAcount})
   status: StatusAcount
 
-  @Column({nullable: true})
-=======
   @Column({ nullable: true })
->>>>>>> nazhwa
   salt: string;
 
   @CreateDateColumn({
