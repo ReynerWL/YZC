@@ -51,33 +51,6 @@ export class PsikologController {
     }
   }
 
-<<<<<<< HEAD
-@Get(':id')
-    async findOne(@Param('id', ParseUUIDPipe) id: string) {
-      return {
-        data: await this.psikologService.findOne(id),
-        statusCode: HttpStatus.OK,
-        message: 'success',
-      };
-    }
-
-@Put("/:id")
-async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikolog){
-  const data = await this.psikologService.update(id, UpdatePsikologDto)
-
-  return{
-    data,
-    StatusCode: HttpStatus.OK,
-    message: "succes"
-  }
-}
-
-@Delete("/:id")
-async softDelete(@Param("id", ParseUUIDPipe) id: string){
-  return {
-    StatusCode: HttpStatus.OK,
-    message: await this.psikologService.softDeletedById(id)
-=======
   @Put("/:id")
   async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikologDto) {
     const data = await this.psikologService.update(id, UpdatePsikologDto)
@@ -87,7 +60,6 @@ async softDelete(@Param("id", ParseUUIDPipe) id: string){
       StatusCode: HttpStatus.OK,
       message: "succes"
     }
->>>>>>> nazhwa
   }
 
 

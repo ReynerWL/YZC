@@ -17,7 +17,7 @@ export class UpdatePsikologDto extends PartialType(CreatePsikologDto){
     gender: GenderProduct;
 
     @IsNotEmpty()
-    phone: number;
+    phone: string;
 
     @IsNotEmpty()
     lastEducation: string;
