@@ -10,8 +10,10 @@ import {
     HttpStatus,
   } from '@nestjs/common';
 import { CustomerService } from './customer.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+
+
+import { CreateCustomerDto } from './dto/create.customer.dto';
+import { UpdateCustomerDto } from './dto/update.customer.dto';
 
 @Controller('customer')
 export class CustomerController {
@@ -30,7 +32,7 @@ export class CustomerController {
 
     @Post()
     async create(@Body() createCustomerDto: CreateCustomerDto) {
-      const data = await this.customerSevice.createCustomer(createCustomerDto)
+      const data = await this.customerSevice.create(createCustomerDto)
       return {
         data,
         statusCode: HttpStatus.CREATED,
@@ -62,11 +64,11 @@ export class CustomerController {
   
     @Delete(':id')
     async remove(@Param('id', ParseUUIDPipe) id: string) {
-      await this.customerSevice.deleteCustomer(id)
+      await this.customerSevice.softDeletedById(id)
   
       return {
         statusCode: HttpStatus.OK,
         message: 'success',
       };
     }
-}
+  }

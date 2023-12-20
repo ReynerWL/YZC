@@ -45,18 +45,18 @@ export class AuthService {
             user_yzc.email = registerDto.email
             user_yzc.salt = saltGenerator
             user_yzc.password = hash
-            user_yzc.status = Status
+            user_yzc.salt = Status
             user_yzc.level_user = levelUser
             const createUserYzc = await this.useryzcRepository.insert(user_yzc)
 
               const customerEntity = new Customer()
             customerEntity.user_yzc = createUserYzc.identifiers[0].id
-            customerEntity.full_name = registerDto.full_name
-            customerEntity.birth_date =registerDto.birth_date
+            customerEntity.fullName= registerDto.full_name
+            customerEntity.birthDate=registerDto.birth_date
             customerEntity.gender = registerDto.gender
             customerEntity.religion = registerDto.religion
             customerEntity.phone_number = registerDto.phone_number
-            customerEntity.last_education = registerDto.last_education
+            customerEntity.lastEducation = registerDto.last_education
 
             const createCustomer = await this.customerRepository.insert(customerEntity)
 
@@ -97,7 +97,7 @@ export class AuthService {
           user_yzc.email = registerPsikologDto.email
           user_yzc.salt = saltGenerator
           user_yzc.password = hash
-          user_yzc.status = Status
+          user_yzc.salt = Status
           user_yzc.level_user = levelUser
           const createUserYzc = await this.useryzcRepository.insert(user_yzc)
           

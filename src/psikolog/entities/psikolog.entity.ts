@@ -1,11 +1,11 @@
 import { Bank } from '#/bank/entities/bank.entity';
-import { Gender } from '#/customer/entities/customer.entity';
 import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
 import { Transaction } from '#/transaksi/entities/transaction.entity';
 import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
+import { string } from "joi";
 import {
     Entity,
     Column,
@@ -16,14 +16,13 @@ import {
     CreateDateColumn,
     OneToOne,
     JoinColumn,
-    ManyToMany,
     ManyToOne,
     OneToMany,
   } from 'typeorm';
 
   export enum GenderProduct{
     PRIA = 'pria',
-    WANITA = 'wanitia',
+    WANITA = 'wanita',
   }
 
 
@@ -48,9 +47,9 @@ import {
 
     @Column({
       type :'enum',
-      enum: Gender
+      enum: GenderProduct
     })
-    gender: Gender
+    gender: GenderProduct
 
     @Column({type: 'char', length: 15})
     phone_number: string;

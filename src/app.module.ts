@@ -2,25 +2,27 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+// import { UsersModule } from './users/users.module';
+// import { UsersModule } from './users/users.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { LoggerModule } from 'nestjs-pino';
 import { HealthModule } from './health/health.module';
 import configuration from './config/configuration';
 import * as pino from 'pino';
+// import { SeederModule } from '#/seeder/seeder.module';
+// import { PsikologController } from './psikolog/psikolog.controller';
+// import { PsikologService } from './psikolog/psikolog.service';
 import { PsikologModule } from './psikolog/psikolog.module';
+import { CustomerModule } from './customer/customer.module';
+import { CustomerService } from './customer/customer.service';
+import { CustomerController } from './customer/customer.controller';
+// import { SeederModule } from '#/seeder/seeder.module';
 import { LevelUserModule } from './level_user/level_user.module';
 import { UserYzcModule } from './user_yzc/user_yzc.module';
 import { AuthModule } from './auth/auth.module';
-import { CustomerModule } from './customer/customer.module';
-import { SeminarModule } from './seminar/seminar.module';
-import { PrivateKonselingModule } from './private_konseling/private_konseling.module';
-import { BankModule } from './bank/bank.module';
-import { TransaksiModule } from './transaksi/transaksi.module';
-import { DetailOrderModule } from './detail_order/detail_order.module';
+import { NotifikasiModule } from './notifikasi/notifikasi.module';
+import { ArtikelController } from './artikel/artikel.controller';
 import { ArtikelModule } from './artikel/artikel.module';
-import { ReviewModule } from './review/review.module';
-import { CaseHandledModule } from './case_handled/case_handled.module';
-import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.module';
 
 @Module({
   imports: [
@@ -105,22 +107,14 @@ import { PsikologSeminarModule } from './psikolog_seminar/psikolog_seminar.modul
       },
       inject: [ConfigService],
     }),
+    // SeederModule,
+    // UsersModule,
     HealthModule,
     PsikologModule,
-    LevelUserModule,
-    UserYzcModule,
-    AuthModule,
     CustomerModule,
-    SeminarModule,
-    PrivateKonselingModule,
-    BankModule,
-    TransaksiModule,
-    DetailOrderModule,
+    NotifikasiModule,
     ArtikelModule,
-    ReviewModule,
-    CaseHandledModule,
-    PsikologSeminarModule,
   ],
-    
+  controllers: [ArtikelController]
 })
 export class AppModule {}

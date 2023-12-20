@@ -4,7 +4,8 @@ import { EntityNotFoundError, Repository } from 'typeorm';
 import { Psikolog } from './entities/psikolog.entity';
 import { UserYzcService } from '#/user_yzc/user_yzc.service';
 import { CreatePsikologDto } from './dto/create.psikolog.dto';
-import { UpdatePsikolog } from './dto/update.psikolog.dto';
+import { UpdatePsikologDto } from './dto/update.psikolog.dto';
+import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 
 @Injectable()
 export class PsikologService {
@@ -87,7 +88,7 @@ export class PsikologService {
     }
   }
 
-  async update(id: string, updatePsikologDto: UpdatePsikolog) {
+  async update(id: string, updatePsikologDto: UpdatePsikologDto) {
     try {
       // cari idnya valid atau engga
       await this.findOne(id);
@@ -125,4 +126,5 @@ export class PsikologService {
       throw e;
     }
   }
+
 }
