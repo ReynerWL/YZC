@@ -14,18 +14,18 @@ export class PsikologController {
     private psikologService: PsikologService
   ) { }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file', storageProfile))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    if (typeof file?.filename == "undefined") {
-        return {
-          statusCode: HttpStatus.BAD_REQUEST, 
-          message: "error file cannot be upload"
-        }
-    } else {
-        return {fileName: file?.filename}
-    }
-  }
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file', storageProfile))
+  // uploadFile(@UploadedFile() file: Express.Multer.File) {
+  //   if (typeof file?.filename == "undefined") {
+  //       return {
+  //         statusCode: HttpStatus.BAD_REQUEST, 
+  //         message: "error file cannot be upload"
+  //       }
+  //   } else {
+  //       return {fileName: file?.filename}
+  //   }
+  // }
 
 
   @Get()

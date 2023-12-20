@@ -7,7 +7,7 @@ import { UserYzcModule } from '#/user_yzc/user_yzc.module';
 import { PsikologModule } from '#/psikolog/psikolog.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bank]),UserYzcModule, PsikologModule],
+  imports: [TypeOrmModule.forFeature([Bank]),PsikologModule],
   exports: [BankService],
   controllers: [BankController],
   providers: [BankService]
