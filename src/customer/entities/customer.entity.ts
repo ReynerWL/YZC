@@ -24,7 +24,7 @@ export enum Religion {
   ISLAM = 'islam',
   KATOLIK = 'katolik',
   PROTESTAN = 'protestan',
-  BUDDHA = 'buddha',
+  BUDDHA = 'budha',
   HINDU = 'hindu',
   KONGHUCU = 'konghucu',
 }

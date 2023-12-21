@@ -72,5 +72,5 @@ export class RegisterPsikologDto{
 
     @IsNotEmpty()
     aboutMe: string;
-    
+
 }

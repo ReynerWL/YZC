@@ -6,6 +6,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { join } from 'path';
 import { of } from 'rxjs';
 import { storageProfile } from './helper/upload-profile-image';
+import { storageLegality } from './helper/upload-legality-image';
 
 
 @Controller('psikolog')
@@ -16,7 +17,7 @@ export class PsikologController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storageProfile))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadProfile(@UploadedFile() file: Express.Multer.File) {
     if (typeof file?.filename == "undefined") {
         return {
           statusCode: HttpStatus.BAD_REQUEST, 
@@ -27,6 +28,18 @@ export class PsikologController {
     }
   }
 
+  @Post('upload/legality')
+  @UseInterceptors(FileInterceptor('file', storageLegality))
+  uploadLegality(@UploadedFile() file: Express.Multer.File) {
+    if (typeof file?.filename == "undefined") {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST, 
+          message: "error file cannot be upload"
+        }
+    } else {
+        return {fileName: file?.filename}
+    }
+  }
 
   @Get()
   async getAll() {
