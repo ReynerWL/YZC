@@ -3,7 +3,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExtractJwt, Strategy } from "passport-jwt"
+import {ExtractJwt, Strategy} from "passport-jwt"
 import { Repository } from "typeorm";
 
 @Injectable()
