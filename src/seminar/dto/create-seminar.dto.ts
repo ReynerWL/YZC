@@ -18,7 +18,7 @@ export class CreateSeminarDto{
     poster: string
 
     @IsNotEmpty()
-    description: string
+    link: string
 
     @IsNotEmpty()
     datetime: Date
