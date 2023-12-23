@@ -46,7 +46,7 @@ import {
   poster: string
 
   @Column({type: 'text'})
-  description: string
+  link: string
 
   @Column({type: 'timestamp with time zone', nullable: true})
   datetime: Date

@@ -139,7 +139,7 @@ export class AuthService {
     async login(loginDto: LoginDto){
         try {
             const useryzcOne = await this.useryzcRepository.findOne({
-                where: {email: loginDto.email},relations: ['level_user']
+                where: {email: loginDto.email}, relations: ['level_user']
             })
             if (!useryzcOne) {
              throw new HttpException(

@@ -37,7 +37,7 @@ export class SeminarService {
       seminarEntity.title = createSeminarDto.title
       seminarEntity.price = createSeminarDto.price
       seminarEntity.poster = createSeminarDto.poster
-      seminarEntity.description = createSeminarDto.description
+      seminarEntity.link = createSeminarDto.link
       seminarEntity.datetime = createSeminarDto.datetime
       seminarEntity.status = createSeminarDto.status
       const insertSeminar = await this.seminarRepository.insert(seminarEntity)
@@ -98,7 +98,7 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
        seminarEntity.title = updateSeminarDto.title
        seminarEntity.price = updateSeminarDto.price
        seminarEntity.poster = updateSeminarDto.poster
-       seminarEntity.description = updateSeminarDto.description
+       seminarEntity.link = updateSeminarDto.link
        seminarEntity.datetime = updateSeminarDto.datetime
        seminarEntity.status = updateSeminarDto.status
 

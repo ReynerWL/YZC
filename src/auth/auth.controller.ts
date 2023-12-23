@@ -35,7 +35,7 @@ export class AuthController {
      return {data,statusCode: HttpStatus.CREATED,message: "Success"}
     }
 
-    @Post('login')
+    @Post('/login')
     async login(@Body() loginDto: LoginDto){
         const data = await this.authService.login(loginDto)
         return {data,statusCode: HttpStatus.OK,message: "Success"}
