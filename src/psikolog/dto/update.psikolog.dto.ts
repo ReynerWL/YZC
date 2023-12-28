@@ -2,7 +2,6 @@ import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsEnum} from "class-validator";
 import { GenderProduct } from "../entities/psikolog.entity";
 import { CreatePsikologDto } from './create.psikolog.dto';
-import { Gender } from '#/customer/entities/customer.entity';
 
 export class UpdatePsikologDto extends PartialType(CreatePsikologDto){
     @IsNotEmpty()
@@ -12,11 +11,11 @@ export class UpdatePsikologDto extends PartialType(CreatePsikologDto){
     fullName: string;
 
     @IsNotEmpty()
-    @IsEnum(Gender)
-    gender: Gender;
+    @IsEnum(GenderProduct)
+    gender: GenderProduct;
 
     @IsNotEmpty()
-    phone: number;
+    phone: string;
 
     @IsNotEmpty()
     lastEducation: string;

@@ -19,6 +19,11 @@ import {
     JoinTable,
   } from 'typeorm';
 
+  export enum types {
+    Seminar = 'seminar',
+    Private_Konseling = 'private_konseling'
+  }
+
   @Entity()
   export class DetailOrder{
     @PrimaryGeneratedColumn('uuid')
@@ -41,6 +46,9 @@ import {
 
     @Column({type: 'int'})
     price: number
+
+    @Column({type: 'enum', enum: types, nullable: true})
+    types: types
 
     @CreateDateColumn({
         type: 'timestamp with time zone',

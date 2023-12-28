@@ -28,7 +28,6 @@ export class CreateTransactionDto{
     @IsArray()
     detailOrder: CreateDetailOrderTransactionDto[]
 
-    alasan: string
 }
 
 export class CreateTransactionKonselingDto{
@@ -54,7 +53,6 @@ export class CreateTransactionKonselingDto{
     @IsArray()
     detailOrder: CreateDetailOrderTransactionDto[]
 
-    alasan: string
 }
 
 export class CreateDetailOrderTransactionDto{
@@ -62,7 +60,7 @@ export class CreateDetailOrderTransactionDto{
     id: string
 
     @IsNotEmpty()
-    type: string
+    types: string
 
     @IsNotEmpty()
     price: number
@@ -88,5 +86,4 @@ export class CreateTransactionPsikologDto{
  @IsEnum(Status)
  status: string = 'pending'
 
- alasan: string
 }

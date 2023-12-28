@@ -40,6 +40,40 @@ export class PsikologController {
     }
   }
 
+  @Get('active')
+  async getAllActive() {
+    const [data, count] = await this.psikologService.findAllActive()
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      massage: "success"
+    }
+  }
+  @Get('not_active')
+  async getAllInActive() {
+    const [data, count] = await this.psikologService.findAllInActive()
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      massage: "success"
+    }
+  }
+  @Get('pending')
+  async getAllPending() {
+    const [data, count] = await this.psikologService.findAllPending()
+
+    return {
+      data,
+      count,
+      statusCode: HttpStatus.OK,
+      massage: "success"
+    }
+  }
+
   @Post()
   async create(@Body() createPsikologDto: CreatePsikologDto) {
     const data = await this.psikologService.create(createPsikologDto)
@@ -51,7 +85,6 @@ export class PsikologController {
     }
   }
 
-<<<<<<< HEAD
 @Get(':id')
     async findOne(@Param('id', ParseUUIDPipe) id: string) {
       return {
@@ -62,7 +95,7 @@ export class PsikologController {
     }
 
 @Put("/:id")
-async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikolog){
+async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikologDto){
   const data = await this.psikologService.update(id, UpdatePsikologDto)
 
   return{
@@ -77,27 +110,8 @@ async softDelete(@Param("id", ParseUUIDPipe) id: string){
   return {
     StatusCode: HttpStatus.OK,
     message: await this.psikologService.softDeletedById(id)
-=======
-  @Put("/:id")
-  async update(@Param("id", ParseUUIDPipe) id: string, @Body() UpdatePsikologDto: UpdatePsikologDto) {
-    const data = await this.psikologService.update(id, UpdatePsikologDto)
-
-    return {
-      data,
-      StatusCode: HttpStatus.OK,
-      message: "succes"
-    }
->>>>>>> nazhwa
   }
-
-
-  @Delete("/:id")
-  async softDelete(@Param("id", ParseUUIDPipe) id: string) {
-    return {
-      StatusCode: HttpStatus.OK,
-      message: await this.psikologService.softDeletedById(id)
-    }
-  }
+}
 
   @Get('upload/:image/:type')
     getImage(

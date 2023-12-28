@@ -1,4 +1,5 @@
 import { Bank } from '#/bank/entities/bank.entity';
+import { Religion } from '#/customer/entities/customer.entity';
 import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { PsikologSeminar } from '#/psikolog_seminar/entities/psikolog_seminar.entity';
@@ -53,7 +54,7 @@ import {
     gender: GenderProduct
 
     @Column({type: 'char', length: 15})
-    phone_number: string;
+    phone: string;
 
     @Column({
       type :"varchar",
@@ -69,6 +70,16 @@ import {
       type :"text"
     })
     aboutMe: string;
+
+    @Column({
+      type: 'enum', enum: Religion
+    })
+    religion: Religion
+
+    @Column({
+      type: 'date'
+    })
+    birth_date: Date
 
     @CreateDateColumn({
         type: 'timestamp with time zone',

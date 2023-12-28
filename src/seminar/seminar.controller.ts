@@ -8,12 +8,19 @@ import {
     Delete,
     ParseUUIDPipe,
     HttpStatus,
-    Req
+    Req,
+    UseInterceptors,
+    UploadedFile,
+    Res
   } from '@nestjs/common';
 import { SeminarService } from './seminar.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
 import { UpdateSeminarDto } from './dto/update-seminar.dto';
-import { UpdatePsikologSeminarDto } from '#/psikolog_seminar/dto/update-psikolog_seminar.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageProfile } from '#/psikolog/helper/upload-profile-image';
+import { storagePosterSeminar} from './helper/upload-image';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('seminar')
 export class SeminarController {
@@ -28,6 +35,48 @@ export class SeminarController {
             message: 'success'
         }
     }
+
+    @Get('approve')
+    async findAllApprove(){
+        const [data,count] = await this.seminarService.findAllApprove()
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+
+    @Get('reject')
+    async findAllReject(){
+        const [data,count] = await this.seminarService.findAllReject()
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+    @Get('pending')
+    async findAllPending(){
+        const [data,count] = await this.seminarService.findAllPending()
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storagePosterSeminar))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (typeof file?.filename == "undefined") {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST, 
+          message: "error file cannot be upload"
+        }
+    } else {
+        return {fileName: file?.filename}
+    }
+  }
 
     @Get('/psikolog/:id')
     async findAllByPsikolog(@Param('id', ParseUUIDPipe) id: string){
@@ -79,7 +128,7 @@ export class SeminarController {
       };
     }
 
-    @Put()
+    @Put('reject/:id')
     async reject(@Param('id', ParseUUIDPipe) id: string,
     updateDto: UpdateSeminarDto){
       return {
@@ -87,11 +136,19 @@ export class SeminarController {
       }
     }
 
-    @Put()
+    @Put('approve/:id')
     async approve(@Param('id', ParseUUIDPipe) id: string,
     updateDto: UpdateSeminarDto){
       return {
         data: await this.seminarService.approve(id, updateDto)
       }
     }
+
+    @Get('upload/:image/:type')
+  getImage(
+      @Param('image') imagePath: string,
+      @Res() res: any,
+  ) {
+      return of(res.sendFile(join(process.cwd(), `upload/posterSeminar/${imagePath}`)));
+  }
 }

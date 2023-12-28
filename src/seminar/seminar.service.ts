@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Seminar } from './entities/seminar.entity';
+import { Seminar, Status } from './entities/seminar.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { CreateSeminarDto } from './dto/create-seminar.dto';
@@ -20,9 +20,19 @@ export class SeminarService {
     private psikologSeminarService: PsikologSeminarService
  ){}
  
- findAll(){
-    return this.seminarRepository.findAndCount({relations: { psikolog: true, psikologseminar: {psikolog:true}}})
+ findAllApprove(){
+    return this.seminarRepository.findAndCount({relations: { psikolog: true, psikologseminar: {psikolog:true}}, where: {status: Status.Approve}})
  }
+ findAllReject(){
+  return this.seminarRepository.findAndCount({relations: { psikolog: true, psikologseminar: {psikolog:true}}, where: {status: Status.Reject}})
+}
+findAllPending(){
+  return this.seminarRepository.findAndCount({relations: { psikolog: true, psikologseminar: {psikolog:true}}, where: {status: Status.Pending}})
+}
+
+findAll(){
+  return this.seminarRepository.findAndCount({relations: {psikologseminar: {psikolog:true},psikolog:true}})
+}
 
 
  async createSeminar(createSeminarDto: CreateSeminarDto){
@@ -31,9 +41,10 @@ export class SeminarService {
     const mapping = createSeminarDto.psikolog.map((val) =>{ return this.psikologService.findOne(val)})
     const result = await Promise.all(mapping)
     const findPsikolog  = createSeminarDto.psikolog.map(async val =>{return await this.psikologService.findOne(val)})
+    const result2 = await Promise.all(findPsikolog)
 
       const seminarEntity = new Seminar
-      seminarEntity.psikolog = await Promise.all(findPsikolog)
+      seminarEntity.psikolog = result2
       seminarEntity.title = createSeminarDto.title
       seminarEntity.price = createSeminarDto.price
       seminarEntity.poster = createSeminarDto.poster
@@ -73,7 +84,7 @@ try {
 
  async findOne(id: string){
    try {
-       return await this.seminarRepository.findOneOrFail({where:{id}, relations: {psikolog: true,psikologseminar: true}})
+       return await this.seminarRepository.findOneOrFail({where:{id},relations:{psikologseminar: {psikolog:true}, psikolog: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(
@@ -158,7 +169,7 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
     const status: any = 'reject'
     const entity = new Seminar
     entity.alasan = updateDto.alasan
-    entity.status = updateDto.status = status
+    entity.status = status
 
     await this.seminarRepository.update(id,entity)
      return this.seminarRepository.findOneOrFail({
@@ -175,7 +186,7 @@ async update(id: string, updateSeminarDto: UpdateSeminarDto) {
 
     const status: any = 'approve'
     const entity = new Seminar
-    entity.status = updateDto.status = status
+    entity.status = status
 
     await this.seminarRepository.update(id,entity)
      return this.seminarRepository.findOneOrFail({

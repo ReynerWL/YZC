@@ -82,7 +82,7 @@ export class CustomerService {
             customerEntity.birthDate = updatecustomerDto.birthDate
             customerEntity.gender = updatecustomerDto.gender
             customerEntity.religion = updatecustomerDto.Religion
-            customerEntity.phone = updatecustomerDto.phone_number
+            customerEntity.phone = updatecustomerDto.phone
             customerEntity.last_education = updatecustomerDto.lastEducation
 
             await this.customerRepository.update(id, customerEntity)

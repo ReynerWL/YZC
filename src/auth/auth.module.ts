@@ -10,6 +10,8 @@ import { CustomerModule } from '#/customer/customer.module';
 import { PsikologModule } from '#/psikolog/psikolog.module';
 import { Customer } from '#/customer/entities/customer.entity';
 import { Psikolog } from '#/psikolog/entities/psikolog.entity';
+import { CaseHandledModule } from '#/case_handled/case_handled.module';
+import { CaseHandled } from '#/case_handled/entities/case_handled.entity';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { Psikolog } from '#/psikolog/entities/psikolog.entity';
       secret: 'YzcSecretKey',
       signOptions: {expiresIn: '24h'},
     }),
-    TypeOrmModule.forFeature([User_Yzc,Customer,Psikolog]), LevelUserModule,CustomerModule,PsikologModule
+    TypeOrmModule.forFeature([User_Yzc,Customer,Psikolog,CaseHandled]), LevelUserModule,CustomerModule,PsikologModule,CaseHandledModule
   ],
   exports: [AuthService],
   controllers: [AuthController],

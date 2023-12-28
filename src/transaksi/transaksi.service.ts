@@ -7,7 +7,10 @@ import {
   Repository,
   getRepository,
 } from 'typeorm';
-import { DetailOrder } from '#/detail_order/entities/detail_order.entity';
+import {
+  DetailOrder,
+  types,
+} from '#/detail_order/entities/detail_order.entity';
 import { CustomerService } from '#/customer/customer.service';
 import { SeminarService } from '#/seminar/seminar.service';
 import { BankService } from '#/bank/bank.service';
@@ -18,12 +21,14 @@ import {
 } from './dto/create-transaction.dto';
 import { PrivateKonselingService } from '#/private_konseling/private_konseling.service';
 import {
+  RejectTransactionDto,
   UpdateTransactionDto,
   UpdateTransactionKonselingDto,
 } from './dto/update-transaction.dto';
 import { PsikologService } from '#/psikolog/psikolog.service';
 import { PrivateKonseling } from '#/private_konseling/entities/private_konseling.entity';
 import { Seminar } from '#/seminar/entities/seminar.entity';
+import { ArrayNotEmpty } from 'class-validator';
 
 @Injectable()
 export class TransaksiService {
@@ -42,6 +47,66 @@ export class TransaksiService {
 
   findAll() {
     return this.transactionRepository.findAndCount({
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true, privateKonseling: true },
+        bank: true
+      },
+    });
+  }
+
+  findAllSeminar() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Seminar } },
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true },
+      },
+    });
+  }
+
+  findAllSeminarApprove() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Seminar } ,status: Status.Approve},
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true },
+      },
+    });
+  }
+
+  findAllSeminarReject() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Seminar } ,status: Status.Reject},
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true },
+      },
+    });
+  }
+
+  findAllSeminarPending() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Seminar } ,status: Status.Pending},
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true },
+      },
+    });
+  }
+
+  findAllPrivateKonseling() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Private_Konseling } },
+      relations: {
+        customer: true,
+        detailOrder: { privateKonseling: true },
+      },
+    });
+  }
+
+  findAllCus() {
+    return this.transactionRepository.findAndCount({
       where: { type: Type.CusToAdmin },
       relations: {
         customer: true,
@@ -54,7 +119,7 @@ export class TransaksiService {
       where: { type: Type.AdminToPsi },
       relations: {
         psikolog: true,
-        detailOrder: { seminar: true, privateKonseling: true },
+        detailOrder: true,
       },
     });
   }
@@ -62,6 +127,8 @@ export class TransaksiService {
   async createTransaction(createTransactionDto: CreateTransactionDto) {
     try {
       let status: any = 'pending';
+      let types: any = 'seminar';
+
       let seminar: Seminar;
       const findCustomer = await this.customerService.findOne(
         createTransactionDto.customer,
@@ -94,6 +161,7 @@ export class TransaksiService {
         detailEntity.customer = transactionEntity.customer;
         detailEntity.seminar = seminar;
         detailEntity.price = transactionEntity.transaction_amount;
+        detailEntity.types = types;
         await this.detailOrderRepository.insert(detailEntity);
       });
       return this.transactionRepository.findOneOrFail({
@@ -109,6 +177,8 @@ export class TransaksiService {
   ) {
     try {
       let status: any = 'pending';
+      let types: any = 'private_konseling';
+
       let privateKonseling: PrivateKonseling;
       const findCustomer = await this.customerService.findOne(
         createTransactionKonseling.customer,
@@ -144,6 +214,8 @@ export class TransaksiService {
         detailEntity.customer = transactionEntity.customer;
         detailEntity.privateKonseling = privateKonseling;
         detailEntity.price = privateKonseling.price;
+        detailEntity.types = types;
+
         await this.detailOrderRepository.insert(detailEntity);
       });
       return this.transactionRepository.findOneOrFail({
@@ -156,20 +228,21 @@ export class TransaksiService {
 
   async findDetailOrderPsikolog(id: string) {
     try {
-      const currentDate = new Date()
+      const currentDate = new Date();
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-      const psikolog = await this.psikologService.findOne(id)
-      const data = await this.detailOrderRepository.createQueryBuilder('detailOrder')
-      .leftJoinAndSelect('detailOrder.privateKonseling', 'privateKonseling')
-      .leftJoinAndSelect('detailOrder.seminar', 'seminar')
-      .leftJoinAndSelect('seminar.psikologseminar', 'psikologseminar')
-      .leftJoinAndSelect('detailOrder.transaction', 'transaction')
-      .where("privateKonseling.psikolog.id = :id",{id: psikolog.id})
-      .orWhere("psikologseminar.psikolog.id = :id", {id: psikolog.id})
-      .andWhere("transaction.type = :type", {type: Type.CusToAdmin})
-      .getMany()
-      return data
+      const psikolog = await this.psikologService.findOne(id);
+      const data = await this.detailOrderRepository
+        .createQueryBuilder('detailOrder')
+        .leftJoinAndSelect('detailOrder.privateKonseling', 'privateKonseling')
+        .leftJoinAndSelect('detailOrder.seminar', 'seminar')
+        .leftJoinAndSelect('seminar.psikologseminar', 'psikologseminar')
+        .leftJoinAndSelect('detailOrder.transaction', 'transaction')
+        .where('privateKonseling.psikolog.id = :id', { id: psikolog.id })
+        .orWhere('psikologseminar.psikolog.id = :id', { id: psikolog.id })
+        .andWhere('transaction.type = :type', { type: Type.CusToAdmin })
+        .getMany();
+      return data;
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(
@@ -224,7 +297,7 @@ export class TransaksiService {
     try {
       return await this.transactionRepository.findOneOrFail({
         where: { id },
-        relations: { customer: true },
+        relations: { customer: true , detailOrder: {seminar: true, privateKonseling: true}, bank: true},
       });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
@@ -313,19 +386,20 @@ export class TransaksiService {
     }
   }
 
-  async reject(id: string, updateDto: UpdateTransactionDto) {
+  async reject(id: string, updateDto: RejectTransactionDto) {
     try {
-      await this.findOne(id);
+      const cari = await this.findOne(id);
+      if (cari.status === 'pending') {
+        const status: any = 'reject';
+        const entity = new Transaction();
+        entity.alasan = updateDto.alasan;
+        entity.status = status;
 
-      const status: any = 'reject';
-      const entity = new Transaction();
-      entity.alasan = updateDto.alasan;
-      entity.status = updateDto.status = status;
-
-      await this.transactionRepository.update(id, entity);
-      return this.transactionRepository.findOneOrFail({
-        where: { id },
-      });
+        await this.transactionRepository.update(id, entity);
+        return this.transactionRepository.findOneOrFail({
+          where: { id },
+        });
+      }
     } catch (error) {
       throw error;
     }
@@ -337,7 +411,7 @@ export class TransaksiService {
 
       const status: any = 'approve';
       const entity = new Transaction();
-      entity.status = updateDto.status = status;
+      entity.status = status;
 
       await this.transactionRepository.update(id, entity);
       return this.transactionRepository.findOneOrFail({

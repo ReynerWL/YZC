@@ -11,6 +11,7 @@ import { Psikolog } from '#/psikolog/entities/psikolog.entity';
 import { LevelUserService } from '#/level_user/level_user.service';
 import { UpdateUserYzcDto } from '#/user_yzc/dto/update-user_yzc.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { CaseHandled } from '#/case_handled/entities/case_handled.entity';
 
 
 @Injectable()
@@ -24,6 +25,9 @@ export class AuthService {
 
         @InjectRepository(Psikolog)
         private psikologRepository: Repository<Psikolog>,
+
+        @InjectRepository(CaseHandled)
+        private caseHandleRepository: Repository<CaseHandled>,
 
         private levelUserService: LevelUserService,
         private jwtService: JwtService,
@@ -56,7 +60,7 @@ export class AuthService {
             customerEntity.birthDate =registerDto.birth_date
             customerEntity.gender = registerDto.gender
             customerEntity.religion = registerDto.religion
-            customerEntity.phone = registerDto.phone_number
+            customerEntity.phone = registerDto.phone
             customerEntity.last_education = registerDto.last_education
 
             const createCustomer = await this.customerRepository.insert(customerEntity)
@@ -105,9 +109,11 @@ export class AuthService {
             const psikologEntity = new Psikolog()
             psikologEntity.user_yzc = createUserYzc.identifiers[0].id
             psikologEntity.photo = registerPsikologDto.photo
-            psikologEntity.phone_number = registerPsikologDto.phone_number
+            psikologEntity.phone = registerPsikologDto.phone
             psikologEntity.fullName = registerPsikologDto.full_name
             psikologEntity.gender = registerPsikologDto.gender
+            psikologEntity.birth_date = registerPsikologDto.birth_date
+            psikologEntity.religion = registerPsikologDto.religion
             psikologEntity.lastEducation = registerPsikologDto.last_education
             psikologEntity.legality = registerPsikologDto.legality
             psikologEntity.aboutMe = registerPsikologDto.aboutMe
@@ -211,4 +217,6 @@ export class AuthService {
         );
       }
     }
+
+
 }

@@ -48,7 +48,7 @@ import {
   @Column({type: 'text'})
   link: string
 
-  @Column({type: 'timestamp with time zone', nullable: true})
+  @Column({type: 'date', nullable: true})
   datetime: Date
 
   @Column({type: 'enum', enum: Status })
