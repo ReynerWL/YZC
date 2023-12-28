@@ -1,4 +1,5 @@
-import { GenderProduct, Religion } from "#/customer/entities/customer.entity";
+import { Religion } from "#/customer/entities/customer.entity";
+import { GenderProduct } from "#/psikolog/entities/psikolog.entity";
 import { Status } from "#/seminar/entities/seminar.entity";
 import { IsEnum, IsNotEmpty, isNotEmpty } from "class-validator";
 

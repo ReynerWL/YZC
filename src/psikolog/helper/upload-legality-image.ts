@@ -10,9 +10,9 @@ const validMimeTypes: validMimeType[] = [
   'image/jpeg'
 ]
 
-export const storageProfile = {
+export const storageLegality = {
     storage: diskStorage({
-      destination: 'upload/profile',
+      destination: 'upload/legality',
       filename: (req, file, callback) => {
         const unique = randomUUID();
         const ext = extname(file.originalname);

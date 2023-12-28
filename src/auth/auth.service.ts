@@ -58,7 +58,7 @@ export class AuthService {
             customerEntity.user_yzc = createUserYzc.identifiers[0].id
             customerEntity.fullName = registerDto.full_name
             customerEntity.birthDate =registerDto.birth_date
-            customerEntity.gender = registerDto.gender
+            customerEntity.gender= registerDto.gender
             customerEntity.religion = registerDto.religion
             customerEntity.phone = registerDto.phone
             customerEntity.last_education = registerDto.last_education

@@ -1,6 +1,7 @@
 import { IsEnum, IsNotEmpty,} from "class-validator";
-import { GenderProduct,} from "../entities/customer.entity";
-import { Religion} from "../entities/customer.entity";
+
+import { Gender, Religion} from "../entities/customer.entity";
+import { GenderProduct } from "#/psikolog/entities/psikolog.entity";
 
 export class CreateCustomerDto{
     @IsNotEmpty()
@@ -13,8 +14,8 @@ export class CreateCustomerDto{
     birthDate: Date;
 
     @IsNotEmpty()
-    @IsEnum(GenderProduct)
-    gender: GenderProduct;
+    @IsEnum(Gender)
+    gender: Gender;
 
     @IsNotEmpty()
     @IsEnum(Religion)
