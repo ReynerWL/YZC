@@ -10,7 +10,7 @@ import {
     HttpStatus,
   } from '@nestjs/common';
   import { UserYzcService } from './user_yzc.service';
-  import { CreateUserYzcDto } from './dto/create-user_yzc.dto';
+  import { CreateUserYzcDto, InactiveUser } from './dto/create-user_yzc.dto';
   import { UpdateUserYzcDto } from './dto/update-user_yzc.dto';
   
   @Controller('user_yzc')
@@ -19,6 +19,29 @@ import {
     @Get()
     async findAll() {
       const [data, count] = await this.useryzcService.findAll();
+  
+      return {
+        data,
+        count,
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
+
+    @Get('/psikolog')
+    async findAllPsikolog() {
+      const [data, count] = await this.useryzcService.findAllPsikolog();
+  
+      return {
+        data,
+        count,
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
+    @Get('/customer')
+    async findAllCustomer() {
+      const [data, count] = await this.useryzcService.findAllCustomer();
   
       return {
         data,
@@ -70,15 +93,15 @@ import {
       };
     }
 
-    @Put()
+    @Put('/inactive/:id')
     async reject(@Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdateUserYzcDto){
+    updateDto: InactiveUser){
       return {
         data: await this.useryzcService.reject(id, updateDto)
       }
     }
 
-    @Put()
+    @Put('/active/:id')
     async approve(@Param('id', ParseUUIDPipe) id: string,
     updateDto: UpdateUserYzcDto){
       return {

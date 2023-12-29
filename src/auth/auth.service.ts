@@ -1,4 +1,4 @@
-import { User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
+import { StatusAcount, User_Yzc } from '#/user_yzc/entities/user_yzc.entity';
 import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt'
@@ -167,8 +167,20 @@ export class AuthService {
              )
             }
 
+            const active = await this.useryzcRepository.findOne({
+              where: {email:loginDto.email, status: StatusAcount.ACTIVE}, relations: ['level_user']
+            })
+            if (!active) {
+              throw new HttpException(
+                {
+                statusCode: HttpStatus.BAD_GATEWAY,
+                error: 'Akun Tidak Aktif',
+                },HttpStatus.BAD_GATEWAY)
+            }
+
             const payload = {
                 id: useryzcOne.id,
+                role: useryzcOne.level_user.name_level,
                 email: useryzcOne.email,
             }
 
@@ -218,6 +230,4 @@ export class AuthService {
         );
       }
     }
-
-
 }

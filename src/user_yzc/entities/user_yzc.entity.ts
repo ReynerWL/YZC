@@ -52,6 +52,9 @@ export class User_Yzc {
   @Column({ nullable: true })
   salt: string;
 
+  @Column({nullable: true})
+  alasan: string
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,
