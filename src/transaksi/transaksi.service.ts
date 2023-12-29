@@ -55,6 +55,36 @@ export class TransaksiService {
     });
   }
 
+  findAllApprove() {
+    return this.transactionRepository.findAndCount({
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true, privateKonseling: true },
+        bank: true
+      },where:{status: Status.Approve, type: Type.CusToAdmin}
+    });
+  }
+
+  findAllReject() {
+    return this.transactionRepository.findAndCount({
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true, privateKonseling: true },
+        bank: true
+      },where:{status: Status.Reject, type: Type.CusToAdmin}
+    });
+  }
+
+  findAllPending() {
+    return this.transactionRepository.findAndCount({
+      relations: {
+        customer: true,
+        detailOrder: { seminar: true, privateKonseling: true },
+        bank: true
+      },where:{status: Status.Pending, type: Type.CusToAdmin}
+    });
+  }
+
   findAllSeminar() {
     return this.transactionRepository.findAndCount({
       where: { detailOrder: { types: types.Seminar } },

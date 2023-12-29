@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserYzcDto } from './dto/create-user_yzc.dto';
+import { CreateUserYzcDto, InactiveUser } from './dto/create-user_yzc.dto';
 import { UpdateUserYzcDto } from './dto/update-user_yzc.dto';
 import { EntityNotFoundError, Repository } from 'typeorm';
-import { User_Yzc } from './entities/user_yzc.entity';
+import { StatusAcount, User_Yzc } from './entities/user_yzc.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LevelUserService } from '#/level_user/level_user.service';
 
@@ -16,6 +16,14 @@ export class UserYzcService {
 
   findAll() {
     return this.useryzcRepository.findAndCount({relations:{level_user: true}});
+  }
+  
+  findAllPsikolog(){
+    return this.useryzcRepository.findAndCount({where: {level_user:{name_level: 'Psikolog'}},relations:{psikolog:true}})
+  }
+
+  findAllCustomer(){
+    return this.useryzcRepository.findAndCount({where: {level_user:{name_level: 'Customer'}},relations:{psikolog:true}})
   }
 
   async createUserYzc(createUserYzcDto: CreateUserYzcDto) {
@@ -96,25 +104,26 @@ export class UserYzcService {
     }
   }
 
-  async reject(id: string, updateDto: UpdateUserYzcDto){
-    if (updateDto.status === 'pending') {
+  async reject(id: string, updateDto: InactiveUser){
     try {
-      
       await this.findOne(id)
+      if (updateDto.status === 'pending') {
   
       const status: any = 'not active'
       const entity = new User_Yzc
-      entity.status = updateDto.status = status
+      entity.alasan = updateDto.alasan
+      entity.status = status
   
       await this.useryzcRepository.update(id,entity)
        return this.useryzcRepository.findOneOrFail({
          where: {id}
-       })
+       })}
     } catch (error) {
       throw error
     }
-   }
+   
   }
+
    async approve(id: string, updateDto: UpdateUserYzcDto){
     if (updateDto.status === 'pending') {
     try {

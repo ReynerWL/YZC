@@ -40,3 +40,11 @@ export class CreateUserYzcDto {
 
   salt: string
 }
+
+export class InactiveUser{
+  @IsNotEmpty()
+  alasan: string
+
+  @IsEnum(StatusAcount)
+  status: StatusAcount
+}

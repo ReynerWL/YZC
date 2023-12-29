@@ -33,6 +33,30 @@ export class TransaksiController {
     }
  }
 
+ @Get('/approve')
+ async findAllApprove(){
+    const [data,count] = await this.transactionService.findAllApprove()
+    return{
+        data,count,status: HttpStatus.OK,message: 'Success'
+    }
+ }
+
+ @Get('/reject')
+ async findAllReject(){
+    const [data,count] = await this.transactionService.findAllReject()
+    return{
+        data,count,status: HttpStatus.OK,message: 'Success'
+    }
+ }
+
+ @Get('/pending')
+ async findAllPending(){
+    const [data,count] = await this.transactionService.findAllPending()
+    return{
+        data,count,status: HttpStatus.OK,message: 'Success'
+    }
+ }
+
  @Get('/seminar')
  async findAllSeminar(){
     const [data,count] = await this.transactionService.findAllSeminar()
