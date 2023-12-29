@@ -118,6 +118,7 @@ export class AuthService {
             psikologEntity.legality = registerPsikologDto.legality
             psikologEntity.aboutMe = registerPsikologDto.aboutMe
 
+            console.log('masok')
           const createCustomer = await this.psikologRepository.insert(psikologEntity)
 
           return( this.useryzcRepository.findOneOrFail({
