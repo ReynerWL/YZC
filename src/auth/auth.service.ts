@@ -37,8 +37,7 @@ export class AuthService {
 
         try {
   
-          const findLevelUser = await this.levelUserService.findOne(registerDto.level_user)
-          const levelUser : any = findLevelUser.id
+          const levelUser : any = '2b9814f9-befa-41e4-9f95-1f759b411801'
           let Status : any = 'active'
           
 
@@ -90,8 +89,7 @@ export class AuthService {
     async registerPsikolog(registerPsikologDto: RegisterPsikologDto){
 
       try {
-        const findLevelUser = await this.levelUserService.findOne(registerPsikologDto.level_user)
-        const levelUser : any = findLevelUser.id
+        const levelUser : any = '703f41b0-1004-4965-a3ff-9c71f5fc4f6f'
         let Status : any = 'pending'
         
           const saltGenerator = await bcrypt.genSalt()
