@@ -135,4 +135,15 @@ async softDelete(@Param("id", ParseUUIDPipe) id: string){
         return of(res.sendFile(join(process.cwd(), `upload/profile/${imagePath}`)));
     }
 
+    @Get('upload/legality/:image/:type')
+    getImageLegality(
+        @Param('type') type: string,
+        @Param('image') imagePath: string,
+        @Res() res: any,
+    ) {
+        return of(res.sendFile(join(process.cwd(), `upload/legality/${imagePath}`)));
+    }
+
 }
+
+

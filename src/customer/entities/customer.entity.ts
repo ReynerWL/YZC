@@ -34,10 +34,6 @@ export class Customer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-@OneToOne(()=> User_Yzc)
-@JoinColumn()
-user_yzc : User_Yzc
-
 @Column({
   type :"varchar"
 })
@@ -93,6 +89,10 @@ detailOrder: DetailOrder
 
 @OneToMany(() => Transaction, transaction => transaction.customer)
 transaction: Transaction
+
+@OneToOne(()=> User_Yzc, user_yzc => user_yzc.customer)
+@JoinColumn()
+user_yzc : User_Yzc
 }
 
 

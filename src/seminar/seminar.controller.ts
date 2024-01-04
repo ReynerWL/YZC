@@ -112,7 +112,7 @@ export class SeminarController {
       @Body() updateSeminarDto: UpdateSeminarDto
     ) {     
       return {
-        data: await this.seminarService.update(id, updateSeminarDto, ),
+        data: await this.seminarService.update(id, updateSeminarDto),
         statusCode: HttpStatus.OK,
         message: 'success',
       };

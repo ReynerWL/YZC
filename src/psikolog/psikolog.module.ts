@@ -6,7 +6,7 @@ import { PsikologController } from './psikolog.controller';
 import { UserYzcModule } from '#/user_yzc/user_yzc.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Psikolog]), UserYzcModule],
+    imports: [TypeOrmModule.forFeature([Psikolog])],
     exports: [PsikologService],
     providers : [PsikologService],
     controllers : [PsikologController]

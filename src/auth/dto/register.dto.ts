@@ -5,7 +5,7 @@ import { IsEnum, IsNotEmpty, isNotEmpty } from "class-validator";
 
 export class RegisterDto{
     // @IsNotEmpty()
-    level_user: any
+    level_user: '2b9814f9-befa-41e4-9f95-1f759b411801'
 
     // @IsNotEmpty()
     user_yzc: string;
@@ -40,7 +40,7 @@ export class RegisterDto{
 
 export class RegisterPsikologDto{
     // @IsNotEmpty()
-    level_user: any
+    level_user: '703f41b0-1004-4965-a3ff-9c71f5fc4f6f'
 
     // @IsNotEmpty()
     user_yzc: string;
@@ -72,6 +72,9 @@ export class RegisterPsikologDto{
 
     @IsNotEmpty()
     aboutMe: string;
+
+    @IsNotEmpty()
+    caseHandled: string
     
     @IsNotEmpty()
     @IsEnum(Religion)

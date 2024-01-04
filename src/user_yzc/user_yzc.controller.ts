@@ -94,7 +94,7 @@ import {
     }
 
     @Put('/inactive/:id')
-    async reject(@Param('id', ParseUUIDPipe) id: string,
+    async reject(@Param('id', ParseUUIDPipe) id: string,@Body()
     updateDto: InactiveUser){
       return {
         data: await this.useryzcService.reject(id, updateDto)
@@ -102,10 +102,9 @@ import {
     }
 
     @Put('/active/:id')
-    async approve(@Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdateUserYzcDto){
+    async approve(@Param('id', ParseUUIDPipe) id: string){
       return {
-        data: await this.useryzcService.approve(id, updateDto)
+        data: await this.useryzcService.approve(id)
       }
     }
   }

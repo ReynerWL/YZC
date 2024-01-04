@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { StatusAcount } from '../entities/user_yzc.entity';
 import { GenderProduct, Religion } from '#/customer/entities/customer.entity';
 
@@ -43,8 +43,8 @@ export class CreateUserYzcDto {
 
 export class InactiveUser{
   @IsNotEmpty()
+  @IsString()
   alasan: string
 
-  @IsEnum(StatusAcount)
-  status: StatusAcount
+  status: 'not active'
 }

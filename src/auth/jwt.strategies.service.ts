@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     try {
       const useryzcOne = await this.useryzcRepository.findOne({
-        relations: ['level_user'],
+        relations: ['level_user', 'customer', 'psikolog'],
         where: { id: payload.id },
       });
       if (!useryzcOne) {
@@ -38,6 +38,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         id: useryzcOne.id,
         role: useryzcOne.level_user.name_level,
         email: useryzcOne.email,
+        idCus: useryzcOne?.customer?.id,
+        idPsi: useryzcOne?.psikolog?.id,
+        fullNameCus: useryzcOne?.customer.fullName,
+        fullNamePsi: useryzcOne?.psikolog.fullName,
       };
       return data;
     } catch (error) {
