@@ -40,7 +40,7 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     try {
-      const levelUser: any = '2b9814f9-befa-41e4-9f95-1f759b411801';
+      const levelUser: any = '9109058c-3c51-4ce4-9415-e002357e9f18';
       let Status: any = 'active';
 
       const saltGenerator = await bcrypt.genSalt();
@@ -99,7 +99,7 @@ export class AuthService {
 
   async registerPsikolog(registerPsikologDto: RegisterPsikologDto) {
     try {
-      const levelUser: any = '703f41b0-1004-4965-a3ff-9c71f5fc4f6f';
+      const levelUser: any = '007dde91-bc41-4f29-9f96-b599ec915d4f';
       let Status: any = 'pending';
 
       const saltGenerator = await bcrypt.genSalt();

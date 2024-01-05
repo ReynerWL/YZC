@@ -82,7 +82,8 @@ import {
     birth_date: Date
 
     @Column({
-      type: 'text'
+      type: 'text',
+      nullable: true
     })
     caseHandled: string
 
