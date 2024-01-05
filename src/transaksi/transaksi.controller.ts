@@ -38,25 +38,25 @@ export class TransaksiController {
     }
  }
 
- @Get('/approve')
- async findAllApprove(){
-    const [data,count] = await this.transactionService.findAllApprove()
+ @Get('/approve/:id')
+ async findAllApprove(@Param('id', ParseUUIDPipe) id: string){
+    const [data,count] = await this.transactionService.findAllApprove(id)
     return{
         data,count,status: HttpStatus.OK,message: 'Success'
     }
  }
 
- @Get('/reject')
- async findAllReject(){
-    const [data,count] = await this.transactionService.findAllReject()
+ @Get('/reject/:id')
+ async findAllReject(@Param('id', ParseUUIDPipe) id: string){
+    const [data,count] = await this.transactionService.findAllReject(id)
     return{
         data,count,status: HttpStatus.OK,message: 'Success'
     }
  }
 
- @Get('/pending')
- async findAllPending(){
-    const [data,count] = await this.transactionService.findAllPending()
+ @Get('/pending/:id')
+ async findAllPending(@Param('id', ParseUUIDPipe) id: string){
+    const [data,count] = await this.transactionService.findAllPending(id)
     return{
         data,count,status: HttpStatus.OK,message: 'Success'
     }
@@ -154,6 +154,39 @@ export class TransaksiController {
     }
  }
 
+ @Get('/psikolog/:id')
+ async TransactionPsikolog(@Param('id', ParseUUIDPipe) id: string){
+    const data = await this.transactionService.findAllByPsikolog(id)
+    return{
+        data,statusCode: HttpStatus.CREATED,
+        message: 'Success'
+    }
+ }
+ @Get('/psikolog/approve/:id')
+ async TransactionPsikologApprove(@Param('id', ParseUUIDPipe) id: string){
+    const data = await this.transactionService.findAllApprovePsi(id)
+    return{
+        data,statusCode: HttpStatus.CREATED,
+        message: 'Success'
+    }
+ }
+ @Get('/psikolog/reject/:id')
+ async TransactionPsikologReject(@Param('id', ParseUUIDPipe) id: string){
+    const data = await this.transactionService.findAllRejectPsi(id)
+    return{
+        data,statusCode: HttpStatus.CREATED,
+        message: 'Success'
+    }
+ }
+ @Get('/psikolog/pending/:id')
+ async TransactionPsikologPending(@Param('id', ParseUUIDPipe) id: string){
+    const data = await this.transactionService.findAllPendingPsi(id)
+    return{
+        data,statusCode: HttpStatus.CREATED,
+        message: 'Success'
+    }
+ }
+
  @Post('/psikolog')
  async createTransactionPsikolog(@Body() createTransactionPsikologDto: CreateTransactionPsikologDto){
     const data = await this.transactionService.createTransactionPsikolog(createTransactionPsikologDto)
@@ -195,6 +228,13 @@ export class TransaksiController {
     updateDto: UpdateTransactionDto){
       return {
         data: await this.transactionService.approve(id, updateDto)
+      }
+    }
+    @Put('done/:id')
+    async done(@Param('id', ParseUUIDPipe) id: string,
+    updateDto: UpdateTransactionDto){
+      return {
+        data: await this.transactionService.Done(id, updateDto)
       }
     }
 

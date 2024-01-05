@@ -56,33 +56,36 @@ export class TransaksiService {
     });
   }
 
-  findAllApprove() {
+ async findAllApprove(id: string) {
+  const customer = await this.customerService.findOne(id)
     return this.transactionRepository.findAndCount({
       relations: {
         customer: true,
         detailOrder: { seminar: true, privateKonseling: true },
         bank: true
-      },where:{status: Status.Approve, type: Type.CusToAdmin}
+      },where:{status: Status.Approve, type: Type.CusToAdmin, customer: {id: customer.id}}
     });
   }
 
-  findAllReject() {
+ async findAllReject(id: string) {
+    const customer = await this.customerService.findOne(id)
     return this.transactionRepository.findAndCount({
       relations: {
         customer: true,
         detailOrder: { seminar: true, privateKonseling: true },
         bank: true
-      },where:{status: Status.Reject, type: Type.CusToAdmin}
+      },where:{status: Status.Reject, type: Type.CusToAdmin, customer: {id: customer.id}}
     });
   }
 
-  findAllPending() {
+  async findAllPending(id: string) {
+    const customer = await this.customerService.findOne(id)
     return this.transactionRepository.findAndCount({
       relations: {
         customer: true,
         detailOrder: { seminar: true, privateKonseling: true },
         bank: true
-      },where:{status: Status.Pending, type: Type.CusToAdmin}
+      },where:{status: Status.Pending, type: Type.CusToAdmin, customer: {id: customer.id}}
     });
   }
 
@@ -154,6 +157,36 @@ export class TransaksiService {
       },
     });
   }
+
+  async findAllApprovePsi(id: string) {
+    const psikolog = await this.psikologService.findOne(id)
+      return this.transactionRepository.find({
+        relations: {
+          psikolog: true,
+          bank: true
+        },where:{status: Status.Done, type: Type.AdminToPsi, psikolog: {id: psikolog.id}}
+      });
+    }
+  
+   async findAllRejectPsi(id: string) {
+      const psikolog = await this.psikologService.findOne(id)
+      return this.transactionRepository.find({
+        relations: {
+          psikolog: true,
+          bank: true
+        },where:{status: Status.Reject, type: Type.AdminToPsi, psikolog: {id: psikolog.id}}
+      });
+    }
+  
+    async findAllPendingPsi(id: string) {
+      const psikolog = await this.psikologService.findOne(id)
+      return await this.transactionRepository.find({
+        relations: {
+          psikolog: true,
+          bank: true
+        },where:{status: Status.PendingToPsi, type: Type.AdminToPsi, psikolog: {id: psikolog.id}}
+      });
+    }
 
   async createTransaction(createTransactionDto: CreateTransactionDto) {
     try {
@@ -288,11 +321,12 @@ export class TransaksiService {
       }
     }
   }
+
   async createTransactionPsikolog(
     createTransactionPsikologDto: CreateTransactionPsikologDto,
   ) {
     try {
-      let status: any = 'pending';
+      let status: any = 'pendingToPayPsi';
       const findPsikolog = await this.psikologService.findOne(
         createTransactionPsikologDto.psikolog,
       );
@@ -345,9 +379,12 @@ export class TransaksiService {
   async findAllByPsikolog(id: string) {
     try {
       const psikolog = await this.psikologService.findOne(id);
-      return await this.transactionRepository.findAndCount({
-        where: { id: psikolog.id },
-      });
+      const find = await this.findDetailOrderPsikolog(psikolog.id);
+      const totals = find.reduce((acc, val) => acc + val.price, 0)
+      return {
+        datas: find,
+        totals: totals
+      }
     } catch (error) {
       return error;
     }
@@ -441,6 +478,23 @@ export class TransaksiService {
       await this.findOne(id);
 
       const status: any = 'approve';
+      const entity = new Transaction();
+      entity.status = status;
+
+      await this.transactionRepository.update(id, entity);
+      return this.transactionRepository.findOneOrFail({
+        where: { id },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async Done(id: string, updateDto: UpdateTransactionDto) {
+    try {
+      await this.findOne(id);
+
+      const status: any = 'done';
       const entity = new Transaction();
       entity.status = status;
 

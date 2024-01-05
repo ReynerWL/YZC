@@ -15,7 +15,7 @@ export class UserYzcService {
   ) {}
 
   findAll() {
-    return this.useryzcRepository.findAndCount({relations:{level_user: true}});
+    return this.useryzcRepository.findAndCount({relations:{level_user: true, customer: true, psikolog: true}})
   }
   
   findAllPsikolog(){
@@ -107,8 +107,6 @@ export class UserYzcService {
   async reject(id: string, updateDto: InactiveUser){
     try {
       await this.findOne(id)
-      if (updateDto.status === 'pending') {
-  
       const status: any = 'not active'
       const entity = new User_Yzc
       entity.alasan = updateDto.alasan
@@ -117,21 +115,20 @@ export class UserYzcService {
       await this.useryzcRepository.update(id,entity)
        return this.useryzcRepository.findOneOrFail({
          where: {id}
-       })}
+       })
     } catch (error) {
       throw error
     }
    
   }
 
-   async approve(id: string, updateDto: UpdateUserYzcDto){
-    if (updateDto.status === 'pending') {
+   async approve(id: string){
     try {
       await this.findOne(id)
   
       const status: any = 'active'
       const entity = new User_Yzc
-      entity.status = updateDto.status = status
+      entity.status = status
   
       await this.useryzcRepository.update(id,entity)
        return this.useryzcRepository.findOneOrFail({
@@ -142,4 +139,3 @@ export class UserYzcService {
     }
    }
   }
-}

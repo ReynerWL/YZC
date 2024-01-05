@@ -12,7 +12,6 @@ export class PsikologService {
     constructor(
         @InjectRepository(Psikolog)
         private psikologRepository : Repository<Psikolog>,
-        private userService: UserYzcService
     ){}
 
   findAll() {
@@ -90,9 +89,7 @@ export class PsikologService {
 
        async create(CreatePsikologDto : CreatePsikologDto){
         try {
-            // cek user id is valid
-            const findOneUserId = await this.userService.findOne(CreatePsikologDto.user_yzc)
-    
+            // cek user id is valid    
             //kalau valid kita baru create review
             const psikologEntity= new Psikolog
             psikologEntity.photo = CreatePsikologDto.photo
@@ -102,7 +99,6 @@ export class PsikologService {
             psikologEntity.lastEducation = CreatePsikologDto.lastEducation
             psikologEntity.legality = CreatePsikologDto.legality
             psikologEntity.aboutMe = CreatePsikologDto.aboutMe
-            psikologEntity.user_yzc = findOneUserId
     
             const insertReview =  await this.psikologRepository.insert(psikologEntity)
             return await this.psikologRepository.findOneOrFail({

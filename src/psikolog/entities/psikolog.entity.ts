@@ -81,6 +81,12 @@ import {
     })
     birth_date: Date
 
+    @Column({
+      type: 'text',
+      nullable: true
+    })
+    caseHandled: string
+
     @CreateDateColumn({
         type: 'timestamp with time zone',
         nullable: false,

@@ -4,9 +4,6 @@ import { GenderProduct, Religion} from "../entities/customer.entity";
 
 export class CreateCustomerDto{
     @IsNotEmpty()
-    user_yzc: string;
-
-    @IsNotEmpty()
     fullName: string;
 
     @IsNotEmpty()

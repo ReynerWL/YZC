@@ -15,7 +15,9 @@ import {
   ManyToOne,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
+import Joi from 'joi';
 
 export enum StatusAcount {
   PENDING = 'pending',
@@ -74,9 +76,11 @@ export class User_Yzc {
   deletedAt: Date;
 
   @OneToOne(() => Psikolog, (psikolog) => psikolog.user_yzc)
+  @JoinColumn()
   psikolog: Psikolog
 
   @OneToOne(() => Customer, (customer) => customer.user_yzc)
+  @JoinColumn()
   customer: Customer
 
   @OneToMany(() => Bank, (bank) => bank.userYzc)

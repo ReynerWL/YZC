@@ -25,13 +25,13 @@ export class AuthController {
     ){}
 
     @Post('/register')
-    async register(@Query('role') level_user: string, @Body() registerDto: RegisterDto){
-     const data = await this.authService.register({...registerDto, level_user})
+    async register(@Body() registerDto: RegisterDto){
+     const data = await this.authService.register({...registerDto})
      return {data,statusCode: HttpStatus.CREATED,message: "Success"}
     }
     @Post('/register/psikolog')
-    async registerPsikolog(@Query('role') level_user: string, @Body() registerPsikologDto: RegisterPsikologDto){
-     const data = await this.authService.registerPsikolog({...registerPsikologDto, level_user})
+    async registerPsikolog(@Body() registerPsikologDto: RegisterPsikologDto){
+     const data = await this.authService.registerPsikolog({...registerPsikologDto})
      return {data,statusCode: HttpStatus.CREATED,message: "Success"}
     }
 

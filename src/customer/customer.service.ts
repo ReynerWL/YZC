@@ -13,14 +13,13 @@ export class CustomerService {
     constructor(
         @InjectRepository(Customer)
         private customerRepository: Repository<Customer>,
-        private userService: UserYzcService
     ) { }
 
     findAll() {
         return this.customerRepository.findAndCount({
             relations: {
-                user_yzc: true
-            }
+                user_yzc: true,
+            },
         });
     }
 
@@ -48,7 +47,6 @@ export class CustomerService {
     async create(createcustomerDto: CreateCustomerDto) {
         try {
             // cek user id is valid
-            const findOneUserId = await this.userService.findOne(createcustomerDto.user_yzc)
 
             //kalau valid kita baru create review
             const customerEntity = new Customer
@@ -58,7 +56,6 @@ export class CustomerService {
             customerEntity.religion = createcustomerDto.Religion
             customerEntity.phone = createcustomerDto.phone
             customerEntity.last_education = createcustomerDto.lastEducation
-            customerEntity.user_yzc = findOneUserId
 
             const insertReview = await this.customerRepository.insert(customerEntity)
             return await this.customerRepository.findOneOrFail({
