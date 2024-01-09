@@ -36,6 +36,35 @@ export class SeminarController {
         }
     }
 
+    @Get('approve/:id')
+    async findAllApprovePsi(@Param('id', ParseUUIDPipe) id: string){
+        const [data,count] = await this.seminarService.findAllApprovePsi(id)
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+
+    @Get('reject/:id')
+    async findAllRejectPsi(@Param('id', ParseUUIDPipe) id: string){
+        const [data,count] = await this.seminarService.findAllRejectPsi(id)
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+    @Get('pending/:id')
+    async findAllPendingPsi(@Param('id', ParseUUIDPipe) id: string){
+        const [data,count] = await this.seminarService.findAllPendingPsi(id)
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+
     @Get('approve')
     async findAllApprove(){
         const [data,count] = await this.seminarService.findAllApprove()
@@ -105,6 +134,15 @@ export class SeminarController {
         message: 'success',
       };
     }
+
+    @Get(':seminar/:id')
+    async findOnePsi(@Param('id', ParseUUIDPipe) id: string, @Param('seminar', ParseUUIDPipe) seminar: string) {
+      return {
+        data: await this.seminarService.findOnePsi(id, seminar),
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      };
+    }
   
     @Put(':id')
     async update(
@@ -128,19 +166,24 @@ export class SeminarController {
       };
     }
 
-    @Put('reject/:id')
-    async reject(@Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdateSeminarDto){
+    @Put('reject/:seminar/:id')
+    async reject(@Param('id', ParseUUIDPipe) id: string,@Param('seminar', ParseUUIDPipe) seminar: string,@Body() updateDto: UpdateSeminarDto){
       return {
-        data: await this.seminarService.reject(id, updateDto)
+        data: await this.seminarService.reject(id, seminar,updateDto)
       }
     }
 
-    @Put('approve/:id')
-    async approve(@Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdateSeminarDto){
+    @Put('approve/:seminar/:id')
+    async approve(@Param('id', ParseUUIDPipe) id: string,@Param('seminar', ParseUUIDPipe) seminar: string){
       return {
-        data: await this.seminarService.approve(id, updateDto)
+        data: await this.seminarService.approve(id, seminar)
+      }
+    }
+
+    @Put('approval/:id')
+    async approvel(@Param('id', ParseUUIDPipe) id: string){
+      return {
+        data: await this.seminarService.approval(id)
       }
     }
 

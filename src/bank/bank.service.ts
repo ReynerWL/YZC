@@ -71,7 +71,8 @@ async findOneUser(id: string){
 
 async findOnePsikolog(id: string){
    try {
-       return await this.bankRepository.findOneOrFail({where:{id}, relations: {userYzc: true}})
+    const psikolog = await this.psikologService.findOne(id)
+       return await this.bankRepository.findOneOrFail({where:{psikolog: {id: psikolog.id}}, relations: {userYzc: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(

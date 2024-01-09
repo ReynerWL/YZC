@@ -57,6 +57,9 @@ import {
   @Column({type: 'text', nullable: true})
   alasan: string
 
+  // @Column({type: 'int'})
+  // kuota: number
+
   @CreateDateColumn({
     type: 'timestamp with time zone',
     nullable: false,

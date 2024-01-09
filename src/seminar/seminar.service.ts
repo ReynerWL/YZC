@@ -20,6 +20,28 @@ export class SeminarService {
     private psikologSeminarService: PsikologSeminarService,
   ) {}
 
+  async findAllApprovePsi(id:string) {
+    const psikolog = await this.psikologService.findOne(id);
+    return this.seminarRepository.findAndCount({
+      relations: { psikolog: true, psikologseminar: { psikolog: true } },
+      where: { status: Status.Approve ,psikologseminar:{psikolog: {id: psikolog.id},status: Status.Approve}},
+    });
+  }
+  async findAllRejectPsi(id:string) {
+    const psikolog = await this.psikologService.findOne(id);
+    return this.seminarRepository.findAndCount({
+      relations: { psikolog: true, psikologseminar: { psikolog: true } },
+      where: { status: Status.Reject ,psikologseminar:{psikolog: {id: psikolog.id}, status: Status.Reject}},
+    });
+  }
+  async findAllPendingPsi(id:string) {
+    const psikolog = await this.psikologService.findOne(id);
+    return this.seminarRepository.findAndCount({
+      relations: { psikolog: true, psikologseminar: { psikolog: true } },
+      where: { status: Status.Pending ,psikologseminar:{psikolog: {id: psikolog.id}, status: Status.Pending}},
+    });
+  }
+
   findAllApprove() {
     return this.seminarRepository.findAndCount({
       relations: { psikolog: true, psikologseminar: { psikolog: true } },
@@ -55,6 +77,7 @@ export class SeminarService {
         return await this.psikologService.findOne(val);
       });
       const result2 = await Promise.all(findPsikolog);
+      const status: any = 'pending'
 
       const seminarEntity = new Seminar();
       seminarEntity.psikolog = result2;
@@ -64,12 +87,14 @@ export class SeminarService {
       seminarEntity.link = createSeminarDto.link;
       seminarEntity.datetime = createSeminarDto.datetime;
       seminarEntity.status = createSeminarDto.status;
+      
       const insertSeminar = await this.seminarRepository.insert(seminarEntity);
 
       result.forEach(async (element) => {
         const psikologSeminarEntity = new PsikologSeminar();
         psikologSeminarEntity.psikolog = element;
         psikologSeminarEntity.seminar = insertSeminar.identifiers[0].id;
+        psikologSeminarEntity.status = status
         const insertList = await this.psikologSeminarRepository.insert(
           psikologSeminarEntity,
         );
@@ -104,6 +129,22 @@ export class SeminarService {
         where: { id },
         relations: { psikologseminar: { psikolog: true }, psikolog: true },
       });
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new HttpException(
+          { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+  async findOnePsi(id: string, seminars: string) {
+    try {
+      const psikolog = await this.psikologService.findOne(id)
+      const seminar = await this.findOne(seminars)
+      return await this.psikologSeminarRepository.findOneOrFail({where: {psikolog: {id: psikolog.id}, seminar: {id: seminar.id}}});
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new HttpException(
@@ -184,38 +225,74 @@ export class SeminarService {
     }
   }
 
-  async reject(id: string, updateDto: UpdateSeminarDto) {
+  async reject(id: string,seminar: string, updateDto: UpdateSeminarDto) {
     try {
-      await this.findOne(id);
+      await this.findOnePsi(id , seminar);
 
       const status: any = 'reject';
-      const entity = new Seminar();
+      const entity = new PsikologSeminar();
       entity.alasan = updateDto.alasan;
       entity.status = status;
 
-      await this.seminarRepository.update(id, entity);
+      await this.psikologSeminarRepository.update(id, entity);
       return this.seminarRepository.findOneOrFail({
-        where: { id },
+        where: { psikologseminar: {psikolog: {id: id}}  },
       });
     } catch (error) {
       throw error;
     }
   }
 
-  async approve(id: string, updateDto: UpdateSeminarDto) {
+  async approve(id: string, seminar: string) {
     try {
-      await this.findOne(id);
+      const data = await this.findOnePsi(id, seminar);
 
       const status: any = 'approve';
-      const entity = new Seminar();
-      entity.status = status;
+      const entity = new PsikologSeminar
+      entity.status = status
 
-      await this.seminarRepository.update(id, entity);
-      return this.seminarRepository.findOneOrFail({
-        where: { id },
+      await this.psikologSeminarRepository.update(data.id, entity);
+      return this.psikologSeminarRepository.findOneOrFail({
+        where: {psikolog: {id: id}, seminar: {id: seminar} },
       });
     } catch (error) {
       throw error;
+    }
+  }
+
+  async approval(id: string){
+    try {
+      const data = await this.findOne(id)
+
+      if (data.psikologseminar.every((val) => val.status === 'approve' )) {
+        const status: any = 'approve'
+        const entity = new Seminar()
+        entity.status = status
+        await this.seminarRepository.update(id,entity)
+        return this.seminarRepository.findOneOrFail({
+          where: {id}
+        })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async rejected(id: string){
+    try {
+      const data = await this.findOne(id)
+
+      if (data?.psikologseminar.every(val => val.status === 'reject')) {
+        const status: any = 'reject'
+        const entity = new Seminar()
+        entity.status = status
+        await this.seminarRepository.update(id,entity)
+        return this.seminarRepository.findOneOrFail({
+          where: {id}
+        })
+      }
+    } catch (error) {
+      throw error
     }
   }
 }
