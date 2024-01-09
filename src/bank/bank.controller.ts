@@ -8,9 +8,16 @@ import {
     Delete,
     ParseUUIDPipe,
     HttpStatus,
+    UseInterceptors,
+    UploadedFile,
+    Res,
   } from '@nestjs/common';import { BankService } from './bank.service';
 import { CreateBankDto } from './dto/create-bank.dto';
 import { UpdateBankDto } from './dto/update-bank.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageQr } from './helper/upload_qr';
+import { of } from 'rxjs';
+import { join } from 'path';
 
 @Controller('bank')
 export class BankController {
@@ -104,4 +111,24 @@ export class BankController {
       };
     }
 
+    @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storageQr))
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (typeof file?.filename == "undefined") {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST, 
+          message: "error file cannot be upload"
+        }
+    } else {
+        return {fileName: file?.filename}
+    }
+  }
+  @Get('upload/:image/:type')
+  getImage(
+      @Param('image') imagePath: string,
+      @Res() res: any,
+  ) {
+      return of(res.sendFile(join(process.cwd(), `upload/qr/${imagePath}`)));
+  }
 }
+

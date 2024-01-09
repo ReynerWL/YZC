@@ -16,6 +16,11 @@ import {
     JoinTable,
   } from 'typeorm';
 
+  export enum Status{
+    Pending = 'pending',
+    Approve = 'approve',
+    Reject = 'reject'
+  }
   @Entity()
   export class PsikologSeminar{
     @PrimaryGeneratedColumn('uuid')
@@ -26,6 +31,12 @@ import {
     
     @ManyToOne(() => Seminar, seminar => seminar.psikologseminar)
     seminar: Seminar
+
+    @Column({type: 'enum', enum: Status, nullable: true})
+    status: Status
+
+    @Column({type: 'text', nullable: true})
+    alasan: string
 
     @CreateDateColumn({
         type: 'timestamp with time zone',

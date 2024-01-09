@@ -1,4 +1,4 @@
-import { Status } from "#/seminar/entities/seminar.entity";
+import { Status } from "../entities/private_konseling.entity";
 import { IsAlpha, IsArray, IsEnum, IsNotEmpty } from "class-validator";
 
 export class CreatePrivateKonselingDto{
