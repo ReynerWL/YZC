@@ -87,6 +87,9 @@ import {
     })
     caseHandled: string
 
+    @Column({type: 'text', nullable:true})
+    spesialis: string
+
     @CreateDateColumn({
         type: 'timestamp with time zone',
         nullable: false,

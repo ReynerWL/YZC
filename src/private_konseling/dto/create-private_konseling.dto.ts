@@ -1,4 +1,3 @@
-import { Status } from "../entities/private_konseling.entity";
 import { IsAlpha, IsArray, IsEnum, IsNotEmpty } from "class-validator";
 
 export class CreatePrivateKonselingDto{
@@ -11,9 +10,6 @@ export class CreatePrivateKonselingDto{
 
     @IsNotEmpty()
     price: number
-
-    @IsEnum(Status)
-    status: string = 'pending'
 
     alasan: string
 }

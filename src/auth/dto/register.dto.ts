@@ -81,4 +81,7 @@ export class RegisterPsikologDto{
 
     @IsNotEmpty()
     birth_date: Date
+
+    @IsNotEmpty()
+    spesialis: string
 }

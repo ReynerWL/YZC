@@ -28,6 +28,39 @@ export class PrivateKonselingController {
       }
     }
 
+    @Get('/pending/:id')
+    async findAllPsiPending(@Param('id', ParseUUIDPipe) id: string){
+      const [data,count] = await this.privateKonselingService.findAllPsiPending(id)
+      return{
+        data,
+        count,
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      }
+    }
+
+    @Get('/approve/:id')
+    async findAllPsiAppprove(@Param('id', ParseUUIDPipe) id: string){
+      const [data,count] = await this.privateKonselingService.findAllPsiApprove(id)
+      return{
+        data,
+        count,
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      }
+    }
+
+    @Get('/reject/:id')
+    async findAllPsiReject(@Param('id', ParseUUIDPipe) id: string){
+      const [data,count] = await this.privateKonselingService.findAllPsiReject(id)
+      return{
+        data,
+        count,
+        statusCode: HttpStatus.OK,
+        message: 'success',
+      }
+    }
+
     @Post()
     async create(@Body() createPrivateKonselingDto: CreatePrivateKonselingDto) {
       const data = await this.privateKonselingService.createPrivateKonseling(createPrivateKonselingDto)
@@ -70,19 +103,18 @@ export class PrivateKonselingController {
       };
     }
 
-    @Put()
-    async reject(@Param('id', ParseUUIDPipe) id: string,
+    @Put('/reject/:id')
+    async reject(@Param('id', ParseUUIDPipe) id: string,@Body()
     updateDto: UpdatePrivateKonselingDto){
       return {
         data: await this.privateKonselingService.reject(id, updateDto)
       }
     }
 
-    @Put()
-    async approve(@Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdatePrivateKonselingDto){
+    @Put('/approve/:id')
+    async approve(@Param('id', ParseUUIDPipe) id: string){
       return {
-        data: await this.privateKonselingService.approve(id, updateDto)
+        data: await this.privateKonselingService.approve(id)
       }
     }
 }
