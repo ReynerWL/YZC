@@ -24,9 +24,9 @@ import {
   UpdateTransactionDto,
 } from './dto/update-transaction.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { storageBuktiPembayaran } from './helper/upload-image';
-import { of } from 'rxjs';
 import { join } from 'path';
+import { of } from 'rxjs';
+import { storageBuktiPembayaran } from './helper/upload-image';
 
 @Controller('transaksi')
 export class TransaksiController {
