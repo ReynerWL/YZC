@@ -24,6 +24,9 @@ export class CreateSeminarDto{
     datetime: Date
 
     @IsNotEmpty()
+    kuota: number
+
+    @IsNotEmpty()
     @IsEnum(Status)
     status: Status
 

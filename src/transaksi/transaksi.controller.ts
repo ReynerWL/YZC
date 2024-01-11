@@ -296,10 +296,9 @@ export class TransaksiController {
   @Put('approve/:id')
   async approve(
     @Param('id', ParseUUIDPipe) id: string,
-    updateDto: UpdateTransactionDto,
   ) {
     return {
-      data: await this.transactionService.approve(id, updateDto),
+      data: await this.transactionService.approve(id),
     };
   }
   @Put('done/:id')

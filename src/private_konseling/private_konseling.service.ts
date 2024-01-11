@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PrivateKonseling } from './entities/private_konseling.entity';
+import { PrivateKonseling, Status } from './entities/private_konseling.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
@@ -21,6 +21,19 @@ export class PrivateKonselingService {
     return this.privateKonselingRepository.findAndCount({relations: {psikolog: true}})
  }
 
+ async findAllPsiPending(id: string){
+  const psikolog = await this.psikologService.findOne(id)
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true}}, where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+}
+async findAllPsiApprove(id: string){
+  const psikolog = await this.psikologService.findOne(id)
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true, detailOrder:{transaction: true}},where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+}
+async findAllPsiReject(id: string){
+  const psikolog = await this.psikologService.findOne(id)
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true}},where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+}
+
  async createPrivateKonseling(createPrivateKonselingDto: CreatePrivateKonselingDto){
     try {
         const findOnePsikolog = await this.psikologService.findOne(createPrivateKonselingDto.psikolog)
@@ -29,9 +42,8 @@ export class PrivateKonselingService {
         const privateKonselingEntity = new PrivateKonseling
         createPrivateKonselingDto.datetime.map(async(val) =>{
           privateKonselingEntity.psikolog = findOnePsikolog
-          privateKonselingEntity.datetime = val
+          privateKonselingEntity.datetime = [val]
           privateKonselingEntity.price = createPrivateKonselingDto.price
-          privateKonselingEntity.status = Status
           await this.privateKonselingRepository.insert(privateKonselingEntity)
         })
         return await this.privateKonselingRepository.findOne({where:{psikolog:{id: findOnePsikolog.id}},order:{createdAt:'DESC'}})
@@ -55,15 +67,30 @@ async findOne(id: string){
     }
 }
 
+async findOnePsi(id: string){
+  try {
+    const psikolog = await this.psikologService.findOne(id)
+      return await this.privateKonselingRepository.find({where:{psikolog: {id: psikolog.id}}, relations: {psikolog:true}})
+  } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+          throw new HttpException(
+              {statusCode: HttpStatus.NOT_FOUND,error: 'Data Not Found'},
+              HttpStatus.NOT_FOUND,
+          )
+      } else {
+          throw error
+      }
+  }
+}
+
 async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
     try {
-      if (updatePrivateKonselingDto.status === 'pending') {
         
       await this.findOne(id)
       const findOnePsikolog = await this.psikologService.findOne(updatePrivateKonselingDto.psikolog)
       const privateKonselingEntity = new PrivateKonseling
       updatePrivateKonselingDto.datetime.map((val) =>{ 
-        privateKonselingEntity.datetime = val
+        privateKonselingEntity.datetime = [val]
         privateKonselingEntity.price = updatePrivateKonselingDto.price
         privateKonselingEntity.psikolog = findOnePsikolog
       })
@@ -72,7 +99,6 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
       return this.privateKonselingRepository.findOneOrFail({
         where: {id}
       })
-    }
     } catch (e) {
       if (e instanceof EntityNotFoundError) {
         throw new HttpException(
@@ -103,8 +129,8 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
   
       const status: any = 'reject'
       const entity = new PrivateKonseling
+      entity.status = status
       entity.alasan = updateDto.alasan
-      entity.status = updateDto.status = status
   
       await this.privateKonselingRepository.update(id,entity)
        return this.privateKonselingRepository.findOneOrFail({
@@ -115,13 +141,13 @@ async update(id: string, updatePrivateKonselingDto: UpdatePrivateKonselingDto) {
     }
    }
   
-   async approve(id: string, updateDto: UpdatePrivateKonselingDto){
+   async approve(id: string){
     try {
       await this.findOne(id)
   
       const status: any = 'approve'
       const entity = new PrivateKonseling
-      entity.status = updateDto.status = status
+      entity.status = status
   
       await this.privateKonselingRepository.update(id,entity)
        return this.privateKonselingRepository.findOneOrFail({

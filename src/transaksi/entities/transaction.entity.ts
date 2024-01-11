@@ -49,7 +49,7 @@ import {
     detailOrder : DetailOrder[]
 
     @ManyToOne(() => Bank, bank => bank.transaction)
-    bank: Bank
+    bank: Bank[]
 
     @Column({type: 'enum', enum: Type})
     type: Type

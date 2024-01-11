@@ -60,8 +60,9 @@ export class BankController {
 
     @Get('/psikolog/:id')
     async findOnePsikolog(@Param('id', ParseUUIDPipe) id: string){
+      const data = await this.bankService.findOnePsikolog(id)
      return {
-        data: await this.bankService.findOnePsikolog(id),
+        data,
         statusCode: HttpStatus.OK,
         message: 'Success'
      }

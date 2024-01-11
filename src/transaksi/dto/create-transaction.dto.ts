@@ -1,5 +1,5 @@
 import { Bank } from "#/bank/entities/bank.entity";
-import { IsArray, IsEnum, IsNotEmpty, isArray } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsNotEmpty, isArray } from "class-validator";
 import { Status, Type } from "../entities/transaction.entity";
 import { PrivateKonseling } from "#/private_konseling/entities/private_konseling.entity";
 import { DetailOrder } from "#/detail_order/entities/detail_order.entity";
@@ -47,11 +47,21 @@ export class CreateTransactionKonselingDto{
     @IsNotEmpty()
     payment_proof: string
 
+    @IsNotEmpty()
+    psikolog: string
+
+    @IsNotEmpty()
+    @IsArray()
+    datetime: Date[]
+
+    @IsNotEmpty()
+    price: number
+
     @IsEnum(Status)
     status: string = 'pending'
 
-    @IsArray()
-    detailOrder: CreateDetailOrderTransactionDto[]
+    // @IsArray()
+    // detailOrder: CreateDetailOrderTransactionDto[]
 
 }
 

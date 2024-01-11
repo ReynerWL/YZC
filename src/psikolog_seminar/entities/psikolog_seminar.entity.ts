@@ -16,7 +16,7 @@ import {
     JoinTable,
   } from 'typeorm';
 
-  export enum Status{
+  export enum StatusPiskolog{
     Pending = 'pending',
     Approve = 'approve',
     Reject = 'reject'
@@ -32,8 +32,8 @@ import {
     @ManyToOne(() => Seminar, seminar => seminar.psikologseminar)
     seminar: Seminar
 
-    @Column({type: 'enum', enum: Status, nullable: true})
-    status: Status
+    @Column({type: 'enum', enum: StatusPiskolog, nullable: true})
+    status: StatusPiskolog
 
     @Column({type: 'text', nullable: true})
     alasan: string

@@ -39,6 +39,8 @@ export class TransaksiService {
     private transactionRepository: Repository<Transaction>,
     @InjectRepository(DetailOrder)
     private detailOrderRepository: Repository<DetailOrder>,
+    @InjectRepository(PrivateKonseling)
+    private privateKonselingRepository: Repository<PrivateKonseling>,
 
     private customerService: CustomerService,
     private psikologService: PsikologService,
@@ -274,7 +276,6 @@ export class TransaksiService {
       let status: any = 'pending';
       let types: any = 'private_konseling';
 
-      let privateKonseling: PrivateKonseling;
       const findCustomer = await this.customerService.findOne(
         createTransactionKonseling.customer,
       );
@@ -282,18 +283,24 @@ export class TransaksiService {
         createTransactionKonseling.bank,
       );
 
-      let price = createTransactionKonseling.detailOrder.reduce(
-        (acc, val) => acc + val.price,
-        0,
+      const findOnePsikolog = await this.psikologService.findOne(
+        createTransactionKonseling.psikolog,
       );
+
+      const privateKonselingEntity = new PrivateKonseling();
+      privateKonselingEntity.psikolog = findOnePsikolog;
+      privateKonselingEntity.datetime = createTransactionKonseling.datetime
+      privateKonselingEntity.price = createTransactionKonseling.price;
+
+      const insertPrivateKonseling =
+        await this.privateKonselingRepository.insert(privateKonselingEntity);
 
       const transactionEntity = new Transaction();
       transactionEntity.customer = findCustomer;
       transactionEntity.bank = findBank;
-      transactionEntity.transaction_amount = price;
+      transactionEntity.transaction_amount = privateKonselingEntity.price * privateKonselingEntity.datetime.length;
       transactionEntity.exp_date = createTransactionKonseling.exp_date;
       transactionEntity.type = createTransactionKonseling.type;
-      transactionEntity.transaction_amount = price;
       transactionEntity.payment_proof =
         createTransactionKonseling.payment_proof;
       transactionEntity.status = status;
@@ -301,21 +308,19 @@ export class TransaksiService {
         transactionEntity,
       );
 
-      createTransactionKonseling.detailOrder.map(async (val) => {
-        privateKonseling = await this.privateKonselingService.findOne(val.id);
+      const detailEntity = new DetailOrder();
+      detailEntity.transaction = insertTransaction.identifiers[0].id;
+      detailEntity.customer = transactionEntity.customer;
+      detailEntity.privateKonseling = insertPrivateKonseling.identifiers[0].id;
+      detailEntity.price = privateKonselingEntity.price * privateKonselingEntity.datetime.length;
+      detailEntity.types = types;
 
-        const detailEntity = new DetailOrder();
-        detailEntity.transaction = insertTransaction.identifiers[0].id;
-        detailEntity.customer = transactionEntity.customer;
-        detailEntity.privateKonseling = privateKonseling;
-        detailEntity.price = privateKonseling.price;
-        detailEntity.types = types;
+      const insertDetailOrder = await this.detailOrderRepository.insert(detailEntity);
 
-        await this.detailOrderRepository.insert(detailEntity);
-      });
-      return this.transactionRepository.findOneOrFail({
-        where: { id: insertTransaction.identifiers[0].id },
-      });
+      return ( this.transactionRepository.findOneOrFail({
+        where: { id: insertTransaction.identifiers[0].id }, relations: {detailOrder: {privateKonseling:{psikolog: true}}}
+      })
+      )
     } catch (error) {
       throw error;
     }
@@ -411,6 +416,25 @@ export class TransaksiService {
     }
   }
 
+  async findOneDetail(id: string) {
+    try {
+      const data = await this.findOne(id);
+      return await this.detailOrderRepository.findOneOrFail({
+        where: { transaction: { id: data.id } },
+        relations: { seminar: true, privateKonseling: true, transaction: true },
+      });
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new HttpException(
+          { statusCode: HttpStatus.NOT_FOUND, error: 'Data Not Found' },
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
   async findAllByPsikolog(id: string) {
     try {
       const psikolog = await this.psikologService.findOne(id);
@@ -430,19 +454,26 @@ export class TransaksiService {
   async rekomenPsikolog() {
     try {
       const data = await this.transactionRepository
-      .createQueryBuilder()
-    .select('psikolog.id', 'psikolog_id')
-    .addSelect('psikolog.full_name', 'psikolog_nama')
-    .addSelect('psikolog.photo', 'psikolog_photo')
-    .addSelect('COUNT("transaction".id)', 'jumlah_transaction') // Menggunakan tanda kutip belakang
-    .from(Psikolog, 'psikolog')
-    .innerJoin(PsikologSeminar, 'ps', 'ps.psikolog_id = psikolog.id')
-    .innerJoin(Seminar, 's', 'ps.seminar_id = s.id')
-    .innerJoin(DetailOrder, 'd', 's.id = d.seminar_id')
-    .innerJoin(Transaction, 'transaction', 'd.transaction_id = "transaction".id') // Menggunakan tanda kutip belakang
-    .groupBy('psikolog.id, psikolog.full_name, psikolog.photo')
-    .orderBy('jumlah_transaction', 'DESC')
-    .getRawMany();
+        .createQueryBuilder()
+        .select('psikolog.id', 'psikolog_id')
+        .addSelect('psikolog.full_name', 'psikolog_nama')
+        .addSelect('psikolog.photo', 'psikolog_photo')
+        .addSelect('psikolog.spesialis', 'psikolog_spesialis')
+        .addSelect('COUNT("transaction".id)', 'jumlah_transaction') // Menggunakan tanda kutip belakang
+        .from(Psikolog, 'psikolog')
+        .innerJoin(PsikologSeminar, 'ps', 'ps.psikolog_id = psikolog.id')
+        .innerJoin(Seminar, 's', 'ps.seminar_id = s.id')
+        .innerJoin(DetailOrder, 'd', 's.id = d.seminar_id')
+        .innerJoin(
+          Transaction,
+          'transaction',
+          'd.transaction_id = "transaction".id',
+        ) // Menggunakan tanda kutip belakang
+        .groupBy(
+          'psikolog.id, psikolog.full_name, psikolog.photo, psikolog.spesialis',
+        )
+        .orderBy('jumlah_transaction', 'DESC')
+        .getRawMany();
       return data;
     } catch (error) {
       throw error;
@@ -532,14 +563,16 @@ export class TransaksiService {
     }
   }
 
-  async approve(id: string, updateDto: UpdateTransactionDto) {
+  async approve(id: string) {
     try {
       await this.findOne(id);
+      const data = await this.findOneDetail(id);
 
       const status: any = 'approve';
       const entity = new Transaction();
       entity.status = status;
 
+      await this.seminarService.decrement(data.seminar.id);
       await this.transactionRepository.update(id, entity);
       return this.transactionRepository.findOneOrFail({
         where: { id },

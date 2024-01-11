@@ -36,6 +36,15 @@ export class SeminarController {
         }
     }
 
+    @Get('/seminar_rekomen')
+    async seminarRekomen(){
+        const data = await this.seminarService.seminarRekomen()
+        return{
+            data,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
     @Get('approve/:id')
     async findAllApprovePsi(@Param('id', ParseUUIDPipe) id: string){
         const [data,count] = await this.seminarService.findAllApprovePsi(id)

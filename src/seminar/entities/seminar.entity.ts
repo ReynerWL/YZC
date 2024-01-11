@@ -21,7 +21,8 @@ import {
   export enum Status{
     Pending = 'pending',
     Approve = 'approve',
-    Reject = 'reject'
+    Reject = 'reject',
+    Full = 'full'
   }
 
 
@@ -48,7 +49,7 @@ import {
   @Column({type: 'text'})
   link: string
 
-  @Column({type: 'date', nullable: true})
+  @Column({type: 'date'})
   datetime: Date
 
   @Column({type: 'enum', enum: Status })
@@ -57,8 +58,8 @@ import {
   @Column({type: 'text', nullable: true})
   alasan: string
 
-  // @Column({type: 'int'})
-  // kuota: number
+  @Column({type: 'int'})
+  kuota: number
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

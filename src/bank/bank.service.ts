@@ -56,7 +56,7 @@ export class BankService {
 
 async findOneUser(id: string){
    try {
-       return await this.bankRepository.findOneOrFail({where:{id}, relations: {psikolog: true}})
+       return await this.bankRepository.find({where:{id}, relations: {psikolog: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(
@@ -72,7 +72,7 @@ async findOneUser(id: string){
 async findOnePsikolog(id: string){
    try {
     const psikolog = await this.psikologService.findOne(id)
-       return await this.bankRepository.findOneOrFail({where:{psikolog: {id: psikolog.id}}, relations: {userYzc: true}})
+       return await this.bankRepository.find({where:{psikolog: {id: psikolog.id}}, relations: {psikolog: true}})
    } catch (error) {
        if (error instanceof EntityNotFoundError) {
            throw new HttpException(

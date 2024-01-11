@@ -32,8 +32,8 @@ import {
     @ManyToOne(() => Psikolog, psikolog => psikolog.privateKonseling)
     psikolog: Psikolog
 
-    @Column({type: 'date'})
-    datetime: Date
+    @Column({type: 'date', array: true})
+    datetime: Date[]
 
     @Column({type: 'int'})
     price: number
