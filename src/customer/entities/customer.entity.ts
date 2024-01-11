@@ -21,12 +21,12 @@ export enum GenderProduct {
 }
 
 export enum Religion {
-  ISLAM = 'Islam',
-  KATOLIK = 'Katolik',
-  PROTESTAN = 'Protestan',
-  BUDDHA = 'Buddha',
-  HINDU = 'Hindu',
-  KONGHUCU = 'Konghucu',
+  ISLAM = 'islam',
+  KATOLIK = 'katolik',
+  PROTESTAN = 'protestan',
+  BUDDHA = 'buddha',
+  HINDU = 'hindu',
+  KONGHUCU = 'konghucu',
 }
 
 @Entity()
@@ -52,7 +52,8 @@ gender: GenderProduct
 
 @Column({
   type :"enum",
-  enum: Religion
+  enum: Religion,
+  default: 'islam'
 })
 religion: Religion
 

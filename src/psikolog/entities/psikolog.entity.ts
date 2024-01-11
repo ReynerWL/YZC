@@ -72,12 +72,12 @@ import {
     aboutMe: string;
 
     @Column({
-      type: 'enum', enum: Religion
+      type: 'enum', enum: Religion, nullable: true
     })
     religion: Religion
 
     @Column({
-      type: 'date'
+      type: 'date', nullable: true
     })
     birth_date: Date
 
