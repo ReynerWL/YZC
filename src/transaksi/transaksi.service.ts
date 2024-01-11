@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status, Transaction, Type } from './entities/transaction.entity';
+import { StatusPK } from '#/private_konseling/entities/private_konseling.entity';
 import {
   Between,
   EntityNotFoundError,
@@ -151,6 +152,34 @@ export class TransaksiService {
   findAllPrivateKonseling() {
     return this.transactionRepository.findAndCount({
       where: { detailOrder: { types: types.Private_Konseling } },
+      relations: {
+        customer: true,
+        detailOrder: { privateKonseling: true },
+      },
+    });
+  }
+
+  findAllPrivateKonselingPending() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Approve}} },
+      relations: {
+        customer: true,
+        detailOrder: { privateKonseling: true },
+      },
+    });
+  }
+  findAllPrivateKonselingApprove() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Private_Konseling,privateKonseling: {status: StatusPK.Approve} } },
+      relations: {
+        customer: true,
+        detailOrder: { privateKonseling: true },
+      },
+    });
+  }
+  findAllPrivateKonselingReject() {
+    return this.transactionRepository.findAndCount({
+      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Reject}} },
       relations: {
         customer: true,
         detailOrder: { privateKonseling: true },

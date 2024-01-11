@@ -18,7 +18,7 @@ import {
     JoinTable,
   } from 'typeorm';
 
-  export enum Status{
+  export enum StatusPK{
     Pending = 'pending',
     Approve = 'approve',
     Reject = 'reject'
@@ -38,8 +38,8 @@ import {
     @Column({type: 'int'})
     price: number
 
-    @Column({enum: Status,type: 'enum',default: 'pending'})
-    status: Status
+    @Column({enum: StatusPK,type: 'enum',default: 'pending'})
+    status: StatusPK
 
     @Column({type: 'text', nullable: true})
     alasan: string

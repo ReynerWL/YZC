@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PrivateKonseling, Status } from './entities/private_konseling.entity';
+import { PrivateKonseling, StatusPK } from './entities/private_konseling.entity';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { CustomerService } from '#/customer/customer.service';
 import { PsikologService } from '#/psikolog/psikolog.service';
@@ -23,15 +23,15 @@ export class PrivateKonselingService {
 
  async findAllPsiPending(id: string){
   const psikolog = await this.psikologService.findOne(id)
-  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true}}, where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true, customer: true}}, where: {psikolog:{id: psikolog.id}, status: StatusPK.Pending}})
 }
 async findAllPsiApprove(id: string){
   const psikolog = await this.psikologService.findOne(id)
-  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true, detailOrder:{transaction: true}},where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true, detailOrder:{transaction: true, customer: true}},where: {psikolog:{id: psikolog.id}, status: StatusPK.Pending}})
 }
 async findAllPsiReject(id: string){
   const psikolog = await this.psikologService.findOne(id)
-  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true}},where: {psikolog:{id: psikolog.id}, status: Status.Pending}})
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true, customer: true}, },where: {psikolog:{id: psikolog.id}, status: StatusPK.Pending}})
 }
 
  async createPrivateKonseling(createPrivateKonselingDto: CreatePrivateKonselingDto){
