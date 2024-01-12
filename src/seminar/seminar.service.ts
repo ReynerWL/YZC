@@ -82,6 +82,18 @@ export class SeminarService {
       where: { status: Status.Pending },
     });
   }
+  findAllFull() {
+    return this.seminarRepository.findAndCount({
+      relations: { psikolog: true, psikologseminar: { psikolog: true } },
+      where: { status: Status.Full },
+    });
+  }
+  findAllDone() {
+    return this.seminarRepository.findAndCount({
+      relations: { psikolog: true, psikologseminar: { psikolog: true } },
+      where: { status: Status.Done },
+    });
+  }
 
   findAll() {
     return this.seminarRepository.findAndCount({
@@ -339,6 +351,22 @@ export class SeminarService {
     return this.seminarRepository.findOneOrFail({
       where: { id },
     });
+  }
+
+  async done(id: string) {
+    try {
+      await this.findOne(id);
+
+        const status: any = 'done';
+        const entity = new Seminar();
+        entity.status = status;
+        await this.seminarRepository.update(id, entity);
+        return this.seminarRepository.findOneOrFail({
+          where: { id },
+        });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async seminarRekomen() {
