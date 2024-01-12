@@ -334,6 +334,15 @@ export class TransaksiController {
       data: await this.transactionService.approve(id),
     };
   }
+
+  @Put('approvepk/:id')
+  async approvepk(
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return {
+      data: await this.transactionService.approvepk(id),
+    };
+  }
   @Put('done/:id')
   async done(
     @Param('id', ParseUUIDPipe) id: string,

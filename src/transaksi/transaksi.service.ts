@@ -161,7 +161,7 @@ export class TransaksiService {
 
   findAllPrivateKonselingPending() {
     return this.transactionRepository.findAndCount({
-      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Approve}} },
+      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Approve}}, status: Status.Pending},
       relations: {
         customer: true,
         detailOrder: { privateKonseling: true },
@@ -170,7 +170,7 @@ export class TransaksiService {
   }
   findAllPrivateKonselingApprove() {
     return this.transactionRepository.findAndCount({
-      where: { detailOrder: { types: types.Private_Konseling,privateKonseling: {status: StatusPK.Approve} } },
+      where: { detailOrder: { types: types.Private_Konseling,privateKonseling: {status: StatusPK.Approve} } ,status: Status.Approve},
       relations: {
         customer: true,
         detailOrder: { privateKonseling: true },
@@ -179,7 +179,7 @@ export class TransaksiService {
   }
   findAllPrivateKonselingReject() {
     return this.transactionRepository.findAndCount({
-      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Reject}} },
+      where: { detailOrder: { types: types.Private_Konseling ,privateKonseling: {status: StatusPK.Reject && StatusPK.Approve}} ,status: Status.Reject},
       relations: {
         customer: true,
         detailOrder: { privateKonseling: true },
@@ -603,6 +603,24 @@ export class TransaksiService {
       entity.status = status;
 
       await this.seminarService.decrement(data.seminar.id);
+      await this.transactionRepository.update(id, entity);
+      return this.transactionRepository.findOneOrFail({
+        where: { id },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async approvepk(id: string) {
+    try {
+      await this.findOne(id);
+      await this.findOneDetail(id);
+
+      const status: any = 'approve';
+      const entity = new Transaction();
+      entity.status = status;
+
       await this.transactionRepository.update(id, entity);
       return this.transactionRepository.findOneOrFail({
         where: { id },
