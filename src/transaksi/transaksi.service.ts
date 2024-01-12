@@ -55,7 +55,7 @@ export class TransaksiService {
     return this.transactionRepository.findAndCount({
       relations: {
         customer: true,
-        detailOrder: { seminar: true, privateKonseling: true },
+        detailOrder: { seminar: true, privateKonseling: {psikolog: true} },
         bank: true,
       },
     });
@@ -430,7 +430,7 @@ export class TransaksiService {
         where: { id },
         relations: {
           customer: true,
-          detailOrder: { seminar: true, privateKonseling: true },
+          detailOrder: { seminar: true, privateKonseling: {psikolog: true} },
           bank: true,
         },
       });

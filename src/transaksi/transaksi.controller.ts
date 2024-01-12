@@ -130,6 +130,39 @@ export class TransaksiController {
     };
   }
 
+  @Get('/private_konseling/pending')
+  async findAllPrivateKonselingpending() {
+    const [data, count] =
+      await this.transactionService.findAllPrivateKonselingPending();
+    return {
+      data,
+      count,
+      status: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
+  @Get('/private_konseling/approve')
+  async findAllPrivateKonselingApprove() {
+    const [data, count] =
+      await this.transactionService.findAllPrivateKonselingApprove();
+    return {
+      data,
+      count,
+      status: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
+  @Get('/private_konseling/reject')
+  async findAllPrivateKonselingReject() {
+    const [data, count] =
+      await this.transactionService.findAllPrivateKonselingReject();
+    return {
+      data,
+      count,
+      status: HttpStatus.OK,
+      message: 'Success',
+    };
+  }
   @Get('/private_konseling')
   async findAllPrivateKonseling() {
     const [data, count] =
