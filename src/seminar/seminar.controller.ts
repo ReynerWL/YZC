@@ -102,6 +102,33 @@ export class SeminarController {
             message: 'success'
         }
     }
+    @Get('full')
+    async findAllFull(){
+        const [data,count] = await this.seminarService.findAllFull()
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+    @Get('done')
+    async findAllDone(){
+        const [data,count] = await this.seminarService.findAllDone()
+        return{
+            data,count,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
+    @Put('done/:id')
+    async Done(@Param('id',ParseUUIDPipe) id: string){
+        const data= await this.seminarService.done(id)
+        return{
+            data,
+            status: HttpStatus.OK,
+            message: 'success'
+        }
+    }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storagePosterSeminar))

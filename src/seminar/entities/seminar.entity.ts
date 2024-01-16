@@ -22,7 +22,8 @@ import {
     Pending = 'pending',
     Approve = 'approve',
     Reject = 'reject',
-    Full = 'full'
+    Full = 'full',
+    Done = 'done'
   }
 
 

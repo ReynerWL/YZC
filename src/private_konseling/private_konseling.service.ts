@@ -27,11 +27,11 @@ export class PrivateKonselingService {
 }
 async findAllPsiApprove(id: string){
   const psikolog = await this.psikologService.findOne(id)
-  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true, detailOrder:{transaction: true, customer: true}},where: {psikolog:{id: psikolog.id}, status: StatusPK.Pending}})
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true, detailOrder:{transaction: true, customer: true}},where: {psikolog:{id: psikolog.id}, status: StatusPK.Approve}})
 }
 async findAllPsiReject(id: string){
   const psikolog = await this.psikologService.findOne(id)
-  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true, customer: true}, },where: {psikolog:{id: psikolog.id}, status: StatusPK.Pending}})
+  return this.privateKonselingRepository.findAndCount({relations: {psikolog: true,detailOrder:{transaction: true, customer: true}, },where: {psikolog:{id: psikolog.id}, status: StatusPK.Reject}})
 }
 
  async createPrivateKonseling(createPrivateKonselingDto: CreatePrivateKonselingDto){
